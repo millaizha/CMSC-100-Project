@@ -10,5 +10,149 @@ body {
     font-family: "Outfit";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
-  
+}
+
+.input-box {
+    width: 100%;
+    min-height: 65px;
+    margin-top: 5px;
+    border-radius: 2rem;
+    background-color: #EEDBDB;
+    padding: 10px;  
+}
+/* bg-white p-8 w-4/5 h-5/6 rounded-[55px] pointer-events-auto flex relative overflow-hidden max-w-full */
+.container {
+    background-color: white;
+    position: relative;
+    border-radius: 55px;
+    overflow: hidden;
+    width: 80%;
+    max-width: 100%;
+    height: 85%;
+    min-height: 480px;
+}
+
+.container form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 40px;
+    height: 100%;
+}
+
+.container input {
+    outline: none;
+    padding: 10px 15px;
+    font-size: 15px;
+    margin: 8px 0;
+    width: 100%;
+}
+
+.form-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 1s ease-in-out;
+}
+
+.form-button {
+    width: 200px;
+    height: 65px;
+    background-color: #40573C;
+    border-radius: 45px;
+    font-weight: 600;
+    color: white;
+}
+
+.sign-in {
+    left: 50px;
+    width: 40%;
+    z-index: 2;
+}
+
+.container.active .sign-in {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+.sign-up {
+    left: 50px;
+    width: 40%;
+    opacity: 0;
+    z-index: 1;
+}
+
+.container.active .sign-up {
+    transform: translateX(130%);
+    opacity: 1;
+    z-index: 5;
+    animation: move 1s;
+}
+
+@keyframes move{ 
+    0%, 49.99%{
+        opacity: 0;
+    }
+    50%, 100%{
+        opacity: 1;
+    }
+}
+
+.toggle-container {
+    position: absolute;
+    left: 49%;
+    width: 50%;
+    height: 97.85%;
+    overflow: hidden;
+    transition: all 1s ease-in-out;
+    border-radius: 3rem;
+    z-index: 1000;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.container.active .toggle-container{
+    transform: translateX(-96%)
+}
+
+.toggle{
+    height: 100%; 
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: all 1s ease-in-out;
+}
+
+.container.active .toggle{
+    transform: translateX(50%);
+}
+
+.toggle-panel {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+}
+
+.toggle-left{ 
+    transform: translateX(200%);
+    transition: all 1s ease-in-out;
+    
+}
+
+.container.active .toggle-left {
+    transform: translateX(0);
+}
+
+.toggle-right {
+    right: 0;
+    transform: translateX(0);
+    transition: all 1s ease-in-out;
+
+}
+
+.container.active .toggle-right {
+    transform: translateX(-200%);
+}
