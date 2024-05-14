@@ -43,7 +43,7 @@ authRoutes.get("/register", getRegisteredUsers);
  * password - String
  *
  * Returns:
- * If successful: Status code 200; "Login successful"
+ * If successful: Status code 200; "Login successful", <token>
  * If non-existent user or wrong password: Status code 401; "Invalid credentials"
  * Else: Status code 500; "Error signing up"
  */
