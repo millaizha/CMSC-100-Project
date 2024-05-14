@@ -1,11 +1,18 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const cors = require('cors')
-const bodyParser = require('body-parser')
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const User = require('./models/userModel')
+// const express = require('express')
+// const mongoose = require('mongoose')
+// const cors = require('cors')
+// const bodyParser = require('body-parser')
+// const bcrypt = require('bcrypt')
+// const jwt = require('jsonwebtoken')
+// const User = require('./models/userModel')
 
+import express from 'express'
+import mongoose from 'mongoose'
+import cors from 'cors'
+import bodyParser from 'body-parser'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import User from './models/userModel.js'
 
 const SECRET_KEY = 'super-secret-key'
 
