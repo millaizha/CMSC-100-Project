@@ -4,9 +4,17 @@ import User from "../models/userModel.js";
 
 const register = async (req, res) => {
   try {
-    const { email, username, password } = req.body;
+    const { firstName, middleName, lastName, userType, email, password } =
+      req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ email, username, password: hashedPassword });
+    const newUser = new User({
+      firstName,
+      middleName,
+      lastName,
+      userType,
+      email,
+      password: hashedPassword,
+    });
     await newUser.save();
     res.status(201).json({ message: "User created successfully" });
   } catch (error) {
