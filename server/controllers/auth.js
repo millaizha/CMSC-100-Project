@@ -2,8 +2,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 
-const SECRET_KEY = "super-secret-key";
-
 const register = async (req, res) => {
   try {
     const { email, username, password } = req.body;
@@ -36,7 +34,7 @@ const login = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
-    const token = jwt.sign({ userId: user._id }, SECRET_KEY, {
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
       expiresIn: "1hr",
     });
     res.json({ message: "Login successful" });

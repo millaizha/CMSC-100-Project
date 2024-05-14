@@ -2,9 +2,11 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
-
+import dotenv from "dotenv";
 import authRoutes from "./routers/auth.js";
 
+// prepare the dot env
+dotenv.config();
 // connect to express app
 const app = express();
 // middleware
