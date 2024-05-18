@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 
-export default function RegisterForm() {
+export default function RegisterForm({toggleFunc}) {
   const firstNameRef = useRef(null);
   const middleNameRef = useRef(null);
   const lastNameRef = useRef(null);
@@ -58,7 +58,7 @@ export default function RegisterForm() {
             required="true"
             id="password"
             className="input-box"
-            placeholder="password"
+            placeholder="Password"
             ref={passwordRef}
           />
 
@@ -73,7 +73,7 @@ export default function RegisterForm() {
         <button className='form-button mt-8'>Sign up</button>
         <div className='flex gap-1 mt-4'>
           <span className='font-extralight'>Already have an account?</span>
-          <span className='font-bold text-[#40573C]'>Log in instead.</span>
+          <span className='font-bold text-[#40573C] cursor-pointer' onClick={toggleFunc}>Log in instead.</span>
         </div>
     </form>
   </div>;
