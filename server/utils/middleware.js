@@ -10,11 +10,11 @@ const verifyAccessToken = (token) => {
 };
 
 const verifyToken = (req, res, next) => {
-  const authHeader = req.headers["Authorization"];
+  const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
   if (!token) {
-    return res.sendStatus(401).json({ error: "Token not found." });
+    return res.status(401).json({ error: "Token not found." });
   }
 
   const result = verifyAccessToken(token);
