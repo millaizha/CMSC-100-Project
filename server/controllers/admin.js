@@ -29,11 +29,12 @@ const addProduct = async (req, res) => {
  * req.body should be something like this:
  *
  * {
- *  sortOption: {<key>: <asc or desc>}
+ *  "sortOption": {<key>: <asc or desc>}
  * }
  *
  * <key> can be "name", "type", "price", or "quantity"
  * <asc or desc>: 1 for ascending, -1 for descending
+ * Only one key is allowed for now.
  */
 const getProductListings = async (req, res) => {
   try {
