@@ -20,7 +20,6 @@ export default function Login() {
     <img src={PICTURE2} alt="Background 2" className={`absolute h-full w-full object-cover transition-opacity duration-1000 ${topImageOpacity === 0 ? 'opacity-100' : 'opacity-0'} `} />
  
     <div className="absolute inset-0 flex items-center justify-center backdrop-blur-sm">
-        {/* ADD CONDITION HERE (active) */}
         <div className={`container ${toggle == 1 ? 'active' : ''
         }`}> 
             <LoginForm toggleFunc={toggleImages}/>
@@ -35,7 +34,6 @@ export default function Login() {
                         <img src={PICTURE1} alt="" className='h-full w-full object-cover'/>
                     </div>
                 </div>
-               
             </div>
         </div>
     </div>
