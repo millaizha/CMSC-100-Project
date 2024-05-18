@@ -1,4 +1,5 @@
 import Product from "../models/productModel.js";
+import User from "../models/userModel.js";
 
 const addProduct = async (req, res) => {
   try {
@@ -46,4 +47,13 @@ const getProductListings = async (req, res) => {
   }
 };
 
-export { addProduct, getProductListings };
+const getRegisteredUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: "Unable to get users" });
+  }
+};
+
+export { addProduct, getProductListings, getRegisteredUsers };

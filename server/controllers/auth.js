@@ -28,15 +28,6 @@ const register = async (req, res) => {
   }
 };
 
-const getRegisteredUsers = async (req, res) => {
-  try {
-    const users = await User.find();
-    res.status(200).json(users);
-  } catch (error) {
-    res.status(500).json({ error: "Unable to get users" });
-  }
-};
-
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -61,4 +52,4 @@ const login = async (req, res) => {
   }
 };
 
-export { register, getRegisteredUsers, login };
+export { register, login };
