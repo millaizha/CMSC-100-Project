@@ -27,4 +27,15 @@ const verifyToken = (req, res, next) => {
   next();
 };
 
-export { verifyToken };
+// further verification if the required user is an admin
+// call this after verifyToken(...)
+const verifyIfAdmin = (req, res, next) => {
+  if (req.tokenInfo.userType != "admin") {
+    return res
+      .status(403)
+      .json({ error: "You need admin privileges to access this content." });
+  }
+  next();
+};
+
+export { verifyToken, verifyIfAdmin };
