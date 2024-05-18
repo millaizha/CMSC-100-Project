@@ -1,5 +1,5 @@
 import express from "express";
-import { register, getRegisteredUsers, login } from "../controllers/auth.js";
+import { register, login } from "../controllers/auth.js";
 
 const authRoutes = express.Router();
 
@@ -20,19 +20,6 @@ const authRoutes = express.Router();
  * Else: Status code 500; "Error signing up"
  */
 authRoutes.post("/register", register);
-
-/**
- * GET /auth/register
- * Get all registered users (including the admin)
- *
- * Inputs for req.body:
- * None
- *
- * Returns:
- * If successful: Status code 200; <list of users>
- * Else: Status code 500; "Unable to get users"
- */
-authRoutes.get("/register", getRegisteredUsers);
 
 /**
  * POST /auth/login
