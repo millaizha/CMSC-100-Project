@@ -4,6 +4,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import authRoutes from "./routers/auth.js";
+import adminRoutes from "./routers/admin.js";
 
 // prepare the dot env
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(cors());
 
 // mount the route files here
 app.use("/auth", authRoutes);
+app.use("/admin", adminRoutes);
 
 // connect to mongoDB
 const dbURI = "mongodb://127.0.0.1:27017/farm-to-table";
