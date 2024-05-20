@@ -53,21 +53,16 @@ export default function Shop() {
           <h1 className="font-black text-6xl mb-6">OUR PRODUCTS</h1>
           <div className="flex flex-wrap gap-2">
             <Card show={handleButtonClick} />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
+            <Card show={handleButtonClick} />
+            <Card show={handleButtonClick} />
+            <Card show={handleButtonClick} />
+            <Card show={handleButtonClick} />
+            <Card show={handleButtonClick} />
+            <Card show={handleButtonClick} />
+            <Card show={handleButtonClick} />
+            <Card show={handleButtonClick} />
+            <Card show={handleButtonClick} />
+            <Card show={handleButtonClick} />
           </div>
         </div>
       </div>
