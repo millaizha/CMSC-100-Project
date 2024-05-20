@@ -3,14 +3,21 @@ import LOGO from "../assets/logo/100_LOGO.svg";
 import { AiOutlineShopping } from "react-icons/ai";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { AuthContext } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const { logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   return (
     <div className="h-32 p-6 w-screen flex sticky top-0 bg-white z-10">
       <div className="left flex gap-12 flex items-center pl-12">
-        <img src={LOGO} alt="Website Logo" className="w-24" />
+        <img
+          src={LOGO}
+          alt="Website Logo"
+          className="w-24 cursor-pointer"
+          onClick={() => navigate("/")}
+        />
         <h1 className="font-black text-3xl">FARM-TO-TABLE</h1>
         <h2 className="text-2xl">Hello, Genevieve!</h2>
       </div>
@@ -20,7 +27,10 @@ export default function Navbar() {
           <AiOutlineShopping />
           My Orders
         </button>
-        <button className="flex items-center gap-2">
+        <button
+          className="flex items-center gap-2"
+          onClick={() => navigate("/cart")}
+        >
           <MdOutlineShoppingCart />
           Cart
         </button>

@@ -14,9 +14,16 @@ function App() {
       <AuthProvider>
         <CartProvider>
           <Routes>
-            <Route path="/" element={<Shop />}></Route>
-            <Route path="/login" element={<Login />}></Route>
-            <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>}></Route>
+            <Route path="/" element={
+              <ProtectedRoute>
+                  <Shop />
+              </ProtectedRoute>
+      
+            } />
+            <Route path="/login" element={<Login />} />
+            <Route path="/cart" element={<ProtectedRoute>
+                <Cart />
+              </ProtectedRoute>} />
           </Routes>
         </CartProvider>
       </AuthProvider>
