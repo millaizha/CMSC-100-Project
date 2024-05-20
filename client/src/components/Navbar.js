@@ -1,8 +1,12 @@
+import { useContext } from "react";
 import LOGO from "../assets/logo/100_LOGO.svg";
 import { AiOutlineShopping } from "react-icons/ai";
 import { MdOutlineShoppingCart } from "react-icons/md";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function Navbar() {
+  const { logout } = useContext(AuthContext);
+
   return (
     <div className="h-32 p-6 w-screen flex sticky top-0 bg-white z-10">
       <div className="left flex gap-12 flex items-center pl-12">
@@ -20,7 +24,9 @@ export default function Navbar() {
           <MdOutlineShoppingCart />
           Cart
         </button>
-        <button className="form-button">Log Out</button>
+        <button className="form-button" onClick={logout}>
+          Log Out
+        </button>
       </div>
     </div>
   );
