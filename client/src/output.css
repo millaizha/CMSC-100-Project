@@ -1200,3 +1200,15 @@ body {
 .container.active .toggle-right {
   transform: translateX(-200%);
 }
+
+.password-toggle {
+  position: absolute;
+  right: 65px;
+  top: 60%;
+  transform: translateY(40%);
+  font-size: x-large;
+  color:#40573C;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}

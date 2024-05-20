@@ -1,5 +1,6 @@
 import { useState, useRef, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import { IoEyeOffSharp, IoEyeSharp } from "react-icons/io5";
 
 import LOGO from "../assets/logo/100_LOGO.svg";
 
@@ -7,12 +8,17 @@ export default function LoginForm({ toggleFunc }) {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const { login } = useContext(AuthContext);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     login(email, password);
+  };
+
+  const togglePassword = () => {
+    setShowPassword((prevState) => !prevState);
   };
 
   return (
@@ -40,13 +46,21 @@ export default function LoginForm({ toggleFunc }) {
         />
 
         <input
-          type="text"
-          required="true"
+          type={showPassword ? "text" : "password"}
+          required
           id="password"
           className="input-box"
           placeholder="Password"
           ref={passwordRef}
         />
+
+        <button
+          type="button"
+          className="password-toggle"
+          onClick={togglePassword}
+        >
+          {showPassword ? <IoEyeOffSharp /> : <IoEyeSharp />}
+        </button>
 
         <button className="form-button mt-8" type="submit">
           Log In

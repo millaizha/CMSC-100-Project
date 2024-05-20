@@ -18,7 +18,7 @@ body {
     margin-top: 5px;
     border-radius: 2rem;
     background-color: #EEDBDB;
-    padding: 10px;  
+    padding: 10px;
 }
 /* bg-white p-8 w-4/5 h-5/6 rounded-[55px] pointer-events-auto flex relative overflow-hidden max-w-full */
 .container {
@@ -155,4 +155,17 @@ body {
 
 .container.active .toggle-right {
     transform: translateX(-200%);
+}
+
+.password-toggle {
+    position: absolute;
+    right: 65px;
+    top: 60%;
+    transform: translateY(40%);
+    font-size: x-large;
+    color:#40573C;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
 }
