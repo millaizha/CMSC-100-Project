@@ -3,6 +3,7 @@ import {
   addProduct,
   getProductListings,
   getRegisteredUsers,
+  getTransactions,
 } from "../controllers/admin.js";
 import { verifyToken, verifyIfAdmin } from "../utils/middleware.js";
 
@@ -78,6 +79,13 @@ adminRoutes.get(
   verifyToken,
   verifyIfAdmin,
   getRegisteredUsers
+);
+
+adminRoutes.get(
+  "/getTransactions",
+  verifyToken,
+  verifyIfAdmin,
+  getTransactions
 );
 
 export default adminRoutes;

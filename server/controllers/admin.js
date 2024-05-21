@@ -1,4 +1,5 @@
 import Product from "../models/productModel.js";
+import Transaction from "../models/transactionModel.js";
 import User from "../models/userModel.js";
 
 const addProduct = async (req, res) => {
@@ -48,4 +49,14 @@ const getRegisteredUsers = async (req, res) => {
   }
 };
 
-export { addProduct, getProductListings, getRegisteredUsers };
+// show all transactions
+const getTransactions = async (req, res) => {
+  try {
+    const transactions = await Transaction.find();
+    res.status(200).json(transactions);
+  } catch (error) {
+    res.status(500).json({ error: "Unable to get transactions." });
+  }
+};
+
+export { addProduct, getProductListings, getRegisteredUsers, getTransactions };
