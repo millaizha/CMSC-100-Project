@@ -3,16 +3,8 @@ import User from "../models/userModel.js";
 
 const addProduct = async (req, res) => {
   try {
-    const {
-      productId,
-      name,
-      description = null,
-      price,
-      type,
-      quantity,
-    } = req.body;
+    const { name, description = null, price, type, quantity } = req.body;
     const newProduct = new Product({
-      productId,
       name,
       description,
       price,

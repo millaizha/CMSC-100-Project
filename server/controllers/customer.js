@@ -26,9 +26,8 @@ const getProductListings = async (req, res) => {
 // order one product
 const orderProduct = async (req, res) => {
   try {
-    const { transactionId, productId, quantity, email } = req.body;
+    const { productId, quantity, email } = req.body;
     const newTransaction = new Transaction({
-      transactionId,
       productId,
       quantity,
       status: 0,

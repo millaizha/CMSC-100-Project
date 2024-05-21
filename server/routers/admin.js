@@ -16,7 +16,6 @@ const adminRoutes = express.Router();
  * User accessing it must be an admin.
  *
  * Inputs for req.body:
- * productId - String (unique)
  * name - String (unique)
  * description - String (optional)
  * price - Number
