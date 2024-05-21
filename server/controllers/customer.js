@@ -40,4 +40,16 @@ const orderProduct = async (req, res) => {
   }
 };
 
-export { getProductListings, orderProduct };
+// cancel an order
+// TODO: It should check whether the order has already been cancelled
+const cancelTransaction = async (req, res) => {
+  try {
+    const { transactionId } = req.body;
+    await Transaction.findOneAndUpdate({ _id: transactionId }, { status: 2 });
+    res.status(200).json({ message: "Cancellation confirmed." });
+  } catch (error) {
+    res.status(500).json({ error: "Cancellation failed." });
+  }
+};
+
+export { getProductListings, orderProduct, cancelTransaction };

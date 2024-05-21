@@ -1,5 +1,9 @@
 import express from "express";
-import { getProductListings, orderProduct } from "../controllers/customer.js";
+import {
+  cancelTransaction,
+  getProductListings,
+  orderProduct,
+} from "../controllers/customer.js";
 import { verifyToken } from "../utils/middleware.js";
 
 const customerRoutes = express.Router();
@@ -29,5 +33,6 @@ const customerRoutes = express.Router();
  */
 customerRoutes.get("/getProductListings", verifyToken, getProductListings);
 customerRoutes.post("/orderProduct", verifyToken, orderProduct);
+customerRoutes.post("/cancelTransaction", verifyToken, cancelTransaction);
 
 export default customerRoutes;

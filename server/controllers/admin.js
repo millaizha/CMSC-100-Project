@@ -60,6 +60,7 @@ const getTransactions = async (req, res) => {
 };
 
 // fulfill an order
+// TODO: It should check whether the order has already been cancelled
 const confirmTransaction = async (req, res) => {
   try {
     const { transactionId } = req.body;
