@@ -3,6 +3,7 @@ import {
   cancelTransaction,
   getProductListings,
   orderProduct,
+  getTransactions,
 } from "../controllers/customer.js";
 import { verifyToken } from "../utils/middleware.js";
 
@@ -65,5 +66,20 @@ customerRoutes.post("/orderProduct", verifyToken, orderProduct);
  * Else: Status code 500; "Cancellation failed"
  */
 customerRoutes.post("/cancelTransaction", verifyToken, cancelTransaction);
+
+/**
+ * GET /customer/getTransactions
+ * Get all the user's transactions
+ *
+ * Requires the Authorization header with the value "Bearer <token>".
+ *
+ * Inputs for req.body:
+ * email - String
+ *
+ * Response:
+ * If successful: Status code 200, <list of transactions>
+ * Else: Status code 500; "Unable to get transactions"
+ */
+customerRoutes.get("/getTransactions", verifyToken, getTransactions);
 
 export default customerRoutes;

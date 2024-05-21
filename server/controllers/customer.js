@@ -51,4 +51,15 @@ const cancelTransaction = async (req, res) => {
   }
 };
 
-export { getProductListings, orderProduct, cancelTransaction };
+// get the transaction by the user
+const getTransactions = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const transactions = await Transaction.find({ email });
+    res.status(200).json(transactions);
+  } catch (error) {
+    res.status(500).json({ error: "Unable to get transactions." });
+  }
+};
+
+export { getProductListings, orderProduct, cancelTransaction, getTransactions };
