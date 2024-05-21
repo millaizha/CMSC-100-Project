@@ -71,13 +71,13 @@ const confirmTransaction = async (req, res) => {
     const product = await Product.findById(transaction.productId);
     if (product.quantity < transaction.quantity) {
       res.status(400).json({ error: "Insufficient product quantity." });
+    } else {
+      await Product.findOneAndUpdate(
+        { _id: product._id },
+        { quantity: product.quantity - transaction.quantity }
+      );
+      res.status(200).json({ message: "Transaction confirmed." });
     }
-    await Product.findOneAndUpdate(
-      { _id: product._id },
-      { quantity: product.quantity - transaction.quantity }
-    );
-
-    res.status(200).json({ message: "Transaction confirmed." });
   } catch (error) {
     res.status(500).json({ error: "Transaction confirmation failed." });
   }
