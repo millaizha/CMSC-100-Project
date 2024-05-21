@@ -1,6 +1,6 @@
-import InventoryCard from "../components/InventoryCard";
+import InventoryCard from "../../components/InventoryCard";
 // import Navbar from "../components/Navbar";
-import Popup from "../components/Popup";
+import Popup from "../../components/Popup";
 import { useState } from "react";
 
 export default function Shop() {
