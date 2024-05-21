@@ -1,6 +1,6 @@
-import Card from "../components/Card";
-import Navbar from "../components/Navbar";
-import Popup from "../components/Popup";
+import Card from "../../components/Card";
+import Navbar from "../../components/Navbar";
+import Popup from "../../components/Popup";
 import { useState } from "react";
 
 export default function Shop() {

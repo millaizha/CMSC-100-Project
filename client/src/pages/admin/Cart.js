@@ -1,5 +1,5 @@
-import CartListCard from "../components/CartListCard";
-import Navbar from "../components/Navbar";
+import CartListCard from "../../components/CartListCard";
+import Navbar from "../../components/Navbar";
 import { FaTrash } from "react-icons/fa";
 
 export default function Cart({ cartList }) {

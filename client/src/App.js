@@ -2,8 +2,8 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Login from "./pages/Login";
-import Shop from "./pages/Shop";
-import Cart from "./pages/Cart";
+import Shop from "./pages/user/Shop";
+import Cart from "./pages/admin/Cart";
 import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./contexts/ProtectedRoute";
