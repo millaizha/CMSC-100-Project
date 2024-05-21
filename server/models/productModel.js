@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
-  // distinct from the already existing  _id key
-  productId: { type: String, required: true, unique: true },
+  // product id is the _id
   name: { type: String, required: true, unique: true },
   description: { type: String },
   price: { type: Number, required: true },

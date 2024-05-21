@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
 
 const transactionSchema = new mongoose.Schema({
-  // distinct from the already existing  _id key
-  transactionId: { type: String, required: true, unique: true },
-  productId: { type: String, required: true, unique: true },
+  // transaction id is _id
+  productId: { type: mongoose.Schema.ObjectId, required: true },
   quantity: { type: Number, required: true },
   status: { type: Number, enum: [0, 1, 2], required: true },
   email: { type: String, required: true },
