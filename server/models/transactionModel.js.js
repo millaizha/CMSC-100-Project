@@ -11,6 +11,6 @@ const transactionSchema = new mongoose.Schema({
   dateTimeOrdered: { type: Date, required: true, default: Date.now },
 });
 
-const transaction = mongoose.model("transaction", transactionSchema);
+const Transaction = mongoose.model("transaction", transactionSchema);
 
-export default transaction;
+export default Transaction;

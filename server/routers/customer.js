@@ -1,5 +1,5 @@
 import express from "express";
-import { getProductListings } from "../controllers/customer.js";
+import { getProductListings, orderProduct } from "../controllers/customer.js";
 import { verifyToken } from "../utils/middleware.js";
 
 const customerRoutes = express.Router();
@@ -27,6 +27,7 @@ const customerRoutes = express.Router();
  * If successful: Status code 200, <list of products>
  * Else: Status code 500; "Unable to get products"
  */
-adminRoutes.get("/getProductListings", verifyToken, getProductListings);
+customerRoutes.get("/getProductListings", verifyToken, getProductListings);
+customerRoutes.post("/orderProduct", verifyToken, orderProduct);
 
 export default customerRoutes;

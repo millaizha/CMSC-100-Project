@@ -1,3 +1,4 @@
+import Transaction from "../models/transactionModel.js";
 import Product from "../models/productModel.js";
 
 /**
@@ -21,4 +22,23 @@ const getProductListings = async (req, res) => {
   }
 };
 
-export { getProductListings };
+// create a transaction (order)
+// order one product
+const orderProduct = async (req, res) => {
+  try {
+    const { transactionId, productId, quantity, email } = req.body;
+    const newTransaction = new Transaction({
+      transactionId,
+      productId,
+      quantity,
+      status: 0,
+      email,
+    });
+    await newTransaction.save();
+    res.status(201).json({ message: "Ordered successfully." });
+  } catch (error) {
+    res.status(500).json({ error: "Ordering failed." });
+  }
+};
+
+export { getProductListings, orderProduct };
