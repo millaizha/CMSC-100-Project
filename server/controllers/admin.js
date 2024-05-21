@@ -60,11 +60,23 @@ const getTransactions = async (req, res) => {
 };
 
 // fulfill an order
-// TODO: It should check whether the order has already been cancelled
 const confirmTransaction = async (req, res) => {
   try {
     const { transactionId } = req.body;
-    await Transaction.findOneAndUpdate({ _id: transactionId }, { status: 1 });
+    const transaction = await Transaction.findOneAndUpdate(
+      { _id: transactionId },
+      { status: 1 }
+    );
+    // check if the inventory suffices
+    const product = await Product.findById(transaction.productId);
+    if (product.quantity < transaction.quantity) {
+      res.status(400).json({ error: "Insufficient product quantity." });
+    }
+    await Product.findOneAndUpdate(
+      { _id: product._id },
+      { quantity: product.quantity - transaction.quantity }
+    );
+
     res.status(200).json({ message: "Transaction confirmed." });
   } catch (error) {
     res.status(500).json({ error: "Transaction confirmation failed." });

@@ -41,7 +41,6 @@ const orderProduct = async (req, res) => {
 };
 
 // cancel an order
-// TODO: It should check whether the order has already been cancelled
 const cancelTransaction = async (req, res) => {
   try {
     const { transactionId } = req.body;
