@@ -59,4 +59,21 @@ const getTransactions = async (req, res) => {
   }
 };
 
-export { addProduct, getProductListings, getRegisteredUsers, getTransactions };
+// fulfill an order
+const confirmTransaction = async (req, res) => {
+  try {
+    const { transactionId } = req.body;
+    await Transaction.findOneAndUpdate({ _id: transactionId }, { status: 1 });
+    res.status(200).json({ message: "Transaction confirmed." });
+  } catch (error) {
+    res.status(500).json({ error: "Transaction confirmation failed." });
+  }
+};
+
+export {
+  addProduct,
+  getProductListings,
+  getRegisteredUsers,
+  getTransactions,
+  confirmTransaction,
+};

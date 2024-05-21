@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addProduct,
+  confirmTransaction,
   getProductListings,
   getRegisteredUsers,
   getTransactions,
@@ -86,6 +87,13 @@ adminRoutes.get(
   verifyToken,
   verifyIfAdmin,
   getTransactions
+);
+
+adminRoutes.get(
+  "/confirmTransaction",
+  verifyToken,
+  verifyIfAdmin,
+  confirmTransaction
 );
 
 export default adminRoutes;
