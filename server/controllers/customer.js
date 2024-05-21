@@ -1,5 +1,5 @@
-import Transaction from "../models/transactionModel.js";
 import Product from "../models/productModel.js";
+import Transaction from "../models/transactionModel.js";
 
 /**
  * req.body should be something like this:
