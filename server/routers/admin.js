@@ -82,6 +82,20 @@ adminRoutes.get(
   getRegisteredUsers
 );
 
+/**
+ * GET /admin/getTransactions
+ * Get all transactions in the database.
+ *
+ * Requires the Authorization header with the value "Bearer <token>".
+ * User accessing it must be an admin.
+ *
+ * Inputs for req.body:
+ * None
+ *
+ * Response:
+ * If successful: Status code 200, <list of transactions>
+ * Else: Status code 500; "Unable to get transactions"
+ */
 adminRoutes.get(
   "/getTransactions",
   verifyToken,
@@ -89,6 +103,22 @@ adminRoutes.get(
   getTransactions
 );
 
+/**
+ * POST /admin/confirmTransaction
+ * Confirms a transaction.
+ * This marks the transaction confirmed and deducts the inventory of a product.
+ *
+ * Requires the Authorization header with the value "Bearer <token>".
+ * User accessing it must be an admin.
+ *
+ * Inputs for req.body:
+ * transactionId - String
+ *
+ * Response:
+ * If successful: Status code 200, "Transaction confirmed"
+ * If inventory is insufficient: Status code 400: "Insufficient product quantity"
+ * Else: Status code 500; "Transaction confirmation failed"
+ */
 adminRoutes.post(
   "/confirmTransaction",
   verifyToken,

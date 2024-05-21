@@ -32,7 +32,38 @@ const customerRoutes = express.Router();
  * Else: Status code 500; "Unable to get products"
  */
 customerRoutes.get("/getProductListings", verifyToken, getProductListings);
+
+/**
+ * POST /customer/orderProduct
+ * Order one product.
+ *
+ * Requires the Authorization header with the value "Bearer <token>".
+ *
+ * Inputs for req.body:
+ * productId - String
+ * quantity - Number
+ * email - String
+ *
+ * Response:
+ * If successful: Status code 200; "Ordered successfully"
+ * Else: Status code 500; "Ordering failed"
+ */
 customerRoutes.post("/orderProduct", verifyToken, orderProduct);
+
+/**
+ * POST /customer/cancelTransaction
+ * Cancels a transaction.
+ * This marks the transaction cancelled.
+ *
+ * Requires the Authorization header with the value "Bearer <token>".
+ *
+ * Inputs for req.body:
+ * transactionId - String
+ *
+ * Response:
+ * If successful: Status code 200, "Cancellation confirmed"
+ * Else: Status code 500; "Cancellation failed"
+ */
 customerRoutes.post("/cancelTransaction", verifyToken, cancelTransaction);
 
 export default customerRoutes;
