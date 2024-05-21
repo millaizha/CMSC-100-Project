@@ -89,7 +89,7 @@ adminRoutes.get(
   getTransactions
 );
 
-adminRoutes.get(
+adminRoutes.post(
   "/confirmTransaction",
   verifyToken,
   verifyIfAdmin,
