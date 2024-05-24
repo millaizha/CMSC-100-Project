@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
@@ -7,6 +7,22 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState(null);
   const navigate = useNavigate();
+
+  const checkAuth = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setToken(token);
+      setIsAuthenticated(true);
+      console.log("AUTHENTICATED");
+    } else {
+      setIsAuthenticated(false);
+      console.log("NOT AUTHENTICATED");
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   // Login
   const login = async (email, password) => {
@@ -23,6 +39,7 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(true);
         setToken(data.token);
         localStorage.setItem("token", data.token);
+        checkAuth();
         navigate("/");
       } else {
         return data.error;
@@ -38,6 +55,7 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
     setToken(null);
     localStorage.removeItem("token");
+    checkAuth();
     navigate("/login");
   };
 
@@ -67,7 +85,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ token, isAuthenticated, login, logout, register }}
+      value={{ token, checkAuth, isAuthenticated, login, logout, register }}
     >
       {children}
     </AuthContext.Provider>

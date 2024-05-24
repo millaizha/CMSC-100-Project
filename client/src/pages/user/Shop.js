@@ -11,13 +11,19 @@ export default function Shop() {
   const [popupName, setPopupName] = useState("");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [sortOption, setSortOption] = useState(1);
+  const [sortOption, setSortOption] = useState();
 
   const { addToCart } = useContext(CartContext);
   const { token } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchProducts = async () => {
+      if (!token) {
+        console.error("No token found");
+        setLoading(false);
+        return;
+      }
+
       try {
         const response = await fetch(
           "http://localhost:3001/customer/getProductListings",
@@ -30,8 +36,8 @@ export default function Shop() {
 
         if (response.ok) {
           const data = await response.json();
+          console.log("Fetched products:", data);
           setProducts(data);
-          console.log(products);
         } else {
           console.error("Error fetching products:", response.statusText);
         }
@@ -42,9 +48,8 @@ export default function Shop() {
       }
     };
     
-    if (token) {
-      fetchProducts();
-    }
+    fetchProducts();
+   
   }, [sortOption, token]);
 
   const handleClosePopup = () => {
