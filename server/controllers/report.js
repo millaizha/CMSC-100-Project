@@ -6,6 +6,12 @@ const getProductsSold = async (req, res) => {
   try {
     const productsSold = await Transaction.aggregate([
       {
+        // only completed transactions
+        $match: {
+          status: 1,
+        },
+      },
+      {
         $group: {
           _id: "$productId",
           totalQuantity: { $sum: "$quantity" },
@@ -38,6 +44,7 @@ const getProductsSold = async (req, res) => {
 
     res.status(200).json(productsSold);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Unable to get transactions." });
   }
 };
