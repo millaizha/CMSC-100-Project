@@ -24,6 +24,7 @@ const register = async (req, res) => {
     await newUser.save();
     res.status(201).json({ message: "User created successfully" });
   } catch (error) {
+    console.error(error.stack);
     res.status(500).json({ error: "Error signing up" });
   }
 };

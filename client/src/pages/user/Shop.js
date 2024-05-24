@@ -1,27 +1,56 @@
 import Card from "../../components/Card";
 import Navbar from "../../components/Navbar";
 import Popup from "../../components/Popup";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { CartContext } from "../../contexts/CartContext";
-
-const products = [
-  {
-    id: "1",
-    name: "Orange Tangerine",
-    description: "Fresh and juicy oranges",
-    type: 1,
-    quantity: 100,
-    imageURL:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Orange-Fruit-Pieces.jpg/2560px-Orange-Fruit-Pieces.jpg",
-    price: 20.99,
-  },
-];
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function Shop() {
   const [showPopup, setShowPopup] = useState(false);
   const [popupImage, setPopupImage] = useState("");
   const [popupName, setPopupName] = useState("");
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [sortOption, setSortOption] = useState();
+
   const { addToCart } = useContext(CartContext);
+  const { token } = useContext(AuthContext);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      if (!token) {
+        console.error("No token found");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          "http://localhost:3001/customer/getProductListings",
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Fetched products:", data);
+          setProducts(data);
+        } else {
+          console.error("Error fetching products:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchProducts();
+   
+  }, [sortOption, token]);
 
   const handleClosePopup = () => {
     setShowPopup(false);
@@ -32,6 +61,10 @@ export default function Shop() {
     setShowPopup(true);
     setPopupImage(product.imageURL);
     setPopupName(product.name);
+  };
+
+  const handleSort = (key, order) => {
+    setSortOption({ [key]: order === "Ascending" ? 1 : -1 });
   };
 
   return (
@@ -57,25 +90,35 @@ export default function Shop() {
           </div>
           <div className="flex flex-col gap-2 mt-6">
             <h1 className="text-2xl font-black mb-2">SORT BY</h1>
-            <button className="bg-white text-xl rounded-lg w-full p-4 ">
+            <button
+              className="bg-white text-xl rounded-lg w-full p-4 "
+              onClick={() => handleSort("name", "Ascending")}
+            >
               Ascending
             </button>
-            <button className="bg-white text-xl rounded-lg w-full p-4 ">
+            <button
+              className="bg-white text-xl rounded-lg w-full p-4 "
+              onClick={() => handleSort("name", "Descending")}
+            >
               Descending
             </button>
           </div>
         </div>
         <div className="content-container p-6 pt-0 h-screen overflow-y-auto">
           <h1 className="font-black text-6xl mb-6">OUR PRODUCTS</h1>
-          <div className="flex flex-wrap gap-2">
-            {products.map((product) => (
-              <Card
-                key={product.id}
-                product={product}
-                addToCart={handleAddToCart}
-              />
-            ))}
-          </div>
+          {loading ? (
+            <p>Loading products...</p>
+          ) : (
+            <div className="flex flex-wrap gap-2">
+              {products.map((product) => (
+                <Card
+                  key={product.id}
+                  product={product}
+                  addToCart={handleAddToCart}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
       <Popup

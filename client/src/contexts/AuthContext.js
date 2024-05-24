@@ -4,46 +4,89 @@ import { useNavigate } from "react-router-dom";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [token, setToken] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const loggedInUser = localStorage.getItem("currentUser");
-    if (loggedInUser) {
-      setUser(JSON.parse(loggedInUser));
-    }
-  }, []);
-
-  const login = (email, password) => {
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = users.find(
-      (u) => u.email === email && u.password === password
-    );
-
-    if (user) {
-      setUser(user);
-      localStorage.setItem("currentUser", JSON.stringify(user));
-      navigate("/");
+  const checkAuth = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setToken(token);
+      setIsAuthenticated(true);
+      console.log("AUTHENTICATED");
     } else {
-      alert("Invalid credentials! Please try again.");
+      setIsAuthenticated(false);
+      console.log("NOT AUTHENTICATED");
     }
   };
 
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  // Login
+  const login = async (email, password) => {
+    try {
+      const response = await fetch("http://localhost:3001/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setIsAuthenticated(true);
+        setToken(data.token);
+        localStorage.setItem("token", data.token);
+        checkAuth();
+        navigate("/");
+      } else {
+        return data.error;
+      }
+    } catch (error) {
+      console.error("Error loggin in:", error);
+      return "An error occured during login";
+    }
+  };
+
+  // Logout
   const logout = () => {
-    setUser(null);
-    localStorage.removeItem("currentUser");
+    setIsAuthenticated(false);
+    setToken(null);
+    localStorage.removeItem("token");
+    checkAuth();
     navigate("/login");
   };
 
-  const register = (userData) => {
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    users.push(userData);
-    localStorage.setItem("users", JSON.stringify(users));
-    login(userData.email, userData.password);
+  // Register
+  const register = async (userData) => {
+    try {
+      const response = await fetch("http://localhost:3001/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      });
+
+      const responseClone = response.clone();
+
+      if (response.ok) {
+        alert("Registration successful! Please log in.");
+        navigate("/");
+      } else {
+        const errorData = await responseClone.json();
+        alert(errorData.error);
+      }
+    } catch (error) {
+      console.error("Error registering:", error);
+      alert("An error occured during registration");
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register }}>
+    <AuthContext.Provider
+      value={{ token, checkAuth, isAuthenticated, login, logout, register }}
+    >
       {children}
     </AuthContext.Provider>
   );

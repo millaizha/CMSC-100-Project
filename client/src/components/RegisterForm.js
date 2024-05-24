@@ -16,6 +16,7 @@ export default function RegisterForm({ toggleFunc }) {
       firstName: firstNameRef.current.value,
       middleName: middleNameRef.current.value,
       lastName: lastNameRef.current.value,
+      userType: "user",
       email: emailRef.current.value,
       password: passwordRef.current.value,
     };
@@ -74,16 +75,16 @@ export default function RegisterForm({ toggleFunc }) {
         />
 
         <input
-          type="text"
+          type="password"
           required="true"
-          id="password"
+          id="password1"
           className="input-box"
           placeholder="Password"
           ref={passwordRef}
         />
 
         <input
-          type="text"
+          type="password"
           required="true"
           id="password_dup"
           className="input-box"
