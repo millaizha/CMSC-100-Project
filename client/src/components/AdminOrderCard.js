@@ -22,11 +22,13 @@ export default function AdminOrderCard({ users }) {
                       <div className="spacer mx-auto"></div>
                       <button
                         type="button"
+                        className="text-red"
                         >
                         <FaRegCircleCheck />
                     </button>
                     <button
                         type="button"
+                        className="text-red"
                         >
                         <FaRegCircleXmark />
                     </button>
