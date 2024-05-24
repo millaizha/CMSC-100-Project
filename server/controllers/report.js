@@ -24,8 +24,9 @@ const getRecentSales = async (req, res) => {
 // get all the list of products sold in a given time interval
 // YYYY-MM-DD format
 // Ex: 2024-05-25 doesn't include that day in 5 PM, it strictly means at 12 MN
+// limit is applied in case the products are too much
 const getProductsSold = async (req, res) => {
-  const { earliestDate, latestDate } = req.body;
+  const { earliestDate, latestDate, limit } = req.body;
   try {
     const productsSold = await Transaction.aggregate([
       {
@@ -41,7 +42,8 @@ const getProductsSold = async (req, res) => {
       {
         $group: {
           _id: "$productId",
-          aggregateCost: { $sum: "$totalCost" },
+          aggregateSales: { $sum: "$totalCost" },
+          aggregateQuantity: { $sum: "$quantity" },
         },
       },
       {
@@ -60,9 +62,17 @@ const getProductsSold = async (req, res) => {
           name: "$productInfo.name",
           description: "$productInfo.description",
           price: "$productInfo.price",
+          aggregateQuantity: "$aggregateQuantity",
           type: "$productInfo.type",
-          aggregateCost: "$aggregateCost",
+          aggregateSales: "$aggregateSales",
         },
+      },
+      {
+        // sort by aggregate sales for now
+        $sort: { aggregateSales: -1 },
+      },
+      {
+        $limit: limit,
       },
     ]);
 
@@ -91,7 +101,7 @@ const getWeeklyReport = async (req, res) => {
       {
         $group: {
           _id: { $week: "$dateTimeOrdered" },
-          aggregateCost: { $sum: "$totalCost" },
+          aggregateSales: { $sum: "$totalCost" },
         },
       },
     ]);
@@ -121,7 +131,7 @@ const getMonthlyReport = async (req, res) => {
       {
         $group: {
           _id: { $month: "$dateTimeOrdered" },
-          aggregateCost: { $sum: "$totalCost" },
+          aggregateSales: { $sum: "$totalCost" },
         },
       },
     ]);
@@ -151,7 +161,7 @@ const getYearlyReport = async (req, res) => {
       {
         $group: {
           _id: { $year: "$dateTimeOrdered" },
-          aggregateCost: { $sum: "$totalCost" },
+          aggregateSales: { $sum: "$totalCost" },
         },
       },
     ]);
