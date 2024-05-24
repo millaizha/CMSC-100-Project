@@ -44,7 +44,7 @@ export default function CartListCard({ product }) {
         <div className="flex justify-between items-center">
           <div className="flex items-end gap-1">
             <div className="text-xl font-bold">PHP</div>
-            <div className="text-4xl font-bold">{product.price}</div>
+            <div className="text-4xl font-bold">{product.price * quantity}</div>
           </div>
 
           <div className="spacer w-16"></div>
