@@ -1,21 +1,37 @@
 import Card from "../../components/Card";
 import Navbar from "../../components/Navbar";
 import Popup from "../../components/Popup";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { CartContext } from "../../contexts/CartContext";
+
+const products = [
+  {
+    id: "1",
+    name: "Orange Tangerine",
+    description: "Fresh and juicy oranges",
+    type: 1,
+    quantity: 100,
+    imageURL:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Orange-Fruit-Pieces.jpg/2560px-Orange-Fruit-Pieces.jpg",
+    price: 20.99,
+  },
+];
 
 export default function Shop() {
   const [showPopup, setShowPopup] = useState(false);
   const [popupImage, setPopupImage] = useState("");
   const [popupName, setPopupName] = useState("");
-
-  const handleButtonClick = (image, name) => {
-    setShowPopup(true);
-    setPopupImage(image);
-    setPopupName(name);
-  };
+  const { addToCart } = useContext(CartContext);
 
   const handleClosePopup = () => {
     setShowPopup(false);
+  };
+
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    setShowPopup(true);
+    setPopupImage(product.imageURL);
+    setPopupName(product.name);
   };
 
   return (
@@ -52,17 +68,13 @@ export default function Shop() {
         <div className="content-container p-6 pt-0 h-screen overflow-y-auto">
           <h1 className="font-black text-6xl mb-6">OUR PRODUCTS</h1>
           <div className="flex flex-wrap gap-2">
-            <Card show={handleButtonClick} />
-            <Card show={handleButtonClick} />
-            <Card show={handleButtonClick} />
-            <Card show={handleButtonClick} />
-            <Card show={handleButtonClick} />
-            <Card show={handleButtonClick} />
-            <Card show={handleButtonClick} />
-            <Card show={handleButtonClick} />
-            <Card show={handleButtonClick} />
-            <Card show={handleButtonClick} />
-            <Card show={handleButtonClick} />
+            {products.map((product) => (
+              <Card
+                key={product.id}
+                product={product}
+                addToCart={handleAddToCart}
+              />
+            ))}
           </div>
         </div>
       </div>
