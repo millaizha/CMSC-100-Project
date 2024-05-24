@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import authRoutes from "./routers/auth.js";
 import adminRoutes from "./routers/admin.js";
 import customerRoutes from "./routers/customer.js";
+import reportRoutes from "./routers/report.js";
 
 // prepare the dot env
 dotenv.config();
@@ -19,6 +20,7 @@ app.use(cors());
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
 app.use("/customer", customerRoutes);
+app.use("/report", reportRoutes);
 
 // connect to mongoDB
 const dbURI = "mongodb://127.0.0.1:27017/farm-to-table";
