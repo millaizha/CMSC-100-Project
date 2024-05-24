@@ -7,27 +7,29 @@ import Cart from "./pages/user/Cart";
 import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./contexts/ProtectedRoute";
+import AdminReport from "./pages/admin/AdminReport";
 
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <CartProvider>
-          <Routes>
-            <Route path="/" element={
-              <ProtectedRoute>
-                  <Shop />
-              </ProtectedRoute>
+    // <Router>
+    //   <AuthProvider>
+    //     <CartProvider>
+    //       <Routes>
+    //         <Route path="/" element={
+    //           <ProtectedRoute>
+    //               <Shop />
+    //           </ProtectedRoute>
       
-            } />
-            <Route path="/login" element={<Login />} />
-            <Route path="/cart" element={<ProtectedRoute>
-                <Cart />
-              </ProtectedRoute>} />
-          </Routes>
-        </CartProvider>
-      </AuthProvider>
-    </Router>
+    //         } />
+    //         <Route path="/login" element={<Login />} />
+    //         <Route path="/cart" element={<ProtectedRoute>
+    //             <Cart />
+    //           </ProtectedRoute>} />
+    //       </Routes>
+    //     </CartProvider>
+    //   </AuthProvider>
+    // </Router>
+    <AdminReport />
   );
 }
 

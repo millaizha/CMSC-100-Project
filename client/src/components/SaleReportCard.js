@@ -14,7 +14,9 @@ export default function SaleReportCard({ users }) {
     function getStatusColor(status) {
         if (status == "Confirmed") 
             return "rounded-xl px-4 py-2 font-black bg-[#80EF80]";
-        return "rounded-xl px-4 py-2 font-black bg-[#ffc64d]";
+        else if (status == "Pending") 
+            return "rounded-xl px-4 py-2 font-black bg-[#ffc64d]";
+        return "rounded-xl px-4 py-2 font-black bg-[#FF6961]";
     }
 
     return( 
@@ -30,6 +32,9 @@ export default function SaleReportCard({ users }) {
                         <div className="flex h-full items-center gap-3">
                             <div className="flex flex-col gap-1">
                                 <h1 className="font-bold">{user.name}</h1>
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <h1 className="font-light">({user.date})</h1>
                             </div>
 
                             <div className="spacer mx-auto"></div>
