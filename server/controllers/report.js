@@ -41,6 +41,55 @@ const getProductsSold = async (req, res) => {
       {
         $group: {
           _id: "$productId",
+          aggregateCost: { $sum: "$totalCost" },
+        },
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "_id",
+          foreignField: "_id",
+          as: "productInfo", // New alias
+        },
+      },
+      {
+        $unwind: "$productInfo",
+      },
+      {
+        $project: {
+          name: "$productInfo.name",
+          description: "$productInfo.description",
+          price: "$productInfo.price",
+          type: "$productInfo.type",
+          aggregateCost: "$aggregateCost",
+        },
+      },
+    ]);
+
+    res.status(200).json(productsSold);
+  } catch (error) {
+    res.status(500).json({ error: "Unable to get report." });
+  }
+};
+
+// it just returns the total sales per week provided
+const getWeeklyReport = async (req, res) => {
+  const { earliestDate, latestDate } = req.body;
+  try {
+    const productsSold = await Transaction.aggregate([
+      {
+        // only completed transactions
+        $match: {
+          status: 1,
+          dateTimeOrdered: {
+            $gte: new Date(earliestDate),
+            $lte: new Date(latestDate),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$productId",
           totalQuantity: { $sum: "$quantity" },
         },
       },
@@ -65,69 +114,6 @@ const getProductsSold = async (req, res) => {
           totalSales: {
             $multiply: ["$totalQuantity", "$productInfo.price"],
           },
-        },
-      },
-    ]);
-
-    res.status(200).json(productsSold);
-  } catch (error) {
-    res.status(500).json({ error: "Unable to get report." });
-  }
-};
-
-const defaultPipeline = (earliestDate, latestDate) => {
-  return [
-    {
-      // only completed transactions
-      $match: {
-        status: 1,
-        dateTimeOrdered: {
-          $gte: new Date(earliestDate),
-          $lte: new Date(latestDate),
-        },
-      },
-    },
-    {
-      $group: {
-        _id: "$productId",
-        totalQuantity: { $sum: "$quantity" },
-      },
-    },
-    {
-      $lookup: {
-        from: "products",
-        localField: "_id",
-        foreignField: "_id",
-        as: "productInfo", // New alias
-      },
-    },
-    {
-      $unwind: "$productInfo",
-    },
-    {
-      $project: {
-        name: "$productInfo.name",
-        description: "$productInfo.description",
-        price: "$productInfo.price",
-        type: "$productInfo.type",
-        totalQuantity: "$totalQuantity",
-        totalSales: {
-          $multiply: ["$totalQuantity", "$productInfo.price"],
-        },
-      },
-    },
-  ];
-};
-
-// it just returns the total sales per week provided
-const getWeeklyReport = async (req, res) => {
-  const { earliestDate, latestDate } = req.body;
-  try {
-    const productsSold = await Transaction.aggregate([
-      ...defaultPipeline,
-      {
-        $group: {
-          _id: { $week: "$date" },
         },
       },
     ]);

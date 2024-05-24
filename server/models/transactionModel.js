@@ -8,6 +8,7 @@ const transactionSchema = new mongoose.Schema({
   email: { type: String, required: true },
   // helpful parameters for easier computation
   productPrice: { type: Number, required: true },
+  totalCost: { type: Number, required: true },
   // date and time merged to one
   dateTimeOrdered: { type: Date, required: true, default: Date.now },
 });

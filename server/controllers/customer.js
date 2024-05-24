@@ -35,6 +35,7 @@ const orderProduct = async (req, res) => {
       status: 0,
       email,
       productPrice: product.price,
+      totalCost: product.price * quantity,
     });
     await newTransaction.save();
     res.status(200).json({ message: "Ordered successfully." });
