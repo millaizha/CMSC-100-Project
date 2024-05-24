@@ -9,12 +9,16 @@ export default function LoginForm({ toggleFunc }) {
   const passwordRef = useRef(null);
   const { login } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    login(email, password);
+    const error = await login(email, password);
+    if (error) {
+      setLoginError(error);
+    }
   };
 
   const togglePassword = () => {
@@ -38,16 +42,16 @@ export default function LoginForm({ toggleFunc }) {
 
         <input
           type="text"
-          required="true"
+          required={true}
           id="email"
           className="input-box"
           placeholder="Email"
           ref={emailRef}
         />
-
+        <div className="relative w-full">
         <input
           type={showPassword ? "text" : "password"}
-          required
+          required={true}
           id="password"
           className="input-box"
           placeholder="Password"
@@ -56,12 +60,14 @@ export default function LoginForm({ toggleFunc }) {
 
         <button
           type="button"
-          className="password-toggle"
+          className="absolute inset-y-0 right-0 pr-5 flex items-center text-xl leading-5"
           onClick={togglePassword}
         >
           {showPassword ? <IoEyeOffSharp /> : <IoEyeSharp />}
         </button>
-
+        </div>
+        
+        <div className="text-red-500 mt-3">{loginError}</div>
         <button className="form-button mt-8" type="submit">
           Log In
         </button>
