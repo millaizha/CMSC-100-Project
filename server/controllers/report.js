@@ -16,16 +16,21 @@ const getProductsSold = async (req, res) => {
           from: "products",
           localField: "_id",
           foreignField: "_id",
-          as: "transactionWithProductInfo", // New alias
+          as: "productInfo", // New alias
         },
       },
       {
-        $unwind: "$transactionWithProductInfo",
+        $unwind: "$productInfo",
       },
       {
         $project: {
+          name: "$productInfo.name",
+          description: "$productInfo.description",
+          price: "$productInfo.price",
+          type: "$productInfo.type",
+          totalQuantity: "$totalQuantity",
           totalSales: {
-            $multiply: ["$totalQuantity", "$transactionWithProductInfo.price"],
+            $multiply: ["$totalQuantity", "$productInfo.price"],
           },
         },
       },
