@@ -8,7 +8,7 @@ const getProductsSold = async (req, res) => {
       {
         $group: {
           _id: "$productId",
-          totalSales: { $sum: "$quantity" },
+          totalQuantity: { $sum: "$quantity" },
         },
       },
       {
@@ -16,22 +16,23 @@ const getProductsSold = async (req, res) => {
           from: "products",
           localField: "_id",
           foreignField: "_id",
-          as: "productInfo",
+          as: "transactionWithProductInfo", // New alias
         },
       },
       {
-        $unwind: "$productInfo",
+        $unwind: "$transactionWithProductInfo",
       },
       {
         $project: {
-          totalPrice: { $multiply: ["$totalSales", "$productInfo.price"] },
+          totalSales: {
+            $multiply: ["$totalQuantity", "$transactionWithProductInfo.price"],
+          },
         },
       },
     ]);
 
     res.status(200).json(productsSold);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: "Unable to get transactions." });
   }
 };
