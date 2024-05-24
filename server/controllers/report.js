@@ -1,6 +1,18 @@
 // for analyzing sales reports
 import Transaction from "../models/transactionModel.js";
 
+// only includes the transactions that are sold, sorted by recency
+// the cutoff would be in a latest provided date, along with the limit
+
+const getRecentTransactions = async (req, res) => {
+  try {
+    const transactions = await Transaction.find().sort({ dateTimeOrdered: -1 });
+    res.status(200).json(transactions);
+  } catch (error) {
+    res.status(500).json({ error: "Unable to get transactions." });
+  }
+};
+
 // get all the list of products sold
 const getProductsSold = async (req, res) => {
   try {
@@ -49,4 +61,4 @@ const getProductsSold = async (req, res) => {
   }
 };
 
-export { getProductsSold };
+export { getRecentTransactions, getProductsSold };
