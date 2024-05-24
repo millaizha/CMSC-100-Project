@@ -27,11 +27,14 @@ const getProductListings = async (req, res) => {
 const orderProduct = async (req, res) => {
   try {
     const { productId, quantity, email } = req.body;
+    // retrieve the product's price
+    const product = await Product.findById(productId);
     const newTransaction = new Transaction({
       productId,
       quantity,
       status: 0,
       email,
+      productPrice: product.price,
     });
     await newTransaction.save();
     res.status(200).json({ message: "Ordered successfully." });
