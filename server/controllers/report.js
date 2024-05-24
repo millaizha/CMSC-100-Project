@@ -4,12 +4,12 @@ import Transaction from "../models/transactionModel.js";
 // only includes the transactions that are sold, sorted by recency
 // the cutoff would be in a latest provided date, along with the limit
 const getRecentSales = async (req, res) => {
-  const { latestDate, limit } = req.body;
+  const { earliestDate, limit } = req.body;
 
   try {
     const sales = await Transaction.find({
       status: 1,
-      dateTimeOrdered: { $gte: new Date(latestDate) },
+      dateTimeOrdered: { $gte: new Date(earliestDate) },
     })
       .sort({
         dateTimeOrdered: -1,
@@ -21,14 +21,21 @@ const getRecentSales = async (req, res) => {
   }
 };
 
-// get all the list of products sold
+// get all the list of products sold in a given time interval
+// YYYY-MM-DD format
+// Ex: 2024-05-25 doesn't include that day in 5 PM, it strictly means at 12 MN
 const getProductsSold = async (req, res) => {
+  const { earliestDate, latestDate } = req.body;
   try {
     const productsSold = await Transaction.aggregate([
       {
         // only completed transactions
         $match: {
           status: 1,
+          dateTimeOrdered: {
+            $gte: new Date(earliestDate),
+            $lte: new Date(latestDate),
+          },
         },
       },
       {
@@ -64,7 +71,6 @@ const getProductsSold = async (req, res) => {
 
     res.status(200).json(productsSold);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: "Unable to get report." });
   }
 };
