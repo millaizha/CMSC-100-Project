@@ -17,9 +17,13 @@ export default function Card({ product, addToCart }) {
         <span className="font-bold text-xl overflow-hidden whitespace-nowrap text-ellipsis">
           {product.name}
         </span>
+        <div className="flex justify-between items-center">
         <div className="bg-white p-1 rounded-md text-sm w-16 flex justify-center">
           {product.type === 1 ? "Crop" : "Poultry"}
         </div>
+        <div className="mr-1 text-sm font-bold">Stock: {product.quantity}</div>
+        </div>
+       
         <p className="h-12 w-full overflow-hidden text-ellipsis line-clamp-3 text-sm text-[12px] leading-4">
           {product.description}
         </p>
@@ -27,7 +31,7 @@ export default function Card({ product, addToCart }) {
           <div className="text-xl font-bold">PHP</div>
           <div className="text-4xl font-bold">{product.price}</div>
           <div className="font-bold">/ piece</div>
-        </div>
+        </div> 
 
         <div className="flex gap-2">
           <input
