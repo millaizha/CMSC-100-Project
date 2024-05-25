@@ -4,7 +4,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import Popup from "../../components/Popup";
 import SkeletonCard from "../../components/SkeletonCard";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { CartContext } from "../../contexts/CartContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
@@ -22,6 +22,7 @@ export default function Shop() {
   const [sortOption, setSortOption] = useState();
   const [filterOption, setFilterOption] = useState({});
   const [activeSort, setActiveSort] = useState(null);
+  const filterRef = useRef(null);
 
   const { addToCart } = useContext(CartContext);
   const { token } = useContext(AuthContext);
@@ -115,11 +116,18 @@ export default function Shop() {
     setFilterOption((prev) => ({ ...prev, [key]: value }));
   };
 
+  const handleReset = () => {
+    setFilterOption({});
+    setSortOption(null);
+    setActiveSort(null);
+    filterRef.current.value = "";
+  };
+
   return (
     <div className="min-h-screen w-screen flex flex-col">
       <Navbar />
       <div className="main-container flex flex-col  sm:flex-row flex-grow pt-3">
-        <div className="filter-container w-5/6 sm:w-[275px] h-[800px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0 sm:sticky sm:top-36">
+        <div className="filter-container w-5/6 sm:w-[275px] h-[850px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0 sm:sticky sm:top-36">
           <div className="flex flex-col gap-2">
             <h1 className="text-2xl font-black mb-2">SEARCH</h1>
             <input
@@ -127,6 +135,7 @@ export default function Shop() {
               placeholder="Name"
               className="bg-white text-xl rounded-lg w-full p-4"
               onChange={(e) => handleFilter("name", e.target.value)}
+              ref={filterRef}
             />
           </div>
           <div className="flex flex-col gap-2 mt-6">
@@ -217,6 +226,12 @@ export default function Shop() {
               onClick={() => handleSort("quantity", "Descending")}
             >
               <FaArrowDown /> Quantity Descending
+            </button>
+            <button
+              className="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded mt-4"
+              onClick={handleReset}
+            >
+              Reset Filters
             </button>
           </div>
         </div>
