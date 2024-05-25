@@ -9,7 +9,7 @@ import { CartContext } from "../../contexts/CartContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import Lenis from "@studio-freight/lenis";
 
-import IMAGE from '../../assets/shop/empty.png'
+import IMAGE from "../../assets/shop/empty.png";
 
 export default function Shop() {
   const [showPopup, setShowPopup] = useState(false);
@@ -183,7 +183,7 @@ export default function Shop() {
 
           {filteredProducts.length == 0 ? (
             <div className="w-full h-[800px] flex flex-col items-center justify-center">
-              <img src={IMAGE} alt="No pr" />
+              <img src={IMAGE} alt="No product" />
               <span className="font-semibold">Oops! No products found.</span>
             </div>
           ) : loading ? (
