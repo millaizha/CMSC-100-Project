@@ -17,9 +17,9 @@ export default function Footer() {
         <h1 className="font-black text-2xl text-white xl:inline ">
           FARM-TO-TABLE
         </h1>
-        <h2 className="text-xl text-white">A CMSC 127 Project</h2>
+        <h2 className="text-xl text-white">A CMSC 100 Project</h2>
         <h3 className="text-sm text-white">
-          © University of the Philippines Los Baños
+          © University of the Philippines Los Baños 2024
         </h3>
       </div>
     </div>

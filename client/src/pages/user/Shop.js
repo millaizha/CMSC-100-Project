@@ -9,6 +9,8 @@ import { CartContext } from "../../contexts/CartContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import Lenis from "@studio-freight/lenis";
 
+import IMAGE from '../../assets/shop/empty.png'
+
 export default function Shop() {
   const [showPopup, setShowPopup] = useState(false);
   const [popupImage, setPopupImage] = useState("");
@@ -176,9 +178,15 @@ export default function Shop() {
             </button>
           </div>
         </div>
-        <div className="content-container p-6 pt-0 h-full overflow-y-auto flex flex-col items-center sm:items-start">
+        <div className="content-container p-6 pt-0 h-full w-full overflow-y-auto flex flex-col items-center sm:items-start">
           <h1 className="font-black text-6xl mb-6">OUR PRODUCTS</h1>
-          {loading ? (
+
+          {filteredProducts.length == 0 ? (
+            <div className="w-full h-[800px] flex flex-col items-center justify-center">
+              <img src={IMAGE} alt="No pr" />
+              <span className="font-semibold">Oops! No products found.</span>
+            </div>
+          ) : loading ? (
             <div className="flex flex-wrap gap-2">
               {Array.from({ length: 12 }).map((_, index) => (
                 <SkeletonCard key={index} />
