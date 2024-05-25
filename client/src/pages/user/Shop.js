@@ -7,6 +7,7 @@ import SkeletonCard from "../../components/SkeletonCard";
 import { useState, useContext, useEffect } from "react";
 import { CartContext } from "../../contexts/CartContext";
 import { AuthContext } from "../../contexts/AuthContext";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import Lenis from "@studio-freight/lenis";
 
 import IMAGE from "../../assets/shop/empty.png";
@@ -20,6 +21,7 @@ export default function Shop() {
   const [loading, setLoading] = useState(true);
   const [sortOption, setSortOption] = useState();
   const [filterOption, setFilterOption] = useState({});
+  const [activeSort, setActiveSort] = useState(null);
 
   const { addToCart } = useContext(CartContext);
   const { token } = useContext(AuthContext);
@@ -105,6 +107,7 @@ export default function Shop() {
   };
 
   const handleSort = (key, order) => {
+    setActiveSort({ key, order });
     setSortOption({ [key]: order === "Ascending" ? 1 : -1 });
   };
 
@@ -129,52 +132,91 @@ export default function Shop() {
           <div className="flex flex-col gap-2 mt-6">
             <h1 className="text-2xl font-black mb-2">SORT BY</h1>
             <button
-              className="bg-white text-xl rounded-lg w-full p-4"
+              className={`bg-white text-xl rounded-lg w-full p-4 flex items-center gap-2 transition-colors ease-out ${
+                activeSort?.key === "name" && activeSort?.order === "Ascending"
+                  ? "bg-green-300"
+                  : ""
+              }`}
               onClick={() => handleSort("name", "Ascending")}
             >
-              Name Ascending
+              <FaArrowUp /> Name Ascending
             </button>
             <button
-              className="bg-white text-xl rounded-lg w-full p-4"
-              onClick={() => handleSort("name", "Descending")}
-            >
-              Name Descending
-            </button>
-            <button
-              className="bg-white text-xl rounded-lg w-full p-4"
+              className={`bg-white text-xl rounded-lg w-full p-4 flex items-center gap-2 transition-colors ease-out ${
+                activeSort?.key === "price" && activeSort?.order === "Ascending"
+                  ? "bg-green-300"
+                  : ""
+              }`}
               onClick={() => handleSort("price", "Ascending")}
             >
+              <FaArrowUp />
               Price Ascending
             </button>
+
             <button
-              className="bg-white text-xl rounded-lg w-full p-4"
+              className={`bg-white text-xl rounded-lg w-full p-4 flex items-center gap-2 transition-colors ease-out ${
+                activeSort?.key === "type" && activeSort?.order === "Ascending"
+                  ? "bg-green-300"
+                  : ""
+              }`}
+              onClick={() => handleSort("type", "Ascending")}
+            >
+              <FaArrowUp /> Type Ascending
+            </button>
+            <button
+              className={`bg-white text-lg rounded-lg w-full p-4 flex items-center gap-2 transition-colors ease-out ${
+                activeSort?.key === "quantity" &&
+                activeSort?.order === "Ascending"
+                  ? "bg-green-300"
+                  : ""
+              }`}
+              onClick={() => handleSort("quantity", "Ascending")}
+            >
+              <FaArrowUp /> Quantity Ascending
+            </button>
+            <button
+              className={`bg-white text-xl rounded-lg w-full p-4 flex items-center gap-2  transition-colors ease-out mt-4 ${
+                activeSort?.key === "name" && activeSort?.order === "Descending"
+                  ? "bg-green-300"
+                  : ""
+              }`}
+              onClick={() => handleSort("name", "Descending")}
+            >
+              <FaArrowDown /> Name Descending
+            </button>
+            <button
+              className={`bg-white text-xl rounded-lg w-full p-4 flex items-center gap-2 transition-colors ease-out ${
+                activeSort?.key === "price" &&
+                activeSort?.order === "Descending"
+                  ? "bg-green-300"
+                  : ""
+              }`}
               onClick={() => handleSort("price", "Descending")}
             >
+              <FaArrowDown />
               Price Descending
             </button>
             <button
-              className="bg-white text-xl rounded-lg w-full p-4"
-              onClick={() => handleSort("type", "Ascending")}
-            >
-              Type Ascending
-            </button>
-            <button
-              className="bg-white text-xl rounded-lg w-full p-4"
+              className={`bg-white text-xl rounded-lg w-full p-4 flex items-center gap-2 transition-colors ease-out ${
+                activeSort?.key === "type" && activeSort?.order === "Descending"
+                  ? "bg-green-300"
+                  : ""
+              }`}
               onClick={() => handleSort("type", "Descending")}
             >
+              <FaArrowDown />
               Type Descending
             </button>
             <button
-              className="bg-white text-xl rounded-lg w-full p-4"
-              onClick={() => handleSort("quantity", "Ascending")}
-            >
-              Quantity Ascending
-            </button>
-            <button
-              className="bg-white text-xl rounded-lg w-full p-4"
+              className={`bg-white text-lg rounded-lg w-full p-4 flex items-center gap-2  transition-colors ease-out ${
+                activeSort?.key === "quantity" &&
+                activeSort?.order === "Descending"
+                  ? "bg-green-300"
+                  : ""
+              }`}
               onClick={() => handleSort("quantity", "Descending")}
             >
-              Quantity Descending
+              <FaArrowDown /> Quantity Descending
             </button>
           </div>
         </div>
