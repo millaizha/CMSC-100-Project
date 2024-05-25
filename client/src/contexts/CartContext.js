@@ -5,18 +5,32 @@ export const CartContext = createContext();
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
 
-  const addToCart = (item) => {
-    setCart((prevCart) => [...prevCart, item]);
+  const addToCart = (product) => {
+    setCart((prevCart) => {
+      const existingProductIndex = prevCart.findIndex(
+        (item) => item._id === product._id
+      );
+
+      if (existingProductIndex !== -1) {
+        const updatedCart = [...prevCart];
+        updatedCart[existingProductIndex].selectedQuantity =
+          parseInt(updatedCart[existingProductIndex].selectedQuantity) +
+          parseInt(product.selectedQuantity);
+        return updatedCart;
+      } else {
+        return [...prevCart, product];
+      }
+    });
   };
 
   const removeFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
+    setCart((prevCart) => prevCart.filter((item) => item._id !== productId));
   };
 
   const updateQuantity = (productId, quantity) => {
     setCart((prevItems) =>
       prevItems.map((item) =>
-        item.id === productId ? { ...item, selectedQuantity: quantity } : item
+        item._id === productId ? { ...item, selectedQuantity: quantity } : item
       )
     );
   };

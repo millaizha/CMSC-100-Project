@@ -15,6 +15,10 @@ const ProtectedRoute = ({ children }) => {
     authenticate();
   }, [checkAuth]);
 
+  if (loading) {
+    return <></>; // Replace with a loading spinner or component
+  }
+
   return isAuthenticated ? children : <Navigate to="/login" />;
 };
 

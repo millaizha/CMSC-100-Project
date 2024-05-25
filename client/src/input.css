@@ -4,12 +4,14 @@
 @tailwind components;
 @tailwind utilities;
 
+
 body {
     margin: 0;
     background-color: #FFFFFF;
     font-family: "Outfit";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
 }
 
 .input-box {
@@ -169,3 +171,21 @@ body {
     cursor: pointer;
 
 }
+  
+  .icon-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;  /* Adjust icon size as needed */
+    height: 30px;
+    background-color: #40573C; 
+    border-radius: 50%;  /* Make it a circle */
+    color: white;
+  }
+  
+
+  @media (max-width: 1280px) {  
+    .logout-button span {
+      display: none;
+    }
+  }

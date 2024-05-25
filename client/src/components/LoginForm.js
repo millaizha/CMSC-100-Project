@@ -2,7 +2,7 @@ import { useState, useRef, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { IoEyeOffSharp, IoEyeSharp } from "react-icons/io5";
 
-import LOGO from "../assets/logo/100_LOGO.svg";
+import LOGO from "../assets/logo/100_LOGO.png";
 
 export default function LoginForm({ toggleFunc }) {
   const emailRef = useRef(null);
@@ -49,24 +49,24 @@ export default function LoginForm({ toggleFunc }) {
           ref={emailRef}
         />
         <div className="relative w-full">
-        <input
-          type={showPassword ? "text" : "password"}
-          required={true}
-          id="password"
-          className="input-box"
-          placeholder="Password"
-          ref={passwordRef}
-        />
+          <input
+            type={showPassword ? "text" : "password"}
+            required={true}
+            id="password"
+            className="input-box"
+            placeholder="Password"
+            ref={passwordRef}
+          />
 
-        <button
-          type="button"
-          className="absolute inset-y-0 right-0 pr-5 flex items-center text-xl leading-5"
-          onClick={togglePassword}
-        >
-          {showPassword ? <IoEyeOffSharp /> : <IoEyeSharp />}
-        </button>
+          <button
+            type="button"
+            className="absolute inset-y-0 right-0 pr-5 flex items-center text-xl leading-5"
+            onClick={togglePassword}
+          >
+            {showPassword ? <IoEyeOffSharp /> : <IoEyeSharp />}
+          </button>
         </div>
-        
+
         <div className="text-red-500 mt-3">{loginError}</div>
         <button className="form-button mt-8" type="submit">
           Log In

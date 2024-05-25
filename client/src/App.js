@@ -7,6 +7,7 @@ import Cart from "./pages/user/Cart";
 import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./contexts/ProtectedRoute";
+import Orders from "./pages/user/Orders";
 
 function App() {
   return (
@@ -14,16 +15,31 @@ function App() {
       <AuthProvider>
         <CartProvider>
           <Routes>
-            <Route path="/" element={
-              <ProtectedRoute>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
                   <Shop />
-              </ProtectedRoute>
-      
-            } />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/login" element={<Login />} />
-            <Route path="/cart" element={<ProtectedRoute>
-                <Cart />
-              </ProtectedRoute>} />
+            <Route
+              path="/cart"
+              element={
+                <ProtectedRoute>
+                  <Cart />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/my-orders"
+              element={
+                <ProtectedRoute>
+                  <Orders />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </CartProvider>
       </AuthProvider>

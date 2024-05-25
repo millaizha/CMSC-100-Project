@@ -4,12 +4,16 @@ import { useCart } from "../contexts/CartContext";
 
 export default function CartListCard({ product }) {
   const [quantity, setQuantity] = useState(product.selectedQuantity);
-  const { updateQuantity } = useCart();
+  const { updateQuantity, removeFromCart } = useCart();
 
   const handleQuantityChange = (e) => {
     const newQuantity = e.target.value;
     setQuantity(newQuantity);
-    updateQuantity(product.id, newQuantity);
+    updateQuantity(product._id, newQuantity);
+  };
+
+  const handleDelete = () => {
+    removeFromCart(product._id);
   };
 
   return (
@@ -44,13 +48,14 @@ export default function CartListCard({ product }) {
         <div className="flex justify-between items-center">
           <div className="flex items-end gap-1">
             <div className="text-xl font-bold">PHP</div>
-            <div className="text-4xl font-bold">{product.price * quantity}</div>
+            <div className="text-4xl font-bold">
+              {(product.price * quantity).toFixed(2)}
+            </div>
           </div>
 
           <div className="spacer w-16"></div>
 
-          <div className="text-red-600">
-            {" "}
+          <div className="text-red-600" onClick={handleDelete}>
             <FaTrash />
           </div>
         </div>

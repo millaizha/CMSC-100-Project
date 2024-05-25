@@ -4,7 +4,7 @@ export default function Card({ product, addToCart }) {
   const [quantity, setQuantity] = useState(1);
 
   return (
-    <div className="h-[470px] w-[270px] bg-[#F2F2F2] rounded-2xl flex flex-col p-2">
+    <div className="h-[470px] w-[270px] bg-[#F2F2F2] rounded-2xl flex flex-col p-2 border-2 border-white hover:border-black">
       <div className="h-[230px] w-full object-cover rounded-2xl overflow-hidden">
         <img
           src={product.imageURL}
@@ -17,9 +17,15 @@ export default function Card({ product, addToCart }) {
         <span className="font-bold text-xl overflow-hidden whitespace-nowrap text-ellipsis">
           {product.name}
         </span>
-        <div className="bg-white p-1 rounded-md text-sm w-16 flex justify-center">
-          {product.type === 1 ? "Crop" : "Poultry"}
+        <div className="flex justify-between items-center">
+          <div className="bg-white p-1 rounded-md text-sm w-16 flex justify-center">
+            {product.type === 1 ? "Crop" : "Poultry"}
+          </div>
+          <div className="mr-1 text-sm font-bold">
+            Stock: {product.quantity}
+          </div>
         </div>
+
         <p className="h-12 w-full overflow-hidden text-ellipsis line-clamp-3 text-sm text-[12px] leading-4">
           {product.description}
         </p>
