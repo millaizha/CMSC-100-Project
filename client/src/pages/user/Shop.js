@@ -11,6 +11,7 @@ import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import Lenis from "@studio-freight/lenis";
 
 import IMAGE from "../../assets/shop/empty.png";
+import BG from "../../assets/shop/bg-wheat.png";
 
 export default function Shop() {
   const [showPopup, setShowPopup] = useState(false);
@@ -245,7 +246,7 @@ export default function Shop() {
               ))}
             </div>
           ) : filteredProducts.length == 0 ? (
-            <div className="w-full h-[800px] flex flex-col items-center justify-center">
+            <div className="w-full h-[800px] flex flex-col items-center justify-center lg:pr-48">
               <img src={IMAGE} alt="No product" />
               <span className="font-semibold">Oops! No products found.</span>
             </div>
@@ -271,6 +272,8 @@ export default function Shop() {
       />
 
       <Footer />
+
+      <img src={BG} alt="" className="fixed -z-20 w-[500px] bottom-12 right-5 opacity-30" />
     </div>
   );
 }
