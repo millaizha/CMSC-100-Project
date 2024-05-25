@@ -1,6 +1,7 @@
 import "react-loading-skeleton/dist/skeleton.css";
 import Card from "../../components/Card";
 import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import Popup from "../../components/Popup";
 import SkeletonCard from "../../components/SkeletonCard";
 import { useState, useContext, useEffect } from "react";
@@ -110,10 +111,9 @@ export default function Shop() {
   };
 
   return (
-    <div className="h-screen w-screen flex flex-col">
+    <div className="min-h-screen w-screen flex flex-col">
       <Navbar />
-
-      <div className="main-container flex flex-col  sm:flex-row pt-3">
+      <div className="main-container flex flex-col  sm:flex-row flex-grow pt-3">
         <div className="filter-container w-5/6 sm:w-[275px] h-[800px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0 sm:sticky sm:top-36">
           <div className="flex flex-col gap-2">
             <h1 className="text-2xl font-black mb-2">SEARCH</h1>
@@ -197,12 +197,15 @@ export default function Shop() {
           )}
         </div>
       </div>
+
       <Popup
         show={showPopup}
         onClose={handleClosePopup}
         image={popupImage}
         title={popupName}
       />
+
+      <Footer />
     </div>
   );
 }

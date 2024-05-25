@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import LOGO from "../assets/logo/100_LOGO.svg";
+import LOGO from "../assets/logo/100_LOGO.png";
 import { AiOutlineShopping } from "react-icons/ai";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { AuthContext } from "../contexts/AuthContext";
