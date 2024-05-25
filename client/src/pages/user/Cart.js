@@ -10,6 +10,13 @@ export default function Cart({ cartList }) {
   const { cart } = useContext(CartContext);
   const navigate = useNavigate();
 
+  let totalPrice = 0;
+  for (const item of cart) {
+    if (item.selectedQuantity > 0) {
+      console.log(item.price * item.selectedQuantity) 
+      totalPrice = totalPrice + (item.price * item.selectedQuantity);
+    }
+  }
   return (
     <div className="h-screen w-screen">
       <Navbar />
@@ -35,7 +42,7 @@ export default function Cart({ cartList }) {
                   <h1 className="text-xl font-bold mr-12">TOTAL</h1>
 
                   <div className="text-xl font-bold">PHP</div>
-                  <div className="text-4xl font-bold">41.99</div>
+                  <div className="text-4xl font-bold">{totalPrice.toFixed(2)}</div>
 
                   <div className="spacer w-[90px]"></div>
                 </div>

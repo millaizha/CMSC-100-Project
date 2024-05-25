@@ -181,22 +181,22 @@ export default function Shop() {
         <div className="content-container p-6 pt-0 h-full w-full overflow-y-auto flex flex-col items-center sm:items-start">
           <h1 className="font-black text-6xl mb-6">OUR PRODUCTS</h1>
 
-          {filteredProducts.length == 0 ? (
-            <div className="w-full h-[800px] flex flex-col items-center justify-center">
-              <img src={IMAGE} alt="No product" />
-              <span className="font-semibold">Oops! No products found.</span>
-            </div>
-          ) : loading ? (
+          {loading ? (
             <div className="flex flex-wrap gap-2">
               {Array.from({ length: 12 }).map((_, index) => (
                 <SkeletonCard key={index} />
               ))}
             </div>
+          ) : filteredProducts.length == 0 ? (
+            <div className="w-full h-[800px] flex flex-col items-center justify-center">
+              <img src={IMAGE} alt="No product" />
+              <span className="font-semibold">Oops! No products found.</span>
+            </div>
           ) : (
             <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
               {filteredProducts.map((product) => (
                 <Card
-                  key={product.id}
+                  key={product._id}
                   product={product}
                   addToCart={handleAddToCart}
                 />

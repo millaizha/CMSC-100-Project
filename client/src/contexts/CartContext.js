@@ -10,13 +10,13 @@ export function CartProvider({ children }) {
   };
 
   const removeFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
+    setCart((prevCart) => prevCart.filter((item) => item._id !== productId));
   };
 
   const updateQuantity = (productId, quantity) => {
     setCart((prevItems) =>
       prevItems.map((item) =>
-        item.id === productId ? { ...item, selectedQuantity: quantity } : item
+        item._id === productId ? { ...item, selectedQuantity: quantity } : item
       )
     );
   };
