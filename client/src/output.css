@@ -619,28 +619,12 @@ video {
   top: 0px;
 }
 
-.top-9{
-  top: 2.25rem;
-}
-
-.top-24{
-  top: 6rem;
-}
-
-.top-36{
-  top: 9rem;
-}
-
 .z-10{
   z-index: 10;
 }
 
 .m-12{
   margin: 3rem;
-}
-
-.m-auto{
-  margin: auto;
 }
 
 .mx-auto{
@@ -703,6 +687,10 @@ video {
   display: flex;
 }
 
+.hidden{
+  display: none;
+}
+
 .h-10{
   height: 2.5rem;
 }
@@ -757,6 +745,10 @@ video {
 
 .w-24{
   width: 6rem;
+}
+
+.w-5\/6{
+  width: 83.333333%;
 }
 
 .w-\[1000px\]{
@@ -845,6 +837,10 @@ video {
   justify-content: space-between;
 }
 
+.justify-around{
+  justify-content: space-around;
+}
+
 .gap-1{
   gap: 0.25rem;
 }
@@ -911,6 +907,10 @@ video {
   border-radius: 0.75rem;
 }
 
+.rounded-full{
+  border-radius: 9999px;
+}
+
 .border-b{
   border-bottom-width: 1px;
 }
@@ -971,6 +971,10 @@ video {
 .bg-white{
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.object-contain{
+  object-fit: contain;
 }
 
 .object-cover{
@@ -1084,6 +1088,10 @@ video {
 
 .font-medium{
   font-weight: 500;
+}
+
+.font-semibold{
+  font-weight: 600;
 }
 
 .leading-4{
@@ -1324,7 +1332,103 @@ body {
   cursor: pointer;
 }
 
+.icon-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  /* Adjust icon size as needed */
+  height: 30px;
+  background-color: #40573C;
+  border-radius: 50%;
+  /* Make it a circle */
+  color: white;
+}
+
+@media (max-width: 1280px) {
+  .logout-button span {
+    display: none;
+  }
+}
+
 .hover\:border-gray-200:hover{
   --tw-border-opacity: 1;
   border-color: rgb(229 231 235 / var(--tw-border-opacity));
+}
+
+@media (min-width: 640px){
+  .sm\:sticky{
+    position: -webkit-sticky;
+    position: sticky;
+  }
+
+  .sm\:top-36{
+    top: 9rem;
+  }
+
+  .sm\:h-\[65px\]{
+    height: 65px;
+  }
+
+  .sm\:w-\[275px\]{
+    width: 275px;
+  }
+
+  .sm\:w-\[200px\]{
+    width: 200px;
+  }
+
+  .sm\:w-\[150px\]{
+    width: 150px;
+  }
+
+  .sm\:flex-row{
+    flex-direction: row;
+  }
+
+  .sm\:items-start{
+    align-items: flex-start;
+  }
+
+  .sm\:justify-start{
+    justify-content: flex-start;
+  }
+}
+
+@media (min-width: 768px){
+  .md\:gap-0{
+    gap: 0px;
+  }
+
+  .md\:gap-4{
+    gap: 1rem;
+  }
+
+  .md\:gap-2{
+    gap: 0.5rem;
+  }
+
+  .md\:px-4{
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (min-width: 1280px){
+  .xl\:inline{
+    display: inline;
+  }
+
+  .xl\:gap-0{
+    gap: 0px;
+  }
+
+  .xl\:gap-2{
+    gap: 0.5rem;
+  }
+
+  .xl\:px-4{
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }

@@ -4,6 +4,7 @@ import { AiOutlineShopping } from "react-icons/ai";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { IoPowerOutline } from "react-icons/io5";
 
 export default function Navbar() {
   const { logout } = useContext(AuthContext);
@@ -15,27 +16,39 @@ export default function Navbar() {
         <img
           src={LOGO}
           alt="Website Logo"
-          className="w-24 cursor-pointer"
+          className="w-24 h-24 cursor-pointer object-contain"
           onClick={() => navigate("/")}
         />
-        <h1 className="font-black text-3xl">FARM-TO-TABLE</h1>
-        <h2 className="text-2xl">Hello, Genevieve!</h2>
+        <h1 className="font-black text-3xl hidden xl:inline ">FARM-TO-TABLE</h1>
+        <h2 className="text-2xl hidden xl:inline">Hello, Genevieve!</h2>
       </div>
-      <div className="spacer m-auto"></div>
-      <div className="right flex gap-12 items-center pr-12">
-        <button className="flex items-center gap-2">
-          <AiOutlineShopping />
-          My Orders
-        </button>
+      <div className="spacer flex-grow"></div>
+      <div className="right flex gap-6 items-center pr-12">
+        {/* Responsive Order Button */}
         <button
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 xl:gap-2 xl:px-4"
+          onClick={() => navigate("/my-orders")}
+        >
+          <AiOutlineShopping />
+          <span className="hidden xl:inline">My Orders</span>{" "}
+        </button>
+
+        <button
+          className="flex items-center gap-2 md:gap-2 md:px-4"
           onClick={() => navigate("/cart")}
         >
           <MdOutlineShoppingCart />
-          Cart
+          <span className="hidden xl:inline">Cart</span>
         </button>
-        <button className="form-button" onClick={logout}>
-          Log Out
+
+        <button
+          className="flex sm:w-[200px] sm:h-[65px] items-center bg-[#40573C] justify-center rounded-full gap-2 text-white font-semibold"
+          onClick={logout}
+        >
+          <div className="icon-circle">
+            <IoPowerOutline />
+          </div>
+          <span className="hidden xl:inline">Log Out</span>
         </button>
       </div>
     </div>

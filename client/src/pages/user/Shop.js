@@ -113,8 +113,8 @@ export default function Shop() {
     <div className="h-screen w-screen flex flex-col">
       <Navbar />
 
-      <div className="main-container flex pt-3">
-        <div className="filter-container w-[275px] h-[800px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0 sticky top-36">
+      <div className="main-container flex flex-col  sm:flex-row pt-3">
+        <div className="filter-container w-5/6 sm:w-[275px] h-[800px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0 sm:sticky sm:top-36">
           <div className="flex flex-col gap-2">
             <h1 className="text-2xl font-black mb-2">SEARCH</h1>
             <input
@@ -176,7 +176,7 @@ export default function Shop() {
             </button>
           </div>
         </div>
-        <div className="content-container p-6 pt-0 h-full overflow-y-auto">
+        <div className="content-container p-6 pt-0 h-full overflow-y-auto flex flex-col items-center sm:items-start">
           <h1 className="font-black text-6xl mb-6">OUR PRODUCTS</h1>
           {loading ? (
             <div className="flex flex-wrap gap-2">
@@ -185,7 +185,7 @@ export default function Shop() {
               ))}
             </div>
           ) : (
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
               {filteredProducts.map((product) => (
                 <Card
                   key={product.id}
