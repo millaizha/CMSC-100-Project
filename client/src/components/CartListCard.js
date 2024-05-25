@@ -4,12 +4,16 @@ import { useCart } from "../contexts/CartContext";
 
 export default function CartListCard({ product }) {
   const [quantity, setQuantity] = useState(product.selectedQuantity);
-  const { updateQuantity } = useCart();
+  const { updateQuantity, removeFromCart } = useCart();
 
   const handleQuantityChange = (e) => {
     const newQuantity = e.target.value;
     setQuantity(newQuantity);
     updateQuantity(product._id, newQuantity);
+  };
+
+  const handleDelete = () => {
+    removeFromCart(product._id);
   };
 
   return (
@@ -51,8 +55,7 @@ export default function CartListCard({ product }) {
 
           <div className="spacer w-16"></div>
 
-          <div className="text-red-600">
-            {" "}
+          <div className="text-red-600" onClick={handleDelete}>
             <FaTrash />
           </div>
         </div>
