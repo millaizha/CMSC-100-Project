@@ -4,12 +4,14 @@
 @tailwind components;
 @tailwind utilities;
 
+
 body {
     margin: 0;
     background-color: #FFFFFF;
     font-family: "Outfit";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
 }
 
 .input-box {

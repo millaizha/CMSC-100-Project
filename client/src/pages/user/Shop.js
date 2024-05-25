@@ -6,6 +6,7 @@ import SkeletonCard from "../../components/SkeletonCard";
 import { useState, useContext, useEffect } from "react";
 import { CartContext } from "../../contexts/CartContext";
 import { AuthContext } from "../../contexts/AuthContext";
+import Lenis from "@studio-freight/lenis";
 
 export default function Shop() {
   const [showPopup, setShowPopup] = useState(false);
@@ -19,6 +20,17 @@ export default function Shop() {
 
   const { addToCart } = useContext(CartContext);
   const { token } = useContext(AuthContext);
+
+  useEffect(() => {
+    const lenis = new Lenis();
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -102,7 +114,7 @@ export default function Shop() {
       <Navbar />
 
       <div className="main-container flex pt-3">
-        <div className="filter-container w-[275px] h-[800px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0">
+        <div className="filter-container w-[275px] h-[800px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0 sticky top-36">
           <div className="flex flex-col gap-2">
             <h1 className="text-2xl font-black mb-2">SEARCH</h1>
             <input
