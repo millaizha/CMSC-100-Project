@@ -5,7 +5,7 @@ import {
   orderProduct,
   getTransactions,
 } from "../controllers/customer.js";
-import { verifyToken } from "../utils/middleware.js";
+import { verifyIfUser, verifyToken } from "../utils/middleware.js";
 
 const customerRoutes = express.Router();
 
@@ -14,6 +14,7 @@ const customerRoutes = express.Router();
  * Get all products in the database.
  *
  * Requires the Authorization header with the value "Bearer <token>".
+ * User accessing it must be a regular user.
  *
  * Inputs for req.body:
  * sortOption - Object
@@ -32,13 +33,19 @@ const customerRoutes = express.Router();
  * If successful: Status code 200, <list of products>
  * Else: Status code 500; "Unable to get products"
  */
-customerRoutes.get("/getProductListings", verifyToken, getProductListings);
+customerRoutes.get(
+  "/getProductListings",
+  verifyToken,
+  verifyIfUser,
+  getProductListings
+);
 
 /**
  * POST /customer/orderProduct
  * Order one product.
  *
  * Requires the Authorization header with the value "Bearer <token>".
+ * User accessing it must be a regular user.
  *
  * Inputs for req.body:
  * productId - String
@@ -49,7 +56,7 @@ customerRoutes.get("/getProductListings", verifyToken, getProductListings);
  * If successful: Status code 200; "Ordered successfully"
  * Else: Status code 500; "Ordering failed"
  */
-customerRoutes.post("/orderProduct", verifyToken, orderProduct);
+customerRoutes.post("/orderProduct", verifyToken, verifyIfUser, orderProduct);
 
 /**
  * POST /customer/cancelTransaction
@@ -57,6 +64,7 @@ customerRoutes.post("/orderProduct", verifyToken, orderProduct);
  * This marks the transaction cancelled.
  *
  * Requires the Authorization header with the value "Bearer <token>".
+ * User accessing it must be a regular user.
  *
  * Inputs for req.body:
  * transactionId - String
@@ -65,13 +73,19 @@ customerRoutes.post("/orderProduct", verifyToken, orderProduct);
  * If successful: Status code 200, "Cancellation confirmed"
  * Else: Status code 500; "Cancellation failed"
  */
-customerRoutes.post("/cancelTransaction", verifyToken, cancelTransaction);
+customerRoutes.post(
+  "/cancelTransaction",
+  verifyToken,
+  verifyIfUser,
+  cancelTransaction
+);
 
 /**
  * GET /customer/getTransactions
  * Get all the user's transactions
  *
  * Requires the Authorization header with the value "Bearer <token>".
+ * User accessing it must be a regular user.
  *
  * Inputs for req.body:
  * email - String
@@ -80,6 +94,11 @@ customerRoutes.post("/cancelTransaction", verifyToken, cancelTransaction);
  * If successful: Status code 200, <list of transactions>
  * Else: Status code 500; "Unable to get transactions"
  */
-customerRoutes.get("/getTransactions", verifyToken, getTransactions);
+customerRoutes.get(
+  "/getTransactions",
+  verifyToken,
+  verifyIfUser,
+  getTransactions
+);
 
 export default customerRoutes;

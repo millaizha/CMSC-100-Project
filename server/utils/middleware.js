@@ -38,4 +38,17 @@ const verifyIfAdmin = (req, res, next) => {
   next();
 };
 
-export { verifyToken, verifyIfAdmin };
+// further verification if the required user is an regular user
+// call this after verifyToken(...)
+const verifyIfUser = (req, res, next) => {
+  if (req.tokenInfo.userType != "user") {
+    return res
+      .status(403)
+      .json({
+        error: "Regular users are only permitted to access this content..",
+      });
+  }
+  next();
+};
+
+export { verifyToken, verifyIfAdmin, verifyIfUser };
