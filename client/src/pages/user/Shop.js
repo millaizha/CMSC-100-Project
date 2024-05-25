@@ -1,6 +1,8 @@
+import "react-loading-skeleton/dist/skeleton.css";
 import Card from "../../components/Card";
 import Navbar from "../../components/Navbar";
 import Popup from "../../components/Popup";
+import SkeletonCard from "../../components/SkeletonCard";
 import { useState, useContext, useEffect } from "react";
 import { CartContext } from "../../contexts/CartContext";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -165,7 +167,11 @@ export default function Shop() {
         <div className="content-container p-6 pt-0 h-full overflow-y-auto">
           <h1 className="font-black text-6xl mb-6">OUR PRODUCTS</h1>
           {loading ? (
-            <p>Loading products...</p>
+            <div className="flex flex-wrap gap-2">
+              {Array.from({ length: 12 }).map((_, index) => (
+                <SkeletonCard key={index} />
+              ))}
+            </div>
           ) : (
             <div className="flex flex-wrap gap-2">
               {filteredProducts.map((product) => (

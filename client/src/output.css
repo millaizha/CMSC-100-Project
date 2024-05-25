@@ -787,6 +787,10 @@ video {
   height: 95%;
 }
 
+.h-96{
+  height: 24rem;
+}
+
 .w-16{
   width: 4rem;
 }
@@ -833,6 +837,10 @@ video {
 
 .w-screen{
   width: 100vw;
+}
+
+.w-80{
+  width: 20rem;
 }
 
 .flex-shrink-0{
