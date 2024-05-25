@@ -4,7 +4,11 @@ const transactionSchema = new mongoose.Schema({
   // transaction id is _id
   productId: { type: mongoose.Schema.ObjectId, required: true },
   quantity: { type: Number, required: true },
-  status: { type: Number, enum: [0, 1, 2], required: true },
+  // -1 = in cart
+  // 0 = pending
+  // 1 = completed
+  // 2 = cancelled
+  status: { type: Number, enum: [-1, 0, 1, 2], required: true },
   email: { type: String, required: true },
   // helpful parameters for easier computation
   productPrice: { type: Number, required: true },
