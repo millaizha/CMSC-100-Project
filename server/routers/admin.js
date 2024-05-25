@@ -23,6 +23,7 @@ const adminRoutes = express.Router();
  * price - Number
  * type - Number (1 or 2)
  * quantity - Number
+ * imageUrl - String (optional)
  *
  * Response:
  * If successful: Status code 201; "Product created successfully"

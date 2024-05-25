@@ -4,13 +4,21 @@ import User from "../models/userModel.js";
 
 const addProduct = async (req, res) => {
   try {
-    const { name, description = null, price, type, quantity } = req.body;
+    const {
+      name,
+      description = null,
+      price,
+      type,
+      quantity,
+      imageUrl = null,
+    } = req.body;
     const newProduct = new Product({
       name,
       description,
       price,
       type,
       quantity,
+      imageUrl,
     });
     await newProduct.save();
     res.status(201).json({ message: "Product created successfully." });
