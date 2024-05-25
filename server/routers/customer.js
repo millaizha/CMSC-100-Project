@@ -50,7 +50,6 @@ customerRoutes.get(
  * Inputs for req.body:
  * productId - String
  * quantity - Number
- * email - String
  *
  * Response:
  * If successful: Status code 200; "Ordered successfully"
@@ -88,7 +87,7 @@ customerRoutes.post(
  * User accessing it must be a regular user.
  *
  * Inputs for req.body:
- * email - String
+ * None
  *
  * Response:
  * If successful: Status code 200, <list of transactions>

@@ -26,14 +26,14 @@ const getProductListings = async (req, res) => {
 // order one product
 const orderProduct = async (req, res) => {
   try {
-    const { productId, quantity, email } = req.body;
+    const { productId, quantity } = req.body;
     // retrieve the product's price
     const product = await Product.findById(productId);
     const newTransaction = new Transaction({
       productId,
       quantity,
       status: 0,
-      email,
+      email: req.tokenInfo.email,
       productPrice: product.price,
       totalCost: product.price * quantity,
     });
@@ -58,8 +58,7 @@ const cancelTransaction = async (req, res) => {
 // get the transaction by the user
 const getTransactions = async (req, res) => {
   try {
-    const { email } = req.body;
-    const transactions = await Transaction.find({ email });
+    const transactions = await Transaction.find({ email: req.tokenInfo.email });
     res.status(200).json(transactions);
   } catch (error) {
     res.status(500).json({ error: "Unable to get transactions." });
