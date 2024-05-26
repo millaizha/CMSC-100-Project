@@ -1,5 +1,5 @@
 // for analyzing sales reports
-import Order from "../models/orderModel.js";
+import Transaction from "../models/orderModel.js";
 
 // only includes the orders that are sold, sorted by recency
 // the cutoff would be in a latest provided date, along with the limit
@@ -7,7 +7,7 @@ const getRecentSales = async (req, res) => {
   const { earliestDate, limit } = req.body;
 
   try {
-    const sales = await Order.find({
+    const sales = await Transaction.find({
       status: 1,
       dateTimeOrdered: { $gte: new Date(earliestDate) },
     })
@@ -28,7 +28,7 @@ const getRecentSales = async (req, res) => {
 const getProductsSold = async (req, res) => {
   const { earliestDate, latestDate, limit } = req.body;
   try {
-    const productsSold = await Order.aggregate([
+    const productsSold = await Transaction.aggregate([
       {
         // only completed orders
         $match: {
@@ -87,7 +87,7 @@ const getProductsSold = async (req, res) => {
 const getWeeklyReport = async (req, res) => {
   const { earliestDate, latestDate } = req.body;
   try {
-    const productsSold = await Order.aggregate([
+    const productsSold = await Transaction.aggregate([
       {
         // only completed orders
         $match: {
@@ -117,7 +117,7 @@ const getWeeklyReport = async (req, res) => {
 const getMonthlyReport = async (req, res) => {
   const { earliestDate, latestDate } = req.body;
   try {
-    const productsSold = await Order.aggregate([
+    const productsSold = await Transaction.aggregate([
       {
         // only completed orders
         $match: {
@@ -147,7 +147,7 @@ const getMonthlyReport = async (req, res) => {
 const getYearlyReport = async (req, res) => {
   const { earliestDate, latestDate } = req.body;
   try {
-    const productsSold = await Order.aggregate([
+    const productsSold = await Transaction.aggregate([
       {
         // only completed orders
         $match: {
