@@ -55,9 +55,9 @@ reportRoutes.get("/getRecentSales", verifyToken, verifyIfAdmin, getRecentSales);
  *  name,
  *  description,
  *  price,
- *  aggregateQuantity: the total quantity sold for that product,
+ *  totalQuantity: the total quantity sold for that product,
+ *  totalSales: the total sales for that product (quantity * price)
  *  type: product type,
- *  aggregateSales: the total sales for that product (quantity * price)
  * }
  *
  * Response:
@@ -90,8 +90,8 @@ reportRoutes.get(
  * Returns:
  * An array containing aggregated info with the format:
  * {
- *  _id: numerical value of the week (e.g.) 20 = 20th week of the year,
- *  aggregateSales: total sales within that week
+ *  _id: {year, week (numerical, ex: 20 = 20th week of that year)}
+ *  totalSales: total sales within that week
  * }
  *
  * Response:
@@ -124,8 +124,8 @@ reportRoutes.get(
  * Returns:
  * An array containing aggregated info with the format:
  * {
- *  _id: numerical value of the month (e.g.) 5 = May,
- *  aggregateSales: total sales within that month
+ *  _id: {year, month (numerical, ex: 5 = May)}
+ *  totalSales: total sales within that month
  * }
  *
  * Response:
@@ -158,8 +158,8 @@ reportRoutes.get(
  * Returns:
  * An array containing aggregated info with the format:
  * {
- *  _id: year,
- *  aggregateSales: total sales within that year
+ *  _id: {year},
+ *  totalSales: total sales within that year
  * }
  *
  * Response:

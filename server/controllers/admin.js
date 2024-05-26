@@ -59,8 +59,11 @@ const getRegisteredUsers = async (req, res) => {
 
 // show all orders
 const getOrders = async (req, res) => {
+  const { status } = req.body;
   try {
-    const orders = await Order.find();
+    const orders = await Order.find({ status: status }).sort({
+      dateTimeOrdered: -1,
+    });
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ error: "Unable to get orders." });

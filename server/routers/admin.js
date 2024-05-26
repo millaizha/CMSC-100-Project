@@ -85,13 +85,16 @@ adminRoutes.get(
 
 /**
  * GET /admin/getOrders
- * Get all orders in the database.
+ * Get all orders in the database, ordered by recency.
  *
  * Requires the Authorization header with the value "Bearer <token>".
  * User accessing it must be an admin.
  *
  * Inputs for req.body:
- * None
+ * status - Number (0, 1, 2)
+ * 0 - Pending
+ * 1 - Confirmed
+ * 2 - Canceled
  *
  * Response:
  * If successful: Status code 200, <list of orders>
@@ -102,7 +105,7 @@ adminRoutes.get("/getOrders", verifyToken, verifyIfAdmin, getOrders);
 /**
  * POST /admin/confirmOrder
  * Confirms a order.
- * This marks the order confirmed and deducts the inventory of a product.
+ * This marks the order confirmed and deducts the inventory of products.
  *
  * Requires the Authorization header with the value "Bearer <token>".
  * User accessing it must be an admin.
@@ -112,7 +115,7 @@ adminRoutes.get("/getOrders", verifyToken, verifyIfAdmin, getOrders);
  *
  * Response:
  * If successful: Status code 200, "Order confirmed"
- * If inventory is insufficient: Status code 400: "Insufficient product quantity"
+ * If inventory is insufficient: Status code 400: "Insufficient product quantity for <product>"
  * Else: Status code 500; "Order confirmation failed"
  */
 adminRoutes.post("/confirmOrder", verifyToken, verifyIfAdmin, confirmOrder);

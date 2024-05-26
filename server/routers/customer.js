@@ -48,8 +48,19 @@ customerRoutes.get(
  * User accessing it must be a regular user.
  *
  * Inputs for req.body:
- * productId - String
- * quantity - Number
+ * name - String (customer name)
+ * email - String (customer email)
+ * products - Array<Object>
+ * dateTimeOrdered - ISO DateTime String (optional)
+ * status - Number (default: 0)
+ *
+ * Each product in the array products is formatted as follows:
+ * {
+ *  productId - String (referencing the Product collection)
+ *  name - String
+ *  count - Number (quantity of products to purchase)
+ *  price - Number
+ * }
  *
  * Response:
  * If successful: Status code 200; "Ordered successfully"
@@ -76,13 +87,16 @@ customerRoutes.post("/cancelOrder", verifyToken, verifyIfUser, cancelOrder);
 
 /**
  * GET /customer/getOrders
- * Get all the user's orders
+ * Get all the user's orders, ordered by recency.
  *
  * Requires the Authorization header with the value "Bearer <token>".
  * User accessing it must be a regular user.
  *
  * Inputs for req.body:
- * None
+ * status - Number (0, 1, 2)
+ * 0 - Pending
+ * 1 - Confirmed
+ * 2 - Canceled
  *
  * Response:
  * If successful: Status code 200, <list of orders>
