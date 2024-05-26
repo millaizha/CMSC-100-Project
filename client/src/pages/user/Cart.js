@@ -26,8 +26,9 @@ export default function Cart({ cartList }) {
 
   const shippingFee = totalPrice > 500 ? 0 : 50;
 
-  const handleConfirmOrder = () => {
-    createOrder(userFirstName, userEmail, token);
+  const handleConfirmOrder = async () => {
+    await createOrder(userFirstName, userEmail, token);
+    navigate("/"); // Return to home for now
   };
 
   return (

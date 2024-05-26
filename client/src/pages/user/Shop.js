@@ -13,7 +13,6 @@ import Lenis from "@studio-freight/lenis";
 import IMAGE from "../../assets/shop/empty.png";
 import BG from "../../assets/shop/bg-wheat.png";
 
-
 export default function Shop() {
   const [showPopup, setShowPopup] = useState(false);
   const [popupImage, setPopupImage] = useState("");
@@ -105,7 +104,7 @@ export default function Shop() {
   const handleAddToCart = (product) => {
     addToCart(product);
     setShowPopup(true);
-    setPopupImage(product.imageURL);
+    setPopupImage(product.imageUrl);
     setPopupName(product.name);
   };
 
@@ -129,9 +128,7 @@ export default function Shop() {
     <div className="min-h-screen w-screen flex flex-col">
       <Navbar />
       <div className="main-container flex flex-col  sm:flex-row flex-grow pt-3">
-
         <div className="filter-container w-5/6 sm:w-[275px] h-[840px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0 sm:sticky sm:top-36">
-
           <div className="flex flex-col gap-2">
             <h1 className="text-2xl font-black mb-2">SEARCH</h1>
             <input
@@ -175,7 +172,6 @@ export default function Shop() {
               onClick={() => handleSort("type", "Ascending")}
             >
               <FaArrowUp /> Type Ascending
-
             </button>
             <button
               className={`bg-white text-lg rounded-lg w-full p-4 flex items-center gap-2 transition-colors ease-out ${
@@ -250,9 +246,7 @@ export default function Shop() {
               ))}
             </div>
           ) : filteredProducts.length == 0 ? (
-
             <div className="w-full h-[800px] flex flex-col items-center justify-center lg:pr-48">
-
               <img src={IMAGE} alt="No product" />
               <span className="font-semibold">Oops! No products found.</span>
             </div>
@@ -284,7 +278,6 @@ export default function Shop() {
         alt=""
         className="fixed -z-20 w-[500px] bottom-12 right-5 opacity-30"
       />
-
     </div>
   );
 }

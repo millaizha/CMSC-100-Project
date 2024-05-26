@@ -4,6 +4,10 @@ import {
   getProductListings,
   orderProduct,
   getOrders,
+  getCart,
+  addToCart,
+  removeFromCart,
+  updateCartQuantity,
 } from "../controllers/customer.js";
 import { verifyIfUser, verifyToken } from "../utils/middleware.js";
 
@@ -103,5 +107,23 @@ customerRoutes.post("/cancelOrder", verifyToken, verifyIfUser, cancelOrder);
  * Else: Status code 500; "Unable to get orders"
  */
 customerRoutes.get("/getOrders", verifyToken, verifyIfUser, getOrders);
+
+customerRoutes.get("/getCart", verifyToken, verifyIfUser, getCart);
+
+customerRoutes.post("/addToCart", verifyToken, verifyIfUser, addToCart);
+
+customerRoutes.post(
+  "/removeFromCart",
+  verifyToken,
+  verifyIfUser,
+  removeFromCart
+);
+
+customerRoutes.post(
+  "/updateCartQuantity",
+  verifyToken,
+  verifyIfUser,
+  updateCartQuantity
+);
 
 export default customerRoutes;

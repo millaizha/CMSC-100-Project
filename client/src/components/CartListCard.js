@@ -3,7 +3,8 @@ import { useState } from "react";
 import { useCart } from "../contexts/CartContext";
 
 export default function CartListCard({ product }) {
-  const [quantity, setQuantity] = useState(product.selectedQuantity);
+  let item = product.product;
+  const [quantity, setQuantity] = useState(product.quantity);
   const { updateQuantity, removeFromCart } = useCart();
 
   const handleQuantityChange = (e) => {
@@ -30,14 +31,14 @@ export default function CartListCard({ product }) {
         />
         <div className="overflow-hidden h-full w-24 bg-red-300 rounded-xl">
           <img
-            src={product.imageURL}
-            alt={product.name}
+            src={item.imageUrL}
+            alt={item.name}
             className="object-cover h-full"
           />
         </div>
 
         <div className="flex flex-col gap-1">
-          <h1 className="font-black">{product.name}</h1>
+          <h1 className="font-black">{item.name}</h1>
           <div className="bg-white p-1 rounded-md text-sm w-16 flex justify-center">
             {product.type === 1 ? "Crop" : "Poultry"}
           </div>
@@ -49,7 +50,7 @@ export default function CartListCard({ product }) {
           <div className="flex items-end gap-1">
             <div className="text-xl font-bold">PHP</div>
             <div className="text-4xl font-bold">
-              {(product.price * quantity).toFixed(2)}
+              {(item.price * quantity).toFixed(2)}
             </div>
           </div>
 

@@ -1,5 +1,6 @@
 import Product from "../models/productModel.js";
 import Order from "../models/orderModel.js";
+import Cart from "../models/cartModel.js";
 
 /**
  * req.body should be something like this:
@@ -34,7 +35,6 @@ const orderProduct = async (req, res) => {
       product.totalProductSales = product.count * product.price;
       totalOrderSales += product.totalProductSales;
     }
-
 
     const newOrder = new Order({
       name,
@@ -79,4 +79,100 @@ const getOrders = async (req, res) => {
   }
 };
 
-export { getProductListings, orderProduct, cancelOrder, getOrders };
+const getCart = async (req, res) => {
+  try {
+    const { email } = req.query;
+    const cart = await Cart.findOne({ email }).populate("items.product");
+    if (cart) {
+      res.json(cart);
+    } else {
+      res.status(404).json({ error: "Cart not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching cart items" });
+  }
+};
+
+const addToCart = async (req, res) => {
+  try {
+    const { email, product } = req.body;
+    let cart = await Cart.findOne({ email });
+
+    if (!cart) {
+      cart = new Cart({
+        email,
+        items: [{ product: product._id, quantity: product.selectedQuantity }],
+      });
+    } else {
+      const existingProductIndex = cart.items.findIndex(
+        (item) => item.product.toString() === product._id
+      );
+      if (existingProductIndex !== -1) {
+        cart.items[existingProductIndex].quantity += product.selectedQuantity;
+      } else {
+        cart.items.push({
+          product: product._id,
+          quantity: product.selectedQuantity,
+        });
+      }
+    }
+
+    await cart.save();
+    res.json(cart);
+  } catch (error) {
+    res.status(500).json({ error: "Error adding to cart" });
+  }
+};
+
+const removeFromCart = async (req, res) => {
+  try {
+    const { email, productId } = req.body;
+    const cart = await Cart.findOne({ email });
+
+    if (cart) {
+      cart.items = cart.items.filter(
+        (item) => item.product.toString() !== productId
+      );
+      await cart.save();
+      res.json(cart);
+    } else {
+      res.status(404).json({ error: "Cart not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error removing from cart" });
+  }
+};
+
+const updateCartQuantity = async (req, res) => {
+  try {
+    const { email, productId, quantity } = req.body;
+    const cart = await Cart.findOne({ email });
+
+    if (cart) {
+      const item = cart.items.find((item) => item._id.toString() === productId);
+
+      if (item) {
+        item.quantity = quantity;
+        await cart.save();
+        res.json(cart);
+      } else {
+        res.status(404).json({ error: "Product not found in cart" });
+      }
+    } else {
+      res.status(404).json({ error: "Cart not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error updating cart quantity" });
+  }
+};
+
+export {
+  getProductListings,
+  orderProduct,
+  cancelOrder,
+  getOrders,
+  getCart,
+  addToCart,
+  removeFromCart,
+  updateCartQuantity,
+};
