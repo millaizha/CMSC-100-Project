@@ -56,7 +56,6 @@ customerRoutes.get(
  * name - String (customer name)
  * email - String (customer email)
  * products - Array<Object>
- * dateTimeOrdered - ISO DateTime String (optional)
  * status - Number (default: 0)
  *
  * Each product in the array products is formatted as follows:

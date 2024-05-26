@@ -13,18 +13,18 @@ const orderSchema = new mongoose.Schema({
         ref: "Product",
       },
       name: { type: String, required: true },
-      count: { type: Number, required: true },
-      price: { type: Number, required: true },
+      count: { type: Number, required: true, min: 1 },
+      price: { type: Number, required: true, min: 0 },
       // helper field
       totalProductSales: { type: Number },
     },
   ],
   dateTimeOrdered: { type: Date, required: true, default: Date.now },
-  // -1 = in cart
-  // 0 = pending
-  // 1 = completed
-  // 2 = cancelled
-  status: { type: Number, enum: [-1, 0, 1, 2], required: true },
+  status: {
+    type: String,
+    enum: ["in_cart", "pending", "confirmed", "canceled"],
+    required: true,
+  },
   // helper field
   totalOrderSales: { type: Number },
 });
