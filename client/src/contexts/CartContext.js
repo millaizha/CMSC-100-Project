@@ -1,4 +1,5 @@
 import { createContext, useState, useContext } from "react";
+import axios from "axios";
 
 export const CartContext = createContext();
 
@@ -35,9 +36,41 @@ export function CartProvider({ children }) {
     );
   };
 
+  const createOrder = async (name, email, token) => {
+    try {
+      const orderProducts = cart.map((item) => ({
+        productId: item._id,
+        name: item.name,
+        count: item.selectedQuantity,
+        price: item.price,
+      }));
+
+      console.log(orderProducts);
+
+      const response = await axios.post(
+        "http://localhost:3001/customer/orderProduct",
+        {
+          name,
+          email,
+          products: orderProducts,
+          status: 0,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.status === 200) {
+        setCart([]);
+      }
+    } catch (error) {
+      console.error("Order creation failed", error);
+    }
+  };
+
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, updateQuantity }}
+      value={{ cart, addToCart, removeFromCart, updateQuantity, createOrder }}
     >
       {children}
     </CartContext.Provider>

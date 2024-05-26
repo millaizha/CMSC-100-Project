@@ -128,7 +128,7 @@ export default function Shop() {
     <div className="min-h-screen w-screen flex flex-col">
       <Navbar />
       <div className="main-container flex flex-col  sm:flex-row flex-grow pt-3">
-        <div className="filter-container w-5/6 sm:w-[275px] h-[850px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0 sm:sticky sm:top-36">
+        <div className="filter-container w-5/6 sm:w-[275px] h-[840px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0 sm:sticky sm:top-36">
           <div className="flex flex-col gap-2">
             <h1 className="text-2xl font-black mb-2">SEARCH</h1>
             <input
@@ -273,7 +273,11 @@ export default function Shop() {
 
       <Footer />
 
-      <img src={BG} alt="" className="fixed -z-20 w-[500px] bottom-12 right-5 opacity-30" />
+      <img
+        src={BG}
+        alt=""
+        className="fixed -z-20 w-[500px] bottom-12 right-5 opacity-30"
+      />
     </div>
   );
 }

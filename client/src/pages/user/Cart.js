@@ -3,14 +3,16 @@ import Navbar from "../../components/Navbar";
 import { FaTrash } from "react-icons/fa";
 import { useContext, useState, useEffect } from "react";
 import { CartContext } from "../../contexts/CartContext";
+import { AuthContext } from "../../contexts/AuthContext";
 import IMAGE from "../../assets/shop/empty.png";
 import { useNavigate } from "react-router-dom";
 
 export default function Cart({ cartList }) {
-  const { cart } = useContext(CartContext);
+  const { cart, createOrder } = useContext(CartContext);
+  const { token } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const [totalPrice, setTotalPrice] = useState(0); 
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     let newTotalPrice = 0;
@@ -22,8 +24,15 @@ export default function Cart({ cartList }) {
     setTotalPrice(newTotalPrice);
   }, [cart]);
 
-
   const shippingFee = totalPrice > 500 ? 0 : 50;
+
+  const handleConfirmOrder = () => {
+    const name = "Customer Name";
+    const email = "knpvinuya@up.edu.ph";
+    console.log(token);
+
+    createOrder(name, email, token);
+  };
 
   return (
     <div className="h-screen w-screen">
@@ -37,7 +46,12 @@ export default function Cart({ cartList }) {
             <div className="w-full h-[800px] flex flex-col items-center justify-center">
               <img src={IMAGE} alt="No product" />
               <span className="font-semibold">Your cart is empty!</span>
-              <button className="form-button mt-3" onClick={() => navigate("/")}>Return to Home</button>
+              <button
+                className="form-button mt-3"
+                onClick={() => navigate("/")}
+              >
+                Return to Home
+              </button>
             </div>
           ) : (
             <div className="list-container mt-8 flex flex-col gap-2 h-full">
@@ -48,11 +62,14 @@ export default function Cart({ cartList }) {
               <div className="self-end mt-4 flex flex-col items-end gap-4">
                 <div className="flex items-end gap-1">
                   <h1 className="text-xl font-bold mr-12">SHIPPING FEE</h1>
-                  {totalPrice <= 500 ? 
-                  (<><div className="text-xl font-bold">PHP</div>
-                  <div className="text-4xl font-bold">{shippingFee}</div></>) :
-                   (<div className="text-xl font-bold">FREE</div>)
-                  }
+                  {totalPrice <= 500 ? (
+                    <>
+                      <div className="text-xl font-bold">PHP</div>
+                      <div className="text-4xl font-bold">{shippingFee}</div>
+                    </>
+                  ) : (
+                    <div className="text-xl font-bold">FREE</div>
+                  )}
 
                   <div className="spacer w-[90px]"></div>
                 </div>
@@ -60,15 +77,24 @@ export default function Cart({ cartList }) {
                   <h1 className="text-xl font-bold mr-12">TOTAL</h1>
 
                   <div className="text-xl font-bold">PHP</div>
-                  <div className="text-4xl font-bold">{(totalPrice + shippingFee).toFixed(2)}</div>
+                  <div className="text-4xl font-bold">
+                    {(totalPrice + shippingFee).toFixed(2)}
+                  </div>
 
                   <div className="spacer w-[90px]"></div>
                 </div>
 
-                <button className="form-button mt-3">Confirm Order</button>
+                <button
+                  className="form-button mt-3"
+                  onClick={handleConfirmOrder}
+                >
+                  Confirm Order
+                </button>
               </div>
 
-              <span className="text-gray-600">* Orders with a total above 500 PHP will get FREE delivery!</span>
+              <span className="text-gray-600">
+                * Orders with a total above 500 PHP will get FREE delivery!
+              </span>
             </div>
           )}
         </div>
