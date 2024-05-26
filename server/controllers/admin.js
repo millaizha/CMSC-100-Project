@@ -76,8 +76,8 @@ const confirmOrder = async (req, res) => {
     // check if the inventory suffices
     let orderSuffices = true;
     let productError;
-    for (var productOrder in productOrders) {
-      const productStore = await Product.find(productOrder.productId);
+    for (let productOrder of productOrders) {
+      const productStore = await Product.findById(productOrder.productId);
       if (productStore.quantity < productOrder.count) {
         orderSuffices = false;
         productError = productStore.name;
@@ -87,12 +87,10 @@ const confirmOrder = async (req, res) => {
 
     if (orderSuffices) {
       // then subtract for all the products
-      for (var productOrder in productOrders) {
-        const productStore = await Product.find(productOrder.productId);
-        await Product.findOneAndUpdate(
-          { _id: productOrder._id },
-          { quantity: productStore.quantity - productOrder.count }
-        );
+      for (let productOrder of productOrders) {
+        await Product.findByIdAndUpdate(productOrder.productId, {
+          $inc: { quantity: -productOrder.count },
+        });
       }
       await Order.findOneAndUpdate({ _id: orderId }, { status: 1 });
       res.status(200).json({ message: "Order confirmed." });
@@ -102,6 +100,7 @@ const confirmOrder = async (req, res) => {
         .json({ error: `Insufficient inventory for ${productError}.` });
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Order confirmation failed." });
   }
 };

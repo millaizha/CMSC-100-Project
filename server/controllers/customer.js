@@ -26,17 +26,11 @@ const getProductListings = async (req, res) => {
 // order one product
 const orderProduct = async (req, res) => {
   try {
-    const {
-      name,
-      email,
-      products,
-      dateTimeOrdered = null,
-      status = 0,
-    } = req.body;
+    const { name, email, products, dateTimeOrdered, status = 0 } = req.body;
 
     // recalculate the total product sales
     let totalOrderSales = 0;
-    for (var product in products) {
+    for (let product of products) {
       product.totalProductSales = product.count * product.price;
       totalOrderSales += product.totalProductSales;
     }

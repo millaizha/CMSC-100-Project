@@ -17,6 +17,7 @@ const getRecentSales = async (req, res) => {
       .limit(limit);
     res.status(200).json(sales);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Unable to get recent sales." });
   }
 };
@@ -53,11 +54,11 @@ const getProductsSold = async (req, res) => {
           from: "products",
           localField: "_id",
           foreignField: "_id",
-          as: "productDetails",
+          as: "productInfo",
         },
       },
       {
-        $unwind: "$productDetails",
+        $unwind: "$productInfo",
       },
       {
         $project: {
@@ -101,9 +102,24 @@ const getWeeklyReport = async (req, res) => {
         },
       },
       {
+        $addFields: {
+          week: { $isoWeek: "$dateTimeOrdered" },
+          year: { $isoWeekYear: "$dateTimeOrdered" },
+        },
+      },
+      {
         $group: {
-          _id: { $week: "$dateTimeOrdered" },
+          _id: { year: "$year", week: "$week" },
           totalSales: { $sum: "$totalOrderSales" },
+        },
+      },
+      {
+        $sort: { "_id.year": -1, "_id.week": -1 },
+      },
+      {
+        $project: {
+          _id: "$_id",
+          totalSales: "$totalSales",
         },
       },
     ]);
@@ -131,9 +147,24 @@ const getMonthlyReport = async (req, res) => {
         },
       },
       {
+        $addFields: {
+          year: { $isoWeekYear: "$dateTimeOrdered" },
+          month: { $month: "$dateTimeOrdered" },
+        },
+      },
+      {
         $group: {
-          _id: { $month: "$dateTimeOrdered" },
+          _id: { year: "$year", month: "$month" },
           totalSales: { $sum: "$totalOrderSales" },
+        },
+      },
+      {
+        $sort: { "_id.year": -1, "_id.month": -1 },
+      },
+      {
+        $project: {
+          _id: "$_id",
+          totalSales: "$totalSales",
         },
       },
     ]);
@@ -161,9 +192,23 @@ const getYearlyReport = async (req, res) => {
         },
       },
       {
+        $addFields: {
+          year: { $isoWeekYear: "$dateTimeOrdered" },
+        },
+      },
+      {
         $group: {
-          _id: { $year: "$dateTimeOrdered" },
+          _id: { year: "$year" },
           totalSales: { $sum: "$totalOrderSales" },
+        },
+      },
+      {
+        $sort: { "_id.year": -1 },
+      },
+      {
+        $project: {
+          _id: "$_id",
+          totalSales: "$totalSales",
         },
       },
     ]);
