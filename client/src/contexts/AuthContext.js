@@ -35,7 +35,6 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
       });
-
       if (response.status === 200) {
         setIsAuthenticated(true);
         setToken(response.data.token);
@@ -50,7 +49,11 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Error loggin in:", error);
-      return "An error occured during login";
+      if (error.response.status === 401) {
+        return "Wrong email or password. Please try again";
+      } else {
+        return "An error occured during login";
+      }
     }
   };
 
