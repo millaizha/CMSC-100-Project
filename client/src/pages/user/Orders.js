@@ -6,12 +6,12 @@ import { AuthContext } from "../../contexts/AuthContext";
 import IMAGE from "../../assets/shop/empty1.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { parseJSON, format, parse } from "date-fns";
+import { parseJSON, format } from "date-fns";
 
-export default function Orders({ cartList }) {
+export default function Orders({ }) {
   const navigate = useNavigate();
   const { token, userEmail } = useContext(AuthContext);
-  const [orders, setOrders] = useState([]);
+  const [ orders, setOrders ] = useState([]);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -44,9 +44,9 @@ export default function Orders({ cartList }) {
   }, [token, userEmail]);
 
   return (
-    <div className="h-screen w-screen flex flex-col overflow-y-auto">
-      <Navbar className="flex-grow" />
-      <div className="main-container mt-3 flex flex-grow">
+    <div className="h-screen w-screen flex flex-col">
+      <Navbar />
+      <div className="main-container mt-3 flex ">
         <div className="spacer mx-auto"></div>
         <div className="cart-container w-[800px]">
           <h1 className="font-black text-6xl">MY ORDERS</h1>
@@ -104,7 +104,7 @@ export default function Orders({ cartList }) {
         </div>
         <div className="spacer mx-auto"></div>
       </div>
-      <Footer className="flex-grow" />
+      <Footer />
     </div>
   );
 }
