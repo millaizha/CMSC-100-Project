@@ -17,6 +17,7 @@ export default function Orders({}) {
   const { cancelOrder } = useContext(CartContext);
   const [orders, setOrders] = useState([]);
   const [activeStatus, setActiveStatus] = useState(0);
+  const [forceUpdate, setForceUpdate] = useState(0);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -56,10 +57,11 @@ export default function Orders({}) {
     }
 
     requestAnimationFrame(raf);
-  }, [token, userEmail, activeStatus]);
+  }, [token, userEmail, activeStatus, forceUpdate]);
 
-  function handleCancelOrder(orderId) {
-    cancelOrder(orderId);
+  async function handleCancelOrder(orderId) {
+    await cancelOrder(orderId);
+    setForceUpdate(forceUpdate + 1);
   }
 
   return (
