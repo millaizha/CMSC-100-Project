@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { parseJSON, format } from "date-fns";
 import Lenis from "@studio-freight/lenis";
+import { MdPendingActions } from "react-icons/md";
+import { FaCircleMinus, FaCircleCheck, FaCircleXmark } from "react-icons/fa6";
 
 export default function Orders({}) {
   const navigate = useNavigate();
@@ -74,48 +76,43 @@ export default function Orders({}) {
           <h1 className="font-black text-6xl">MY ORDERS</h1>
           <div className="flex gap-2 mt-4">
             <button
-              className={`p-2 px-4 rounded-full border-2 border-green-600 hover:bg-green-50 ${
+              className={`p-2 px-4 flex items-center justify-center gap-2 transition-colors ease-out rounded-full border-2 border-green-600 hover:bg-green-50 ${
                 activeStatus === 0
                   ? "bg-green-600 hover:bg-green-600 text-white"
                   : ""
               }`}
               onClick={() => setActiveStatus(0)}
             >
+              <FaCircleMinus />
               Pending
             </button>
             <button
-              className={`p-2 px-4 rounded-full border-2 border-green-600 hover:bg-green-50 ${
+              className={`p-2 px-4 flex items-center justify-center gap-2 transition-colors ease-out rounded-full border-2 border-green-600 hover:bg-green-50 ${
                 activeStatus === 1
                   ? "bg-green-600 hover:bg-green-600 text-white"
                   : ""
               }`}
               onClick={() => setActiveStatus(1)}
             >
+              <FaCircleCheck />
               Completed
             </button>
             <button
-              className={`p-2 px-4 rounded-full border-2 border-green-600 hover:bg-green-50 ${
+              className={`p-2 px-4 flex items-center justify-center gap-2 transition-colors ease-out rounded-full border-2 border-green-600 hover:bg-green-50 ${
                 activeStatus === 2
                   ? "bg-green-600 hover:bg-green-600 text-white"
                   : ""
               }`}
               onClick={() => setActiveStatus(2)}
             >
+              <FaCircleXmark />
               Cancelled
             </button>
           </div>
           {orders.length === 0 ? (
             <div className="w-full flex flex-col items-center justify-center">
               <img src={IMAGE} alt="No order" className="h-96 mt-4" />
-              <span className="font-semibold">
-                You don't have any orders yet!
-              </span>
-              <button
-                className="form-button mt-3"
-                onClick={() => navigate("/")}
-              >
-                Return to Home
-              </button>
+              <span className="font-semibold">No orders found!</span>
             </div>
           ) : (
             <div className="mt-4 mb-10">
