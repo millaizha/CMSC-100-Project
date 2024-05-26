@@ -128,7 +128,7 @@ export default function Shop() {
     <div className="min-h-screen w-screen flex flex-col">
       <Navbar />
       <div className="main-container flex flex-col sm:flex-row flex-grow pt-3">
-        <div className="filter-container w-5/6 sm:w-[275px] h-[720px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0 sm:sticky sm:top-36">
+        <div className="filter-container w-5/6 sm:w-[275px] h-[780px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0 sm:sticky sm:top-36">
           <div className="flex flex-col gap-2">
             <h1 className="text-2xl font-black mb-2">SEARCH</h1>
             <input
@@ -142,7 +142,7 @@ export default function Shop() {
           <div className="flex flex-col gap-2 mt-6">
             <h1 className="text-2xl font-black mb-2">SORT BY</h1>
             <button
-              className={`bg-white text-xl rounded-lg w-full p-4 py-2  flex items-center gap-2 transition-colors ease-out ${
+              className={`bg-white text-xl rounded-lg w-full p-4 py-3  flex items-center gap-2 transition-colors ease-out ${
                 activeSort?.key === "name" && activeSort?.order === "Ascending"
                   ? "bg-green-300"
                   : ""
@@ -152,7 +152,7 @@ export default function Shop() {
               <FaArrowUp /> Name Ascending
             </button>
             <button
-              className={`bg-white text-xl rounded-lg w-full p-4 py-2  flex items-center gap-2 transition-colors ease-out ${
+              className={`bg-white text-xl rounded-lg w-full p-4 py-3  flex items-center gap-2 transition-colors ease-out ${
                 activeSort?.key === "price" && activeSort?.order === "Ascending"
                   ? "bg-green-300"
                   : ""
@@ -164,7 +164,7 @@ export default function Shop() {
             </button>
 
             <button
-              className={`bg-white text-xl rounded-lg w-full p-4  py-2 flex items-center gap-2 transition-colors ease-out ${
+              className={`bg-white text-xl rounded-lg w-full p-4  py-3 flex items-center gap-2 transition-colors ease-out ${
                 activeSort?.key === "type" && activeSort?.order === "Ascending"
                   ? "bg-green-300"
                   : ""
@@ -174,7 +174,7 @@ export default function Shop() {
               <FaArrowUp /> Type Ascending
             </button>
             <button
-              className={`bg-white text-lg rounded-lg w-full p-4 py-2  flex items-center gap-2 transition-colors ease-out ${
+              className={`bg-white text-lg rounded-lg w-full p-4 py-3  flex items-center gap-2 transition-colors ease-out ${
                 activeSort?.key === "quantity" &&
                 activeSort?.order === "Ascending"
                   ? "bg-green-300"
@@ -185,7 +185,7 @@ export default function Shop() {
               <FaArrowUp /> Quantity Ascending
             </button>
             <button
-              className={`bg-white text-xl rounded-lg w-full p-4 py-2  flex items-center gap-2  transition-colors ease-out mt-4 ${
+              className={`bg-white text-xl rounded-lg w-full p-4 py-3  flex items-center gap-2  transition-colors ease-out mt-4 ${
                 activeSort?.key === "name" && activeSort?.order === "Descending"
                   ? "bg-green-300"
                   : ""
@@ -195,7 +195,7 @@ export default function Shop() {
               <FaArrowDown /> Name Descending
             </button>
             <button
-              className={`bg-white text-xl rounded-lg w-full p-4 py-2  flex items-center gap-2 transition-colors ease-out ${
+              className={`bg-white text-xl rounded-lg w-full p-4 py-3  flex items-center gap-2 transition-colors ease-out ${
                 activeSort?.key === "price" &&
                 activeSort?.order === "Descending"
                   ? "bg-green-300"
@@ -207,7 +207,7 @@ export default function Shop() {
               Price Descending
             </button>
             <button
-              className={`bg-white text-xl rounded-lg w-full p-4 py-2  flex items-center gap-2 transition-colors ease-out ${
+              className={`bg-white text-xl rounded-lg w-full p-4 py-3  flex items-center gap-2 transition-colors ease-out ${
                 activeSort?.key === "type" && activeSort?.order === "Descending"
                   ? "bg-green-300"
                   : ""
@@ -218,7 +218,7 @@ export default function Shop() {
               Type Descending
             </button>
             <button
-              className={`bg-white text-lg rounded-lg w-full p-4  py-2 flex items-center gap-2  transition-colors ease-out ${
+              className={`bg-white text-lg rounded-lg w-full p-4  py-3 flex items-center gap-2  transition-colors ease-out ${
                 activeSort?.key === "quantity" &&
                 activeSort?.order === "Descending"
                   ? "bg-green-300"

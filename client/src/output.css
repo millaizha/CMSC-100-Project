@@ -823,6 +823,18 @@ video {
   height: 720px;
 }
 
+.h-\[730px\]{
+  height: 730px;
+}
+
+.h-\[760px\]{
+  height: 760px;
+}
+
+.h-\[780px\]{
+  height: 780px;
+}
+
 .min-h-screen{
   min-height: 100vh;
 }

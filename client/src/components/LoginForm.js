@@ -13,11 +13,17 @@ export default function LoginForm({ toggleFunc }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const email = emailRef.current.value;
-    const password = passwordRef.current.value;
-    const error = await login(email, password);
-    if (error) {
-      setLoginError(error);
+
+    try {
+      const email = emailRef.current.value;
+      const password = passwordRef.current.value;
+      const error = await login(email, password);
+
+      if (error) {
+        setLoginError(error);
+      }
+    } catch (error) {
+      setLoginError("An unexpected error occurred. Please try again later.");
     }
   };
 

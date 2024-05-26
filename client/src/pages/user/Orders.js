@@ -8,6 +8,7 @@ import BG from "../../assets/shop/orders.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { parseJSON, format } from "date-fns";
+import Lenis from "@studio-freight/lenis";
 
 export default function Orders({ }) {
   const navigate = useNavigate();
@@ -40,8 +41,17 @@ export default function Orders({ }) {
         console.error("Network error:", error);
       }
     };
-
+    
     fetchOrders();
+
+    const lenis = new Lenis();
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
   }, [token, userEmail]);
 
   return (
