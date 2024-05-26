@@ -1,7 +1,6 @@
 import { useState, useContext } from "react";
 import PICTURE1 from "../assets/login/login1.jpg";
 import PICTURE2 from "../assets/login/login2.jpg";
-import { AuthContext } from "../contexts/AuthContext";
 
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
@@ -9,17 +8,12 @@ import RegisterForm from "../components/RegisterForm";
 export default function Login() {
   const [topImageOpacity, setTopImageOpacity] = useState(1);
   const [toggle, setToggle] = useState(0);
-  const { login } = useContext(AuthContext);
 
   function toggleImages() {
     setTopImageOpacity(topImageOpacity === 1 ? 0 : 1);
     setToggle(toggle === 0 ? 1 : 0);
   }
 
-  const handleLogin = (email, password) => {
-    const user = { email, password };
-    login(user);
-  };
 
   return (
     <>
