@@ -22,7 +22,7 @@ const getProductListings = async (req, res) => {
   }
 };
 
-// create a order (order)
+// create a order
 // order one product
 const orderProduct = async (req, res) => {
   try {
@@ -34,12 +34,20 @@ const orderProduct = async (req, res) => {
       status = 0,
     } = req.body;
 
+    // recalculate the total product sales
+    let totalOrderSales = 0;
+    for (var product in products) {
+      product.totalProductSales = product.count * product.price;
+      totalOrderSales += product.totalProductSales;
+    }
+
     const newOrder = new Order({
       name,
       email,
       products,
       dateTimeOrdered,
       status,
+      totalOrderSales,
     });
     await newOrder.save();
     res.status(200).json({ message: "Ordered successfully." });
