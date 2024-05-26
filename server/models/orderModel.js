@@ -15,6 +15,8 @@ const orderSchema = new mongoose.Schema({
       name: { type: String, required: true },
       count: { type: Number, required: true },
       price: { type: Number, required: true },
+      // helper field
+      totalProductSales: { type: Number },
     },
   ],
   dateTimeOrdered: { type: Date, required: true, default: Date.now },
@@ -23,6 +25,8 @@ const orderSchema = new mongoose.Schema({
   // 1 = completed
   // 2 = cancelled
   status: { type: Number, enum: [-1, 0, 1, 2], required: true },
+  // helper field
+  totalOrderSales: { type: Number },
 });
 
 const Order = mongoose.model("Order", orderSchema);
