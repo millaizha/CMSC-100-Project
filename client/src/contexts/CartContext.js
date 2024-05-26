@@ -91,6 +91,7 @@ export function CartProvider({ children }) {
           name: item.product.name,
           count: item.quantity,
           price: item.product.price,
+          imageUrl: item.product.imageUrl,
         })),
         dateTimeOrdered: new Date().toISOString(),
         status: 0,

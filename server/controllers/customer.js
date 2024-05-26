@@ -65,10 +65,10 @@ const cancelOrder = async (req, res) => {
 
 // get the order by the user
 const getOrders = async (req, res) => {
-  const { status } = req.body;
+  const { email, status } = req.query;
   try {
     const orders = await Order.find({
-      email: req.tokenInfo.email,
+      email: email,
       status: status,
     }).sort({
       dateTimeOrdered: -1,
@@ -173,9 +173,7 @@ const clearCart = async (req, res) => {
     const cart = await Cart.findOne({ email });
 
     if (cart) {
-      console.log(cart.items);
       cart.items = [];
-      console.log(cart.items);
 
       await cart.save();
       res.json({ message: "Cart cleared successfully" });

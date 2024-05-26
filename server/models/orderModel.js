@@ -17,6 +17,7 @@ const orderSchema = new mongoose.Schema({
       price: { type: Number, required: true },
       // helper field
       totalProductSales: { type: Number },
+      imageUrl: { type: String },
     },
   ],
   dateTimeOrdered: { type: Date, required: true, default: Date.now },
