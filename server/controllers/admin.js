@@ -71,17 +71,35 @@ const getOrders = async (req, res) => {
 const confirmOrder = async (req, res) => {
   try {
     const { orderId } = req.body;
-    const order = await Order.findOneAndUpdate({ _id: orderId }, { status: 1 });
+    const order = await Order.findById(orderId);
+    const productOrders = order.products;
     // check if the inventory suffices
-    const product = await Product.findById(order.productId);
-    if (product.quantity < order.quantity) {
-      res.status(400).json({ error: "Insufficient product quantity." });
-    } else {
-      await Product.findOneAndUpdate(
-        { _id: product._id },
-        { quantity: product.quantity - order.quantity }
-      );
+    let orderSuffices = true;
+    let productError;
+    for (var productOrder in productOrders) {
+      const productStore = await Product.find(productOrder.productId);
+      if (productStore.quantity < productOrder.count) {
+        orderSuffices = false;
+        productError = productStore.name;
+        break;
+      }
+    }
+
+    if (orderSuffices) {
+      // then subtract for all the products
+      for (var productOrder in productOrders) {
+        const productStore = await Product.find(productOrder.productId);
+        await Product.findOneAndUpdate(
+          { _id: productOrder._id },
+          { quantity: productStore.quantity - productOrder.count }
+        );
+      }
+      await Order.findOneAndUpdate({ _id: orderId }, { status: 1 });
       res.status(200).json({ message: "Order confirmed." });
+    } else {
+      res
+        .status(400)
+        .json({ error: `Insufficient inventory for ${productError}.` });
     }
   } catch (error) {
     res.status(500).json({ error: "Order confirmation failed." });
