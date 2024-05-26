@@ -33,7 +33,7 @@ export default function CartListCard({ product }) {
         </select>
         <div className="overflow-hidden h-full w-24 bg-red-300 rounded-xl">
           <img
-            src={item.imageUrL}
+            src={item.imageUrl}
             alt={item.name}
             className="object-cover h-full"
           />

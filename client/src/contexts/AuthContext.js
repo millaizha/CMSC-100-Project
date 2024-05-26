@@ -13,14 +13,17 @@ export const AuthProvider = ({ children }) => {
   const [userFirstName, setUserFirstName] = useState(null);
 
   const checkAuth = () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setToken(token);
+    const storedToken = localStorage.getItem("token");
+    const storedEmail = localStorage.getItem("email");
+    const storedFirstName = localStorage.getItem("firstName");
+
+    if (storedToken) {
+      setToken(storedToken);
+      setUserEmail(storedEmail);
+      setUserFirstName(storedFirstName);
       setIsAuthenticated(true);
-      console.log("AUTHENTICATED");
     } else {
       setIsAuthenticated(false);
-      console.log("NOT AUTHENTICATED");
     }
   };
 
@@ -39,6 +42,8 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(true);
         setToken(response.data.token);
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("email", email);
+        localStorage.setItem("firstName", response.data.firstName);
         checkAuth();
 
         setUserEmail(email);
@@ -61,7 +66,11 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setIsAuthenticated(false);
     setToken(null);
+
     localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    localStorage.removeItem("firstName");
+
     checkAuth();
     setUserEmail(null);
     setUserFirstName(null);

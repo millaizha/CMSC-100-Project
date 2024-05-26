@@ -7,7 +7,7 @@ export default function Card({ product, addToCart }) {
     <div className="h-[470px] w-[270px] bg-[#F2F2F2] rounded-2xl flex flex-col p-2 border-2 border-white hover:border-black">
       <div className="h-[230px] w-full object-cover rounded-2xl overflow-hidden">
         <img
-          src={product.imageURL}
+          src={product.imageUrl}
           alt={product.name}
           className="object-cover w-full h-full"
         />

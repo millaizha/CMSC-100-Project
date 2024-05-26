@@ -8,15 +8,19 @@ const ProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     const authenticate = async () => {
-      await checkAuth();
-      setLoading(false);
+      try {
+        await checkAuth();
+        setLoading(false);
+      } catch (error) {
+        console.error("Error checking authentication:", error);
+        setLoading(false);
+      }
     };
-
     authenticate();
   }, [checkAuth]);
 
   if (loading) {
-    return <></>; // Replace with a loading spinner or component
+    return <></>;
   }
 
   return isAuthenticated ? children : <Navigate to="/login" />;
