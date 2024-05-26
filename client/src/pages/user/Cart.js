@@ -26,7 +26,7 @@ export default function Cart({ cartList }) {
 
   const handleConfirmOrder = async () => {
     await createOrder(userFirstName, userEmail, token);
-    navigate("/"); // Return to home for now
+    navigate("/");
   };
 
   return (

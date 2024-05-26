@@ -8,6 +8,7 @@ import {
   addToCart,
   removeFromCart,
   updateCartQuantity,
+  clearCart,
 } from "../controllers/customer.js";
 import { verifyIfUser, verifyToken } from "../utils/middleware.js";
 
@@ -125,5 +126,7 @@ customerRoutes.post(
   verifyIfUser,
   updateCartQuantity
 );
+
+customerRoutes.post("/clearCart", verifyToken, verifyIfUser, clearCart);
 
 export default customerRoutes;

@@ -167,6 +167,26 @@ const updateCartQuantity = async (req, res) => {
   }
 };
 
+const clearCart = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const cart = await Cart.findOne({ email });
+
+    if (cart) {
+      console.log(cart.items);
+      cart.items = [];
+      console.log(cart.items);
+
+      await cart.save();
+      res.json({ message: "Cart cleared successfully" });
+    } else {
+      res.status(404).json({ error: "Cart not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error clearing cart" });
+  }
+};
+
 export {
   getProductListings,
   orderProduct,
@@ -176,4 +196,5 @@ export {
   addToCart,
   removeFromCart,
   updateCartQuantity,
+  clearCart,
 };

@@ -41,7 +41,6 @@ export function CartProvider({ children }) {
         { email: userEmail, product },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
       setCart(response.data.items);
       setForceUpdate(forceUpdate + 1);
     } catch (error) {
@@ -105,8 +104,27 @@ export function CartProvider({ children }) {
         }
       );
 
-      // Clear the cart after ordering
-      setCart([]);
+      // Clear the cart in the backend
+      axios
+        .post(
+          "http://localhost:3001/customer/clearCart",
+          {
+            email: userEmail,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          setCart([]);
+          setForceUpdate(forceUpdate + 1);
+          console.log(response.data.message);
+        })
+        .catch((error) => {
+          console.error("Error clearing cart:", error);
+        });
     } catch (error) {
       console.error("Error creating order:", error);
     }
