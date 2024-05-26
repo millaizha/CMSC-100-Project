@@ -1,0 +1,183 @@
+// for analyzing sales reports
+import Order from "../models/orderModel.js";
+
+// only includes the orders that are sold, sorted by recency
+// the cutoff would be in a latest provided date, along with the limit
+const getRecentSales = async (req, res) => {
+  const { earliestDate, limit } = req.body;
+
+  try {
+    const sales = await Order.find({
+      status: 1,
+      dateTimeOrdered: { $gte: new Date(earliestDate) },
+    })
+      .sort({
+        dateTimeOrdered: -1,
+      })
+      .limit(limit);
+    res.status(200).json(sales);
+  } catch (error) {
+    res.status(500).json({ error: "Unable to get recent sales." });
+  }
+};
+
+// get all the list of products sold in a given time interval
+// YYYY-MM-DD format
+// Ex: 2024-05-25 doesn't include that day in 5 PM, it strictly means at 12 MN
+// limit is applied in case the products are too much
+const getProductsSold = async (req, res) => {
+  const { earliestDate, latestDate, limit } = req.body;
+  try {
+    const productsSold = await Order.aggregate([
+      {
+        $match: {
+          dateTimeOrdered: {
+            $gte: new Date(earliestDate),
+            $lte: new Date(latestDate),
+          },
+          status: 1,
+        },
+      },
+      {
+        $unwind: "$products",
+      },
+      {
+        $group: {
+          _id: "$products.productId",
+          totalSales: { $sum: "$products.totalProductSales" },
+          totalQuantity: { $sum: "$products.count" },
+        },
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "_id",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+      {
+        $unwind: "$productDetails",
+      },
+      {
+        $project: {
+          name: "$productInfo.name",
+          description: "$productInfo.description",
+          price: "$productInfo.price",
+          totalQuantity: "$totalQuantity",
+          totalSales: "$totalSales",
+          type: "$productInfo.type",
+        },
+      },
+      {
+        // sort by aggregate sales for now
+        $sort: { totalSales: -1 },
+      },
+      {
+        $limit: limit,
+      },
+    ]);
+
+    res.status(200).json(productsSold);
+  } catch (error) {
+    res.status(500).json({ error: "Unable to get report." });
+  }
+};
+
+// it just returns the total sales per week provided
+// the _id denotes the _id-th week in a year
+const getWeeklyReport = async (req, res) => {
+  const { earliestDate, latestDate } = req.body;
+  try {
+    const salesReport = await Order.aggregate([
+      {
+        // only completed orders
+        $match: {
+          status: 1,
+          dateTimeOrdered: {
+            $gte: new Date(earliestDate),
+            $lte: new Date(latestDate),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: { $week: "$dateTimeOrdered" },
+          totalSales: { $sum: "$totalOrderSales" },
+        },
+      },
+    ]);
+
+    res.status(200).json(salesReport);
+  } catch (error) {
+    res.status(500).json({ error: "Unable to get report." });
+  }
+};
+
+// it just returns the total sales per month provided
+// the _id denotes the numerical month in a year
+const getMonthlyReport = async (req, res) => {
+  const { earliestDate, latestDate } = req.body;
+  try {
+    const salesReport = await Order.aggregate([
+      {
+        // only completed orders
+        $match: {
+          status: 1,
+          dateTimeOrdered: {
+            $gte: new Date(earliestDate),
+            $lte: new Date(latestDate),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: { $month: "$dateTimeOrdered" },
+          totalSales: { $sum: "$totalOrderSales" },
+        },
+      },
+    ]);
+
+    res.status(200).json(salesReport);
+  } catch (error) {
+    res.status(500).json({ error: "Unable to get report." });
+  }
+};
+
+// it just returns the total sales per month provided
+// the _id denotes the year
+const getYearlyReport = async (req, res) => {
+  const { earliestDate, latestDate } = req.body;
+  try {
+    const salesReport = await Order.aggregate([
+      {
+        // only completed orders
+        $match: {
+          status: 1,
+          dateTimeOrdered: {
+            $gte: new Date(earliestDate),
+            $lte: new Date(latestDate),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: { $year: "$dateTimeOrdered" },
+          totalSales: { $sum: "$totalOrderSales" },
+        },
+      },
+    ]);
+
+    res.status(200).json(salesReport);
+  } catch (error) {
+    res.status(500).json({ error: "Unable to get report." });
+  }
+};
+
+export {
+  getRecentSales,
+  getProductsSold,
+  getWeeklyReport,
+  getMonthlyReport,
+  getYearlyReport,
+};

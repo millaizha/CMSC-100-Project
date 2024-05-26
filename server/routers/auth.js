@@ -11,7 +11,7 @@ const authRoutes = express.Router();
  * firstName - String
  * middleName - String (optional)
  * lastName - String
- * userType - String ("admin" or "user")
+ * userType - String ("admin" or "user") (Default: "user")
  * email - String (unique)
  * password - String
  *
