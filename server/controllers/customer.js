@@ -35,17 +35,19 @@ const orderProduct = async (req, res) => {
       totalOrderSales += product.totalProductSales;
     }
 
+
     const newOrder = new Order({
       name,
       email,
       products,
-      dateTimeOrdered,
       status,
       totalOrderSales,
     });
+
     await newOrder.save();
     res.status(200).json({ message: "Ordered successfully." });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Ordering failed." });
   }
 };
