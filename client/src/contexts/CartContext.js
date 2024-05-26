@@ -5,7 +5,7 @@ import axios from "axios";
 export const CartContext = createContext();
 
 export function CartProvider({ children }) {
-  const { userEmail, token } = useContext(AuthContext);
+  const { userEmail, userFirstName, token } = useContext(AuthContext);
   const [forceUpdate, setForceUpdate] = useState(0);
   const [cart, setCart] = useState([]);
 
@@ -81,10 +81,10 @@ export function CartProvider({ children }) {
     }
   };
 
-  const createOrder = async (name, email, token) => {
+  const createOrder = async (shippingFee, token) => {
     try {
       const orderData = {
-        name: userEmail,
+        name: userFirstName,
         email: userEmail,
         products: cart.map((item) => ({
           productId: item.product._id,
@@ -94,6 +94,7 @@ export function CartProvider({ children }) {
           imageUrl: item.product.imageUrl,
         })),
         dateTimeOrdered: new Date().toISOString(),
+        shippingFee: shippingFee,
         status: 0,
       };
 

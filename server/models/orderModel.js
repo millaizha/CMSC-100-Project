@@ -27,6 +27,7 @@ const orderSchema = new mongoose.Schema({
   // 2 = cancelled
   status: { type: Number, enum: [-1, 0, 1, 2], required: true },
   // helper field
+  shippingFee: { type: Number },
   totalOrderSales: { type: Number },
 });
 

@@ -15,6 +15,7 @@ export default function Cart({ cartList }) {
   const navigate = useNavigate();
 
   const [totalPrice, setTotalPrice] = useState(0);
+  const [shippingFee, setShippingFee] = useState(25);
 
   useEffect(() => {
     let newTotalPrice = 0;
@@ -22,12 +23,11 @@ export default function Cart({ cartList }) {
       newTotalPrice += item.product.price * item.quantity;
     }
     setTotalPrice(newTotalPrice);
+    setShippingFee(newTotalPrice > 500 ? 0 : 25);
   }, [cart]);
 
-  const shippingFee = totalPrice > 500 ? 0 : 50;
-
   const handleConfirmOrder = async () => {
-    await createOrder(userFirstName, userEmail, token);
+    await createOrder(shippingFee, token);
     navigate("/my-orders");
   };
 
@@ -55,33 +55,54 @@ export default function Cart({ cartList }) {
               {cart.map((item, index) => (
                 <CartListCard product={item} />
               ))}
-
-              <div className="self-end mt-4 flex flex-col items-end gap-4">
-                <div className="flex items-end gap-1">
-                  <h1 className="text-xl font-bold mr-12">SHIPPING FEE</h1>
-
-                  {totalPrice <= 500 ? (
-                    <>
-                      <div className="text-xl font-bold">PHP</div>
-                      <div className="text-4xl font-bold">{shippingFee}</div>
-                    </>
-                  ) : (
-                    <div className="text-xl font-bold">FREE</div>
-                  )}
-
-                  <div className="spacer w-[90px]"></div>
-                </div>
-                <div className="flex items-end gap-1">
+              <div className="flex justify-end">
+                <div className="flex flex-col gap-7 mt-8 items-end">
+                  <h1 className="text-xl font-bold mr-12 text-gray-400">
+                    ITEM SUBTOTAL
+                  </h1>
+                  <h1 className="text-xl font-bold mr-12 text-gray-400">
+                    SHIPPING FEE
+                  </h1>
                   <h1 className="text-xl font-bold mr-12">TOTAL</h1>
-
-                  <div className="text-xl font-bold">PHP</div>
-
-                  <div className="text-4xl font-bold">
-                    {(totalPrice + shippingFee).toFixed(2)}
-                  </div>
-
-                  <div className="spacer w-[90px]"></div>
                 </div>
+                <div className="self-end mt-4 flex flex-col items-end gap-4">
+                  <div className="flex items-end gap-1 text-gray-400">
+                    <div className="text-xl font-bold">PHP</div>
+
+                    <div className="text-4xl font-bold">{totalPrice}</div>
+
+                    <div className="spacer w-[90px]"></div>
+                  </div>
+                  <div className="flex items-end gap-1">
+                    {totalPrice <= 500 ? (
+                      <>
+                        <div className="text-xl font-bold text-gray-400">
+                          PHP
+                        </div>
+                        <div className="text-4xl font-bold text-gray-400">
+                          {shippingFee}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-4xl font-bold text-gray-400">
+                        FREE
+                      </div>
+                    )}
+
+                    <div className="spacer w-[90px]"></div>
+                  </div>
+                  <div className="flex items-end gap-1">
+                    <div className="text-xl font-bold">PHP</div>
+
+                    <div className="text-4xl font-bold">
+                      {(totalPrice + shippingFee).toFixed(2)}
+                    </div>
+
+                    <div className="spacer w-[90px]"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="self-end">
                 <button
                   className="form-button mt-3"
                   onClick={handleConfirmOrder}

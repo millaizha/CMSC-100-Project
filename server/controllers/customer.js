@@ -27,7 +27,7 @@ const getProductListings = async (req, res) => {
 // order one product
 const orderProduct = async (req, res) => {
   try {
-    const { name, email, products, dateTimeOrdered, status = 0 } = req.body;
+    const { name, email, products, shippingFee, status = 0 } = req.body;
 
     // recalculate the total product sales
     let totalOrderSales = 0;
@@ -36,12 +36,15 @@ const orderProduct = async (req, res) => {
       totalOrderSales += product.totalProductSales;
     }
 
+    totalOrderSales += shippingFee;
+
     const newOrder = new Order({
       name,
       email,
       products,
       status,
       totalOrderSales,
+      shippingFee,
     });
 
     await newOrder.save();

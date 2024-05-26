@@ -116,47 +116,110 @@ export default function Orders({}) {
             </div>
           ) : (
             <div className="mt-4 mb-10">
-              {orders.map((order) => (
-                <div
-                  key={order._id}
-                  className="mb-4 bg-[#EEDBDB] p-4 rounded-xl"
-                >
-                  <div className="mt-2 flex flex-col gap-2">
-                    {order.products.map((product) => (
-                      <OrderListCard key={product._id.$oid} product={product} />
-                    ))}
-                  </div>
-                  <div className="flex justify-between">
-                    <div className="mt-4 ml-2">
-                      <p className="text-gray-600">
-                        Ordered on:{" "}
-                        {format(
-                          parseJSON(order.dateTimeOrdered),
-                          "MMMM d, yyyy h:mm a"
-                        )}
-                      </p>
-                      <p className="text-gray-600 font-bold">
-                        Status:{" "}
-                        {order.status === 0
-                          ? "Pending"
-                          : order.status === 1
-                          ? "Confirmed"
-                          : "Canceled"}
-                      </p>
+              {orders.map((order) => {
+                const itemSubtotal = order.products.reduce((acc, product) => {
+                  return acc + product.price * product.count;
+                }, 0);
+
+                return (
+                  <div
+                    key={order._id}
+                    className="mb-4 bg-[#EEDBDB] p-4 rounded-xl"
+                  >
+                    <div className="mt-2 flex flex-col gap-2">
+                      {order.products.map((product) => (
+                        <OrderListCard
+                          key={product._id.$oid}
+                          product={product}
+                        />
+                      ))}
                     </div>
-                    {order.status === 0 ? (
-                      <button
-                        className="form-button mt-4"
-                        onClick={() => handleCancelOrder(order._id)}
-                      >
-                        Cancel Order
-                      </button>
-                    ) : (
-                      <></>
-                    )}
+                    <div className="flex justify-end">
+                      <div className="flex">
+                        <div className="flex flex-col gap-7 mt-8 items-end">
+                          <h1 className="text-xl font-bold mr-12 text-gray-400">
+                            ITEM SUBTOTAL
+                          </h1>
+                          <h1 className="text-xl font-bold mr-12 text-gray-400">
+                            SHIPPING FEE
+                          </h1>
+                          <h1 className="text-xl font-bold mr-12">TOTAL</h1>
+                        </div>
+                        <div className="self-end mt-4 flex flex-col items-end gap-4">
+                          <div className="flex items-end gap-1 text-gray-400">
+                            <div className="text-xl font-bold">PHP</div>
+
+                            <div className="text-4xl font-bold">
+                              {itemSubtotal.toFixed(2)}
+                            </div>
+
+                            <div className="spacer w-[75px]"></div>
+                          </div>
+                          <div className="flex items-end gap-1">
+                            {order.shippingFee === 0 ? (
+                              <>
+                                <div className="text-xl font-bold text-gray-400">
+                                  PHP
+                                </div>
+                                <div className="text-4xl font-bold text-gray-400">
+                                  {order.shippingFee.toFixed(2)}
+                                </div>
+                              </>
+                            ) : (
+                              <div className="text-4xl font-bold text-gray-400">
+                                FREE
+                              </div>
+                            )}
+
+                            <div className="spacer w-[75px]"></div>
+                          </div>
+                          <div className="flex items-end gap-1">
+                            <div className="text-xl font-bold">PHP</div>
+
+                            <div className="text-4xl font-bold">
+                              {order.totalOrderSales}
+                              {}
+                            </div>
+
+                            <div className="spacer w-[75px]"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex justify-between mt-4 items-center">
+                      <div className="mt-4 ml-2">
+                        <p className="text-gray-600">
+                          Ordered on:{" "}
+                          {format(
+                            parseJSON(order.dateTimeOrdered),
+                            "MMMM d, yyyy h:mm a"
+                          )}
+                        </p>
+                        <p className="text-gray-600 font-bold">
+                          Status:{" "}
+                          {order.status === 0
+                            ? "Pending"
+                            : order.status === 1
+                            ? "Confirmed"
+                            : "Canceled"}
+                        </p>
+                      </div>
+                      <div>
+                        {order.status === 0 ? (
+                          <button
+                            className="form-button mt-4"
+                            onClick={() => handleCancelOrder(order._id)}
+                          >
+                            Cancel Order
+                          </button>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
