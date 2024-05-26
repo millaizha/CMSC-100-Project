@@ -131,9 +131,33 @@ export function CartProvider({ children }) {
     }
   };
 
+  const cancelOrder = async (orderId) => {
+    if (!userEmail) {
+      console.error("User email is not available");
+      return;
+    }
+
+    try {
+      await axios.post(
+        "http://localhost:3001/customer/cancelOrder",
+        { orderId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } catch (error) {
+      console.error("Error cancelling order:", error);
+    }
+  };
+
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, updateQuantity, createOrder }}
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        createOrder,
+        cancelOrder,
+      }}
     >
       {children}
     </CartContext.Provider>
