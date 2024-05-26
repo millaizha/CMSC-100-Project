@@ -1,5 +1,5 @@
 import Product from "../models/productModel.js";
-import Transaction from "../models/transactionModel.js";
+import Order from "../models/orderModel.js";
 
 /**
  * req.body should be something like this:
@@ -22,22 +22,28 @@ const getProductListings = async (req, res) => {
   }
 };
 
-// create a transaction (order)
+// create a order
 // order one product
 const orderProduct = async (req, res) => {
   try {
-    const { productId, quantity, email } = req.body;
-    // retrieve the product's price
-    const product = await Product.findById(productId);
-    const newTransaction = new Transaction({
-      productId,
-      quantity,
-      status: 0,
+    const { name, email, products, dateTimeOrdered, status = 0 } = req.body;
+
+    // recalculate the total product sales
+    let totalOrderSales = 0;
+    for (let product of products) {
+      product.totalProductSales = product.count * product.price;
+      totalOrderSales += product.totalProductSales;
+    }
+
+    const newOrder = new Order({
+      name,
       email,
-      productPrice: product.price,
-      totalCost: product.price * quantity,
+      products,
+      dateTimeOrdered,
+      status,
+      totalOrderSales,
     });
-    await newTransaction.save();
+    await newOrder.save();
     res.status(200).json({ message: "Ordered successfully." });
   } catch (error) {
     res.status(500).json({ error: "Ordering failed." });
@@ -45,25 +51,30 @@ const orderProduct = async (req, res) => {
 };
 
 // cancel an order
-const cancelTransaction = async (req, res) => {
+const cancelOrder = async (req, res) => {
   try {
-    const { transactionId } = req.body;
-    await Transaction.findOneAndUpdate({ _id: transactionId }, { status: 2 });
+    const { orderId } = req.body;
+    await Order.findOneAndUpdate({ _id: orderId }, { status: 2 });
     res.status(200).json({ message: "Cancellation confirmed." });
   } catch (error) {
     res.status(500).json({ error: "Cancellation failed." });
   }
 };
 
-// get the transaction by the user
-const getTransactions = async (req, res) => {
+// get the order by the user
+const getOrders = async (req, res) => {
+  const { status } = req.body;
   try {
-    const { email } = req.body;
-    const transactions = await Transaction.find({ email });
-    res.status(200).json(transactions);
+    const orders = await Order.find({
+      email: req.tokenInfo.email,
+      status: status,
+    }).sort({
+      dateTimeOrdered: -1,
+    });
+    res.status(200).json(orders);
   } catch (error) {
-    res.status(500).json({ error: "Unable to get transactions." });
+    res.status(500).json({ error: "Unable to get orders." });
   }
 };
 
-export { getProductListings, orderProduct, cancelTransaction, getTransactions };
+export { getProductListings, orderProduct, cancelOrder, getOrders };

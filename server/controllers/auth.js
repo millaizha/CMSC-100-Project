@@ -8,7 +8,7 @@ const register = async (req, res) => {
       firstName,
       middleName = null,
       lastName,
-      userType,
+      userType = "user",
       email,
       password,
     } = req.body;
@@ -24,7 +24,6 @@ const register = async (req, res) => {
     await newUser.save();
     res.status(201).json({ message: "User created successfully" });
   } catch (error) {
-    console.error(error.stack);
     res.status(500).json({ error: "Error signing up" });
   }
 };
@@ -41,7 +40,7 @@ const login = async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
     const token = jwt.sign(
-      { userId: user._id, userType: user.userType },
+      { userId: user._id, userType: user.userType, email: user.email },
       process.env.SECRET_KEY,
       {
         expiresIn: "1hr",

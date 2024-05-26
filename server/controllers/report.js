@@ -1,13 +1,13 @@
 // for analyzing sales reports
-import Transaction from "../models/transactionModel.js";
+import Order from "../models/orderModel.js";
 
-// only includes the transactions that are sold, sorted by recency
+// only includes the orders that are sold, sorted by recency
 // the cutoff would be in a latest provided date, along with the limit
 const getRecentSales = async (req, res) => {
   const { earliestDate, limit } = req.body;
 
   try {
-    const sales = await Transaction.find({
+    const sales = await Order.find({
       status: 1,
       dateTimeOrdered: { $gte: new Date(earliestDate) },
     })
@@ -17,6 +17,7 @@ const getRecentSales = async (req, res) => {
       .limit(limit);
     res.status(200).json(sales);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Unable to get recent sales." });
   }
 };
@@ -28,22 +29,24 @@ const getRecentSales = async (req, res) => {
 const getProductsSold = async (req, res) => {
   const { earliestDate, latestDate, limit } = req.body;
   try {
-    const productsSold = await Transaction.aggregate([
+    const productsSold = await Order.aggregate([
       {
-        // only completed transactions
         $match: {
-          status: 1,
           dateTimeOrdered: {
             $gte: new Date(earliestDate),
             $lte: new Date(latestDate),
           },
+          status: 1,
         },
       },
       {
+        $unwind: "$products",
+      },
+      {
         $group: {
-          _id: "$productId",
-          aggregateSales: { $sum: "$totalCost" },
-          aggregateQuantity: { $sum: "$quantity" },
+          _id: "$products.productId",
+          totalSales: { $sum: "$products.totalProductSales" },
+          totalQuantity: { $sum: "$products.count" },
         },
       },
       {
@@ -51,7 +54,7 @@ const getProductsSold = async (req, res) => {
           from: "products",
           localField: "_id",
           foreignField: "_id",
-          as: "productInfo", // New alias
+          as: "productInfo",
         },
       },
       {
@@ -62,14 +65,14 @@ const getProductsSold = async (req, res) => {
           name: "$productInfo.name",
           description: "$productInfo.description",
           price: "$productInfo.price",
-          aggregateQuantity: "$aggregateQuantity",
+          totalQuantity: "$totalQuantity",
+          totalSales: "$totalSales",
           type: "$productInfo.type",
-          aggregateSales: "$aggregateSales",
         },
       },
       {
         // sort by aggregate sales for now
-        $sort: { aggregateSales: -1 },
+        $sort: { totalSales: -1 },
       },
       {
         $limit: limit,
@@ -87,9 +90,9 @@ const getProductsSold = async (req, res) => {
 const getWeeklyReport = async (req, res) => {
   const { earliestDate, latestDate } = req.body;
   try {
-    const productsSold = await Transaction.aggregate([
+    const salesReport = await Order.aggregate([
       {
-        // only completed transactions
+        // only completed orders
         $match: {
           status: 1,
           dateTimeOrdered: {
@@ -99,14 +102,29 @@ const getWeeklyReport = async (req, res) => {
         },
       },
       {
+        $addFields: {
+          week: { $isoWeek: "$dateTimeOrdered" },
+          year: { $isoWeekYear: "$dateTimeOrdered" },
+        },
+      },
+      {
         $group: {
-          _id: { $week: "$dateTimeOrdered" },
-          aggregateSales: { $sum: "$totalCost" },
+          _id: { year: "$year", week: "$week" },
+          totalSales: { $sum: "$totalOrderSales" },
+        },
+      },
+      {
+        $sort: { "_id.year": -1, "_id.week": -1 },
+      },
+      {
+        $project: {
+          _id: "$_id",
+          totalSales: "$totalSales",
         },
       },
     ]);
 
-    res.status(200).json(productsSold);
+    res.status(200).json(salesReport);
   } catch (error) {
     res.status(500).json({ error: "Unable to get report." });
   }
@@ -117,9 +135,9 @@ const getWeeklyReport = async (req, res) => {
 const getMonthlyReport = async (req, res) => {
   const { earliestDate, latestDate } = req.body;
   try {
-    const productsSold = await Transaction.aggregate([
+    const salesReport = await Order.aggregate([
       {
-        // only completed transactions
+        // only completed orders
         $match: {
           status: 1,
           dateTimeOrdered: {
@@ -129,14 +147,29 @@ const getMonthlyReport = async (req, res) => {
         },
       },
       {
+        $addFields: {
+          year: { $isoWeekYear: "$dateTimeOrdered" },
+          month: { $month: "$dateTimeOrdered" },
+        },
+      },
+      {
         $group: {
-          _id: { $month: "$dateTimeOrdered" },
-          aggregateSales: { $sum: "$totalCost" },
+          _id: { year: "$year", month: "$month" },
+          totalSales: { $sum: "$totalOrderSales" },
+        },
+      },
+      {
+        $sort: { "_id.year": -1, "_id.month": -1 },
+      },
+      {
+        $project: {
+          _id: "$_id",
+          totalSales: "$totalSales",
         },
       },
     ]);
 
-    res.status(200).json(productsSold);
+    res.status(200).json(salesReport);
   } catch (error) {
     res.status(500).json({ error: "Unable to get report." });
   }
@@ -147,9 +180,9 @@ const getMonthlyReport = async (req, res) => {
 const getYearlyReport = async (req, res) => {
   const { earliestDate, latestDate } = req.body;
   try {
-    const productsSold = await Transaction.aggregate([
+    const salesReport = await Order.aggregate([
       {
-        // only completed transactions
+        // only completed orders
         $match: {
           status: 1,
           dateTimeOrdered: {
@@ -159,14 +192,28 @@ const getYearlyReport = async (req, res) => {
         },
       },
       {
+        $addFields: {
+          year: { $isoWeekYear: "$dateTimeOrdered" },
+        },
+      },
+      {
         $group: {
-          _id: { $year: "$dateTimeOrdered" },
-          aggregateSales: { $sum: "$totalCost" },
+          _id: { year: "$year" },
+          totalSales: { $sum: "$totalOrderSales" },
+        },
+      },
+      {
+        $sort: { "_id.year": -1 },
+      },
+      {
+        $project: {
+          _id: "$_id",
+          totalSales: "$totalSales",
         },
       },
     ]);
 
-    res.status(200).json(productsSold);
+    res.status(200).json(salesReport);
   } catch (error) {
     res.status(500).json({ error: "Unable to get report." });
   }

@@ -1,16 +1,24 @@
 import Product from "../models/productModel.js";
-import Transaction from "../models/transactionModel.js";
+import Order from "../models/orderModel.js";
 import User from "../models/userModel.js";
 
 const addProduct = async (req, res) => {
   try {
-    const { name, description = null, price, type, quantity } = req.body;
+    const {
+      name,
+      description = null,
+      price,
+      type,
+      quantity,
+      imageUrl = null,
+    } = req.body;
     const newProduct = new Product({
       name,
       description,
       price,
       type,
       quantity,
+      imageUrl,
     });
     await newProduct.save();
     res.status(201).json({ message: "Product created successfully." });
@@ -49,37 +57,54 @@ const getRegisteredUsers = async (req, res) => {
   }
 };
 
-// show all transactions
-const getTransactions = async (req, res) => {
+// show all orders
+const getOrders = async (req, res) => {
+  const { status } = req.body;
   try {
-    const transactions = await Transaction.find();
-    res.status(200).json(transactions);
+    const orders = await Order.find({ status: status }).sort({
+      dateTimeOrdered: -1,
+    });
+    res.status(200).json(orders);
   } catch (error) {
-    res.status(500).json({ error: "Unable to get transactions." });
+    res.status(500).json({ error: "Unable to get orders." });
   }
 };
 
 // fulfill an order
-const confirmTransaction = async (req, res) => {
+const confirmOrder = async (req, res) => {
   try {
-    const { transactionId } = req.body;
-    const transaction = await Transaction.findOneAndUpdate(
-      { _id: transactionId },
-      { status: 1 }
-    );
+    const { orderId } = req.body;
+    const order = await Order.findById(orderId);
+    const productOrders = order.products;
     // check if the inventory suffices
-    const product = await Product.findById(transaction.productId);
-    if (product.quantity < transaction.quantity) {
-      res.status(400).json({ error: "Insufficient product quantity." });
+    let orderSuffices = true;
+    let productError;
+    for (let productOrder of productOrders) {
+      const productStore = await Product.findById(productOrder.productId);
+      if (productStore.quantity < productOrder.count) {
+        orderSuffices = false;
+        productError = productStore.name;
+        break;
+      }
+    }
+
+    if (orderSuffices) {
+      // then subtract for all the products
+      for (let productOrder of productOrders) {
+        await Product.findByIdAndUpdate(productOrder.productId, {
+          $inc: { quantity: -productOrder.count },
+        });
+      }
+      await Order.findOneAndUpdate({ _id: orderId }, { status: 1 });
+      res.status(200).json({ message: "Order confirmed." });
     } else {
-      await Product.findOneAndUpdate(
-        { _id: product._id },
-        { quantity: product.quantity - transaction.quantity }
-      );
-      res.status(200).json({ message: "Transaction confirmed." });
+      res
+        .status(400)
+        .json({ error: `Insufficient inventory for ${productError}.` });
     }
   } catch (error) {
-    res.status(500).json({ error: "Transaction confirmation failed." });
+    console.log(error);
+    res.status(500).json({ error: "Order confirmation failed." });
   }
 };
 
@@ -87,6 +112,6 @@ export {
   addProduct,
   getProductListings,
   getRegisteredUsers,
-  getTransactions,
-  confirmTransaction,
+  getOrders,
+  confirmOrder,
 };
