@@ -43,6 +43,7 @@ export function CartProvider({ children }) {
       );
 
       setCart(response.data.items);
+      setForceUpdate(forceUpdate + 1);
     } catch (error) {
       console.error("Error adding to cart:", error);
     }
@@ -57,6 +58,7 @@ export function CartProvider({ children }) {
       );
 
       setCart(response.data.items);
+      setForceUpdate(forceUpdate + 1);
     } catch (error) {
       console.error("Error removing from cart:", error);
     }

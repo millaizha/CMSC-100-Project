@@ -17,9 +17,7 @@ export default function Cart({ cartList }) {
   useEffect(() => {
     let newTotalPrice = 0;
     for (const item of cart) {
-      if (item.selectedQuantity > 0) {
-        newTotalPrice += item.price * item.selectedQuantity;
-      }
+      newTotalPrice += item.product.price * item.quantity;
     }
     setTotalPrice(newTotalPrice);
   }, [cart]);
