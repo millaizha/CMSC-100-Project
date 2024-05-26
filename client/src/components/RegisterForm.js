@@ -14,7 +14,7 @@ export default function RegisterForm({ toggleFunc }) {
     e.preventDefault();
     const user = {
       firstName: firstNameRef.current.value,
-      middleName: middleNameRef.current.value,
+      middleName: middleNameRef.current.value || "",
       lastName: lastNameRef.current.value,
       userType: "user",
       email: emailRef.current.value,
@@ -49,7 +49,6 @@ export default function RegisterForm({ toggleFunc }) {
         />
         <input
           type="text"
-          required="true"
           id="mname"
           className="input-box"
           placeholder="Middle Name (Optional)"

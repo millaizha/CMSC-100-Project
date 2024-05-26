@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }) => {
         userData
       );
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         alert("Registration successful! Please log in.");
         navigate("/");
       } else {
