@@ -9,6 +9,9 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const navigate = useNavigate();
 
+  const [userEmail, setUserEmail] = useState(null);
+  const [userFirstName, setUserFirstName] = useState(null);
+
   const checkAuth = () => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -38,6 +41,9 @@ export const AuthProvider = ({ children }) => {
         setToken(response.data.token);
         localStorage.setItem("token", response.data.token);
         checkAuth();
+
+        setUserEmail(email);
+        setUserFirstName(response.data.firstName);
         navigate("/");
       } else {
         return response.data.error;
@@ -54,6 +60,8 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     localStorage.removeItem("token");
     checkAuth();
+    setUserEmail(null);
+    setUserFirstName(null);
     navigate("/login");
   };
 
@@ -79,7 +87,16 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ token, checkAuth, isAuthenticated, login, logout, register }}
+      value={{
+        token,
+        checkAuth,
+        isAuthenticated,
+        login,
+        logout,
+        register,
+        userEmail,
+        userFirstName,
+      }}
     >
       {children}
     </AuthContext.Provider>

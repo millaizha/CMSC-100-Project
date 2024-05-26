@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { IoPowerOutline } from "react-icons/io5";
 
 export default function Navbar() {
-  const { logout } = useContext(AuthContext);
+  const { logout, userFirstName } = useContext(AuthContext);
   const navigate = useNavigate();
 
   return (
@@ -20,7 +20,7 @@ export default function Navbar() {
           onClick={() => navigate("/")}
         />
         <h1 className="font-black text-3xl hidden xl:inline ">FARM-TO-TABLE</h1>
-        <h2 className="text-2xl hidden xl:inline">Hello, Genevieve!</h2>
+        <h2 className="text-2xl hidden xl:inline">Hello, {userFirstName}!</h2>
       </div>
       <div className="spacer flex-grow"></div>
       <div className="right flex gap-6 items-center pr-12">

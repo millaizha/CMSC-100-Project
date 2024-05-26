@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Cart({ cartList }) {
   const { cart, createOrder } = useContext(CartContext);
-  const { token } = useContext(AuthContext);
+  const { token, userFirstName, userEmail } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [totalPrice, setTotalPrice] = useState(0);
@@ -24,17 +24,11 @@ export default function Cart({ cartList }) {
     setTotalPrice(newTotalPrice);
   }, [cart]);
 
-
   const shippingFee = totalPrice > 500 ? 0 : 50;
 
   const handleConfirmOrder = () => {
-    const name = "Customer Name";
-    const email = "knpvinuya@up.edu.ph";
-    console.log(token);
-
-    createOrder(name, email, token);
+    createOrder(userFirstName, userEmail, token);
   };
-
 
   return (
     <div className="h-screen w-screen">
@@ -98,7 +92,6 @@ export default function Cart({ cartList }) {
               <span className="text-gray-600">
                 * Orders with a total above 500 PHP will get FREE delivery!
               </span>
-
             </div>
           )}
         </div>
