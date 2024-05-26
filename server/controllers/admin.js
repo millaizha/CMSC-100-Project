@@ -1,5 +1,5 @@
 import Product from "../models/productModel.js";
-import Transaction from "../models/transactionModel.js";
+import Order from "../models/orderModel.js";
 import User from "../models/userModel.js";
 
 const addProduct = async (req, res) => {
@@ -57,37 +57,34 @@ const getRegisteredUsers = async (req, res) => {
   }
 };
 
-// show all transactions
-const getTransactions = async (req, res) => {
+// show all orders
+const getOrders = async (req, res) => {
   try {
-    const transactions = await Transaction.find();
-    res.status(200).json(transactions);
+    const orders = await Order.find();
+    res.status(200).json(orders);
   } catch (error) {
-    res.status(500).json({ error: "Unable to get transactions." });
+    res.status(500).json({ error: "Unable to get orders." });
   }
 };
 
 // fulfill an order
-const confirmTransaction = async (req, res) => {
+const confirmOrder = async (req, res) => {
   try {
-    const { transactionId } = req.body;
-    const transaction = await Transaction.findOneAndUpdate(
-      { _id: transactionId },
-      { status: 1 }
-    );
+    const { orderId } = req.body;
+    const order = await Order.findOneAndUpdate({ _id: orderId }, { status: 1 });
     // check if the inventory suffices
-    const product = await Product.findById(transaction.productId);
-    if (product.quantity < transaction.quantity) {
+    const product = await Product.findById(order.productId);
+    if (product.quantity < order.quantity) {
       res.status(400).json({ error: "Insufficient product quantity." });
     } else {
       await Product.findOneAndUpdate(
         { _id: product._id },
-        { quantity: product.quantity - transaction.quantity }
+        { quantity: product.quantity - order.quantity }
       );
-      res.status(200).json({ message: "Transaction confirmed." });
+      res.status(200).json({ message: "Order confirmed." });
     }
   } catch (error) {
-    res.status(500).json({ error: "Transaction confirmation failed." });
+    res.status(500).json({ error: "Order confirmation failed." });
   }
 };
 
@@ -95,6 +92,6 @@ export {
   addProduct,
   getProductListings,
   getRegisteredUsers,
-  getTransactions,
-  confirmTransaction,
+  getOrders,
+  confirmOrder,
 };

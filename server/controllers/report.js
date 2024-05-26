@@ -1,13 +1,13 @@
 // for analyzing sales reports
-import Transaction from "../models/transactionModel.js";
+import Order from "../models/orderModel.js";
 
-// only includes the transactions that are sold, sorted by recency
+// only includes the orders that are sold, sorted by recency
 // the cutoff would be in a latest provided date, along with the limit
 const getRecentSales = async (req, res) => {
   const { earliestDate, limit } = req.body;
 
   try {
-    const sales = await Transaction.find({
+    const sales = await Order.find({
       status: 1,
       dateTimeOrdered: { $gte: new Date(earliestDate) },
     })
@@ -28,9 +28,9 @@ const getRecentSales = async (req, res) => {
 const getProductsSold = async (req, res) => {
   const { earliestDate, latestDate, limit } = req.body;
   try {
-    const productsSold = await Transaction.aggregate([
+    const productsSold = await Order.aggregate([
       {
-        // only completed transactions
+        // only completed orders
         $match: {
           status: 1,
           dateTimeOrdered: {
@@ -87,9 +87,9 @@ const getProductsSold = async (req, res) => {
 const getWeeklyReport = async (req, res) => {
   const { earliestDate, latestDate } = req.body;
   try {
-    const productsSold = await Transaction.aggregate([
+    const productsSold = await Order.aggregate([
       {
-        // only completed transactions
+        // only completed orders
         $match: {
           status: 1,
           dateTimeOrdered: {
@@ -117,9 +117,9 @@ const getWeeklyReport = async (req, res) => {
 const getMonthlyReport = async (req, res) => {
   const { earliestDate, latestDate } = req.body;
   try {
-    const productsSold = await Transaction.aggregate([
+    const productsSold = await Order.aggregate([
       {
-        // only completed transactions
+        // only completed orders
         $match: {
           status: 1,
           dateTimeOrdered: {
@@ -147,9 +147,9 @@ const getMonthlyReport = async (req, res) => {
 const getYearlyReport = async (req, res) => {
   const { earliestDate, latestDate } = req.body;
   try {
-    const productsSold = await Transaction.aggregate([
+    const productsSold = await Order.aggregate([
       {
-        // only completed transactions
+        // only completed orders
         $match: {
           status: 1,
           dateTimeOrdered: {

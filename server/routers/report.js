@@ -12,7 +12,7 @@ const reportRoutes = express.Router();
 
 /**
  * GET /report/getRecentSales
- * Get recent sales (transactions that are completed with status 1).
+ * Get recent sales (orders that are completed with status 1).
  * Ordered by recency.
  * The cutoff would be in a latest provided date.
  * Ex: 2024-05-25 doesn't include that day in 5 PM, it strictly means at 12 MN.
@@ -34,9 +34,9 @@ reportRoutes.get("/getRecentSales", verifyToken, verifyIfAdmin, getRecentSales);
 /**
  * GET /report/getProductsSold
  * Get overall products that are sold.
- * Only sales are included (transactions that are completed with status 1).
+ * Only sales are included (orders that are completed with status 1).
  * Ordered by aggregate sales per product.
- * Transactions between the earliest and latest dates are included.
+ * Orders between the earliest and latest dates are included.
  * Ex: 2024-05-25 doesn't include that day in 5 PM, it strictly means at 12 MN.
  * Limit indicates the maximum number of collections to be shown.
  *
@@ -74,10 +74,10 @@ reportRoutes.get(
 /**
  * GET /report/getWeeklyReport
  * Get sale reports in the given week intervals
- * Only sales are included (transactions that are completed with status 1).
+ * Only sales are included (orders that are completed with status 1).
  * Grouped by week.
  * Return length depends on the gap between earliest and latest dates.
- * Transactions between the earliest and latest dates are included.
+ * Orders between the earliest and latest dates are included.
  * Ex: 2024-05-25 doesn't include that day in 5 PM, it strictly means at 12 MN.
  *
  * Requires the Authorization header with the value "Bearer <token>".
@@ -108,10 +108,10 @@ reportRoutes.get(
 /**
  * GET /report/getMonthlyReport
  * Get sale reports in the given month intervals
- * Only sales are included (transactions that are completed with status 1).
+ * Only sales are included (orders that are completed with status 1).
  * Grouped by month.
  * Return length depends on the gap between earliest and latest dates.
- * Transactions between the earliest and latest dates are included.
+ * Orders between the earliest and latest dates are included.
  * Ex: 2024-05-25 doesn't include that day in 5 PM, it strictly means at 12 MN.
  *
  * Requires the Authorization header with the value "Bearer <token>".
@@ -142,10 +142,10 @@ reportRoutes.get(
 /**
  * GET /report/getYearlyReport
  * Get sale reports in the given year intervals
- * Only sales are included (transactions that are completed with status 1).
+ * Only sales are included (orders that are completed with status 1).
  * Grouped by year.
  * Return length depends on the gap between earliest and latest dates.
- * Transactions between the earliest and latest dates are included.
+ * Orders between the earliest and latest dates are included.
  * Ex: 2024-05-25 doesn't include that day in 5 PM, it strictly means at 12 MN.
  *
  * Requires the Authorization header with the value "Bearer <token>".

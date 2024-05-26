@@ -1,9 +1,9 @@
 import express from "express";
 import {
-  cancelTransaction,
+  cancelOrder,
   getProductListings,
   orderProduct,
-  getTransactions,
+  getOrders,
 } from "../controllers/customer.js";
 import { verifyIfUser, verifyToken } from "../utils/middleware.js";
 
@@ -58,30 +58,25 @@ customerRoutes.get(
 customerRoutes.post("/orderProduct", verifyToken, verifyIfUser, orderProduct);
 
 /**
- * POST /customer/cancelTransaction
- * Cancels a transaction.
- * This marks the transaction cancelled.
+ * POST /customer/cancelOrder
+ * Cancels a order.
+ * This marks the order cancelled.
  *
  * Requires the Authorization header with the value "Bearer <token>".
  * User accessing it must be a regular user.
  *
  * Inputs for req.body:
- * transactionId - String
+ * orderId - String
  *
  * Response:
  * If successful: Status code 200, "Cancellation confirmed"
  * Else: Status code 500; "Cancellation failed"
  */
-customerRoutes.post(
-  "/cancelTransaction",
-  verifyToken,
-  verifyIfUser,
-  cancelTransaction
-);
+customerRoutes.post("/cancelOrder", verifyToken, verifyIfUser, cancelOrder);
 
 /**
- * GET /customer/getTransactions
- * Get all the user's transactions
+ * GET /customer/getOrders
+ * Get all the user's orders
  *
  * Requires the Authorization header with the value "Bearer <token>".
  * User accessing it must be a regular user.
@@ -90,14 +85,9 @@ customerRoutes.post(
  * None
  *
  * Response:
- * If successful: Status code 200, <list of transactions>
- * Else: Status code 500; "Unable to get transactions"
+ * If successful: Status code 200, <list of orders>
+ * Else: Status code 500; "Unable to get orders"
  */
-customerRoutes.get(
-  "/getTransactions",
-  verifyToken,
-  verifyIfUser,
-  getTransactions
-);
+customerRoutes.get("/getOrders", verifyToken, verifyIfUser, getOrders);
 
 export default customerRoutes;

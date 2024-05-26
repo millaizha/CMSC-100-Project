@@ -1,10 +1,10 @@
 import express from "express";
 import {
   addProduct,
-  confirmTransaction,
+  confirmOrder,
   getProductListings,
   getRegisteredUsers,
-  getTransactions,
+  getOrders,
 } from "../controllers/admin.js";
 import { verifyToken, verifyIfAdmin } from "../utils/middleware.js";
 
@@ -84,8 +84,8 @@ adminRoutes.get(
 );
 
 /**
- * GET /admin/getTransactions
- * Get all transactions in the database.
+ * GET /admin/getOrders
+ * Get all orders in the database.
  *
  * Requires the Authorization header with the value "Bearer <token>".
  * User accessing it must be an admin.
@@ -94,37 +94,27 @@ adminRoutes.get(
  * None
  *
  * Response:
- * If successful: Status code 200, <list of transactions>
- * Else: Status code 500; "Unable to get transactions"
+ * If successful: Status code 200, <list of orders>
+ * Else: Status code 500; "Unable to get orders"
  */
-adminRoutes.get(
-  "/getTransactions",
-  verifyToken,
-  verifyIfAdmin,
-  getTransactions
-);
+adminRoutes.get("/getOrders", verifyToken, verifyIfAdmin, getOrders);
 
 /**
- * POST /admin/confirmTransaction
- * Confirms a transaction.
- * This marks the transaction confirmed and deducts the inventory of a product.
+ * POST /admin/confirmOrder
+ * Confirms a order.
+ * This marks the order confirmed and deducts the inventory of a product.
  *
  * Requires the Authorization header with the value "Bearer <token>".
  * User accessing it must be an admin.
  *
  * Inputs for req.body:
- * transactionId - String
+ * orderId - String
  *
  * Response:
- * If successful: Status code 200, "Transaction confirmed"
+ * If successful: Status code 200, "Order confirmed"
  * If inventory is insufficient: Status code 400: "Insufficient product quantity"
- * Else: Status code 500; "Transaction confirmation failed"
+ * Else: Status code 500; "Order confirmation failed"
  */
-adminRoutes.post(
-  "/confirmTransaction",
-  verifyToken,
-  verifyIfAdmin,
-  confirmTransaction
-);
+adminRoutes.post("/confirmOrder", verifyToken, verifyIfAdmin, confirmOrder);
 
 export default adminRoutes;
