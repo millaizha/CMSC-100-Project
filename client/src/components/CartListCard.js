@@ -35,7 +35,7 @@ export default function CartListCard({ product }) {
           <img
             src={item.imageUrl}
             alt={item.name}
-            className="object-cover h-full"
+            className="object-cover h-full w-full"
           />
         </div>
 
