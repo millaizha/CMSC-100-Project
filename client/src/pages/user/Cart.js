@@ -1,10 +1,12 @@
 import CartListCard from "../../components/CartListCard";
 import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import { FaTrash } from "react-icons/fa";
 import { useContext, useState, useEffect } from "react";
 import { CartContext } from "../../contexts/CartContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import IMAGE from "../../assets/shop/empty.png";
+import BG from "../../assets/shop/cart.png";
 import { useNavigate } from "react-router-dom";
 
 export default function Cart({ cartList }) {
@@ -30,15 +32,15 @@ export default function Cart({ cartList }) {
   };
 
   return (
-    <div className="h-screen w-screen">
+    <div className="h-screen w-screen flex flex-col">
       <Navbar />
 
-      <div className="main-container mt-3 flex">
+      <div className="main-container mt-3 flex flex-grow mb-12">
         <div className="spacer mx-auto"></div>
         <div className="cart-container w-[800px]">
           <h1 className="font-black text-6xl">SHOPPING CART</h1>
           {cart.length === 0 ? (
-            <div className="w-full h-[800px] flex flex-col items-center justify-center">
+            <div className="w-full h-full flex flex-col items-center justify-center">
               <img src={IMAGE} alt="No product" />
               <span className="font-semibold">Your cart is empty!</span>
               <button
@@ -96,6 +98,12 @@ export default function Cart({ cartList }) {
         </div>
         <div className="spacer mx-auto"></div>
       </div>
+      <Footer />
+      <img
+        src={BG}
+        alt=""
+        className="fixed -z-20 w-[500px] bottom-12 right-5 opacity-30"
+      />
     </div>
   );
 }

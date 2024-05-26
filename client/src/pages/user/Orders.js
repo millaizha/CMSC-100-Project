@@ -4,6 +4,7 @@ import Footer from "../../components/Footer";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import IMAGE from "../../assets/shop/empty1.png";
+import BG from "../../assets/shop/orders.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { parseJSON, format } from "date-fns";
@@ -46,13 +47,13 @@ export default function Orders({ }) {
   return (
     <div className="h-screen w-screen flex flex-col">
       <Navbar />
-      <div className="main-container mt-3 flex ">
+      <div className="main-container mt-3 flex flex-grow">
         <div className="spacer mx-auto"></div>
         <div className="cart-container w-[800px]">
           <h1 className="font-black text-6xl">MY ORDERS</h1>
           {orders.length === 0 ? (
-            <div className="w-full h-[800px] flex flex-col items-center justify-center">
-              <img src={IMAGE} alt="No order" />
+            <div className="w-full h-full flex flex-col items-center">
+              <img src={IMAGE} alt="No order" className=""/>
               <span className="font-semibold">
                 You don't have any orders yet!
               </span>
@@ -94,9 +95,7 @@ export default function Orders({ }) {
                     </p>
                     </div>
                     {order.status === 0 ? <button className="form-button mt-4 ">Cancel Order</button> : (<></>)}
-                  </div>
-              
-               
+                  </div> 
                 </div>
               ))}
             </div>
@@ -105,6 +104,11 @@ export default function Orders({ }) {
         <div className="spacer mx-auto"></div>
       </div>
       <Footer />
+      <img
+        src={BG}
+        alt=""
+        className="fixed -z-20 w-[500px] bottom-12 right-5 opacity-30"
+      />
     </div>
   );
 }
