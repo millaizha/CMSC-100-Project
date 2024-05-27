@@ -1,5 +1,25 @@
 import { useState, useEffect } from "react";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 export default function Tab({ items }) {
   const tabsData = [
@@ -16,6 +36,13 @@ export default function Tab({ items }) {
       content: null
     },
   ];
+  
+  const data = {};
+  const options = {
+    layout: {
+      padding: 50
+  }
+  };
 
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [weeklySalesData, setWeeklySalesData] = useState([]);
@@ -145,6 +172,17 @@ export default function Tab({ items }) {
     else if (range == 'Monthly') salesData = monthlySalesData
     else salesData = annualSalesData
 
+    data.labels = salesData.map((timeRange) => timeRange.range);
+    data.datasets = [
+      {
+        label: "Total Sales",
+        data: salesData.map((timeRange) => timeRange.total),
+        fill: false,
+        borderColor: "#EEDBDB",
+        tension: 0.1,
+      },
+    ];
+
     return salesData.map((timeRange) => {
       return (
         <div
@@ -156,6 +194,21 @@ export default function Tab({ items }) {
       );
     });
   }
+
+  function getOverallSales() {
+    let totalSales = 0;
+
+    items.forEach(item => {
+      if (item.status == 'Confirmed')
+        item.products.forEach(product => {
+            totalSales += product.count * product.price;
+        });
+    });
+
+    return totalSales
+  }
+
+
 
   return (
     <div>
@@ -180,8 +233,14 @@ export default function Tab({ items }) {
       {/* Show active tab content. */}
       <div className="py-4">
         <div className="flex flex-col gap-4">
+          <Line options={ options } data={ data }/>
           {showTimeSales(tabsData[activeTabIndex].label)}
+          <div className="flex flex-row justify-center w-full h-16 bg-[#EEDBDB] rounded-xl px-4 py-2 items-center">
+            <div className="flex items-center gap-3">
+                <h1 className="font-black">Total Overall Sales: {getOverallSales()}</h1>
+            </div>
           </div>
+        </div>
       </div>
     </div>
   );
