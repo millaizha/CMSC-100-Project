@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import LOGO from "../assets/logo/100_LOGO.svg";
+import LOGO from "../assets/logo/100_LOGO.png";
 import { HiOutlineReceiptTax } from "react-icons/hi";
 import { MdPeopleOutline, MdOutlineShoppingBag, MdOutlineShoppingCart } from "react-icons/md";
 import { AuthContext } from "../contexts/AuthContext";
