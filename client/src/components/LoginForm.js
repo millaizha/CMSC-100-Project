@@ -4,6 +4,24 @@ import { IoEyeOffSharp, IoEyeSharp } from "react-icons/io5";
 
 import LOGO from "../assets/logo/100_LOGO.png";
 
+/**
+ * COMPONENT: LoginForm
+ * PURPOSE: Provides a form for users to log into the application.
+ *
+ * PROPS:
+ *  - toggleFunc (Function): Function to switch between login and registration forms.
+ *
+ * STATE:
+ *  - showPassword (boolean): Controls the visibility of the password input.
+ *  - loginError (string): Stores error messages during login attempts.
+ *
+ * CONTEXT:
+ *  - AuthContext: Provides the `login` function for authentication.
+ *
+ * USAGE:
+ *  - Used on login section of the login page to enable user authentication.
+ */
+
 export default function LoginForm({ toggleFunc }) {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);

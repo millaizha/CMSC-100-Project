@@ -2,6 +2,22 @@ import { createContext, useState, useContext, useEffect } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import axios from "axios";
 
+/**
+ * CONTEXT: CartProvider
+ * PURPOSE: Provides cart context and functionality (adding, removing, updating items, creating/cancelling orders) for the application.
+ *
+ * FUNCTIONS:
+ *    - cart (array): The current items in the user's cart.
+ *    - addToCart (Function): Function to add a product to the cart.
+ *    - removeFromCart (Function): Function to remove a product from the cart.
+ *    - updateQuantity (Function): Function to update the quantity of a product in the cart.
+ *    - createOrder (Function): Function to create an order from the cart items.
+ *    - cancelOrder (Function): Function to cancel a previously placed order.
+ *
+ * USAGE:
+ *  - Wraps components that need to interact with the shopping cart.
+ */
+
 export const CartContext = createContext();
 
 export function CartProvider({ children }) {
@@ -9,6 +25,12 @@ export function CartProvider({ children }) {
   const [forceUpdate, setForceUpdate] = useState(0);
   const [cart, setCart] = useState([]);
 
+  /**
+   * useEffect (for fetching cart data):
+   * - Fetches the user's cart items from the backend when the component mounts and whenever userEmail or token changes.
+   * - If userEmail is available, it makes an authorized request to get cart data.
+   * - Otherwise, it resets the cart to an empty array.
+   */
   useEffect(() => {
     const fetchCartItems = async () => {
       if (userEmail) {
@@ -29,6 +51,12 @@ export function CartProvider({ children }) {
     fetchCartItems();
   }, [userEmail, token, forceUpdate]);
 
+  /**
+   * addToCart:
+   * - Adds a product to the cart in the backend.
+   * - Updates the local cart state with the new data.
+   * - Triggers a re-render to reflect changes.
+   */
   const addToCart = async (product) => {
     if (!userEmail) {
       console.error("User email is not available");
@@ -48,6 +76,12 @@ export function CartProvider({ children }) {
     }
   };
 
+  /**
+   * removeFromCart:
+   * - Removes a product from the cart in the backend.
+   * - Updates the local cart state with the new data.
+   * - Triggers a re-render to reflect changes.
+   */
   const removeFromCart = async (productId) => {
     try {
       const response = await axios.post(
@@ -63,6 +97,12 @@ export function CartProvider({ children }) {
     }
   };
 
+  /**
+   * updateQuantity:
+   * - Updates the quantity of a product in the cart in the backend.
+   * - Updates the local cart state with the new data.
+   * - Triggers a re-render to reflect changes.
+   */
   const updateQuantity = async (productId, quantity) => {
     if (quantity) {
       try {
@@ -81,6 +121,11 @@ export function CartProvider({ children }) {
     }
   };
 
+  /**
+   * createOrder:
+   * - Creates an order in the backend based on the current items in the cart.
+   * - Clears the cart after the order is successfully created.
+   */
   const createOrder = async (shippingFee, token) => {
     try {
       const orderData = {
@@ -132,6 +177,10 @@ export function CartProvider({ children }) {
     }
   };
 
+  /**
+   * cancelOrder:
+   * - Cancels a previously placed order in the backend.
+   */
   const cancelOrder = async (orderId) => {
     if (!userEmail) {
       console.error("User email is not available");

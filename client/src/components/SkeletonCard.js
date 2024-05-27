@@ -1,6 +1,13 @@
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
+/**
+ * COMPONENT: SkeletonCard
+ * PURPOSE: Displays a skeleton loading state for a product card while data is being fetched.
+ *
+ * USAGE: Used as a placeholder in place of a product card while data is loading.
+ */
+
 export default function SkeletonCard() {
   return (
     <div className="h-[470px] w-[270px] bg-[#F2F2F2] rounded-2xl flex flex-col p-2">

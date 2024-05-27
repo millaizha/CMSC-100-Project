@@ -2,6 +2,23 @@ import { FaTrash } from "react-icons/fa";
 import { useState } from "react";
 import { useCart } from "../contexts/CartContext";
 
+/**
+ * COMPONENT: CartListCard
+ * PURPOSE: Displays a product item within a user's shopping cart, including quantity selection, image, name, type, total price, and a delete option.
+ *
+ * PROPS:
+ *  - product (Object): Object containing product details and quantity in the cart.
+ *
+ * STATE:
+ *  - quantity (number): The quantity of the product currently in the cart.
+ *
+ * CONTEXT:
+ *  - useCart: A React Context hook providing functions for updating quantity and removing items from the cart.
+ *
+ * USAGE:
+ *  - Used within a shopping cart page to display individual items added by the user.
+ */
+
 export default function CartListCard({ product }) {
   let item = product.product;
   const [quantity, setQuantity] = useState(product.quantity);

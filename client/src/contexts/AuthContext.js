@@ -2,6 +2,24 @@ import { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+/**
+ * CONTEXT: AuthProvider
+ * PURPOSE: Provides authentication context and functionality for the application.
+ *
+ * FUNCTIONS:
+ *    - token (string or null): The authentication token for the currently logged-in user.
+ *    - checkAuth (Function): A function to check authentication status and update state.
+ *    - login (Function): A function to handle user login.
+ *    - logout (Function): A function to handle user logout.
+ *    - register (Function): A function to handle user registration.
+ *    - isAuthenticated (boolean): Indicates whether a user is currently authenticated.
+ *    - userEmail (string or null): The email of the currently logged-in user.
+ *    - userFirstName (string or null): The first name of the currently logged-in user.
+ *
+ * USAGE:
+ *  - Wraps the entire application to provide authentication context and functionality.
+ */
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -12,6 +30,12 @@ export const AuthProvider = ({ children }) => {
   const [userEmail, setUserEmail] = useState(null);
   const [userFirstName, setUserFirstName] = useState(null);
 
+  /**
+   * checkAuth:
+   * - Checks if a token is stored in local storage.
+   * - If found, it sets authentication state to 'true', updates user data, and indicates successful login.
+   * - If not found, it sets authentication state to 'false', indicating no active login session.
+   */
   const checkAuth = () => {
     const storedToken = localStorage.getItem("token");
     const storedEmail = localStorage.getItem("email");
@@ -27,11 +51,21 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  /**
+   * useEffect (for initial auth check):
+   * - Triggers the `checkAuth` function when the component mounts.
+   * - This ensures the authentication status is verified on page load.
+   */
   useEffect(() => {
     checkAuth();
   }, []);
 
-  // Login
+  /**
+   * login:
+   * - Sends a login request to the backend.
+   * - If successful, updates authentication state, stores the token, user data, and redirects to the home page.
+   * - If unsuccessful, logs an error and handles the error response appropriately.
+   */
   const login = async (email, password) => {
     try {
       const response = await axios.post("http://localhost:3001/auth/login", {
@@ -62,7 +96,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Logout
+  /**
+   * logout:
+   * - Clears authentication state and token.
+   * - Removes stored data from local storage.
+   * - Redirects the user to the login page.
+   */
   const logout = () => {
     setIsAuthenticated(false);
     setToken(null);
@@ -77,7 +116,12 @@ export const AuthProvider = ({ children }) => {
     navigate("/login");
   };
 
-  // Register
+  /**
+   * register:
+   * - Sends a registration request to the backend with the provided user data.
+   * - If successful, displays a success message and redirects to the login page.
+   * - If unsuccessful, displays an error message.
+   */
   const register = async (userData) => {
     try {
       const response = await axios.post(
@@ -102,10 +146,10 @@ export const AuthProvider = ({ children }) => {
       value={{
         token,
         checkAuth,
-        isAuthenticated,
         login,
         logout,
         register,
+        isAuthenticated,
         userEmail,
         userFirstName,
       }}

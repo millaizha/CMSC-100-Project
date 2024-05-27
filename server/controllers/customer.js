@@ -82,6 +82,7 @@ const getOrders = async (req, res) => {
   }
 };
 
+// get the cart of the user
 const getCart = async (req, res) => {
   try {
     const { email } = req.query;
@@ -96,6 +97,8 @@ const getCart = async (req, res) => {
   }
 };
 
+// add a product and their quantity to the cart of the user
+// if cart is not yet existent, create a new one
 const addToCart = async (req, res) => {
   try {
     const { email, product } = req.body;
@@ -127,6 +130,7 @@ const addToCart = async (req, res) => {
   }
 };
 
+// remove a product from the cart of the user
 const removeFromCart = async (req, res) => {
   try {
     const { email, productId } = req.body;
@@ -147,6 +151,7 @@ const removeFromCart = async (req, res) => {
   }
 };
 
+// update the quantity of a product in the cart of the user
 const updateCartQuantity = async (req, res) => {
   try {
     const { email, productId, quantity } = req.body;
@@ -170,6 +175,7 @@ const updateCartQuantity = async (req, res) => {
   }
 };
 
+// clear the cart of the user
 const clearCart = async (req, res) => {
   try {
     const { email } = req.body;

@@ -1,5 +1,19 @@
-import { useState, useRef, useContext } from "react";
+import { useRef, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+
+/**
+ * COMPONENT: RegisterForm
+ * PURPOSE: Provides a form for users to create a new account.
+ *
+ * PROPS:
+ *  - toggleFunc (Function): Function to switch between login and registration forms.
+ *
+ * CONTEXT:
+ *  - AuthContext: Provides the `register` function for user registration.
+ *
+ * USAGE:
+ *  - Used on registration section of the login page to collect new user information and create accounts.
+ */
 
 export default function RegisterForm({ toggleFunc }) {
   const firstNameRef = useRef(null);

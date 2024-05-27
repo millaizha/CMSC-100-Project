@@ -1,5 +1,21 @@
 import { useEffect } from "react";
 
+/**
+ * COMPONENT: Popup
+ * PURPOSE: Displays a temporary popup notification with an image and title.
+ *
+ * PROPS:
+ *  - show (boolean): Controls the visibility of the popup.
+ *  - onClose (Function): Callback function to close the popup.
+ *  - image (string): URL of the image to be displayed in the popup.
+ *  - title (string): Text to be displayed as the title of the popup.
+ *
+ * STATE: None
+ *
+ * USAGE:
+ *  - Used to provide visual feedback to the user after adding an item to the cart.
+ */
+
 export default function Popup({ show, onClose, image, title }) {
   useEffect(() => {
     if (show) {

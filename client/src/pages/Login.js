@@ -5,15 +5,32 @@ import PICTURE2 from "../assets/login/login2.jpg";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 
+/**
+ * PAGE: Login
+ * PURPOSE: Provides a login/registration page with animated transitions.
+ *
+ * STATE:
+ *  - topImageOpacity (number): Controls the opacity of the top image for the transition effect.
+ *  - toggle (number): Determines which form (login or register) is currently active.
+ *
+ * USAGE:
+ *  - Renders the login page with interactive forms.
+ */
+
 export default function Login() {
   const [topImageOpacity, setTopImageOpacity] = useState(1);
   const [toggle, setToggle] = useState(0);
 
+  /**
+   * toggleImages:
+   * - Toggles the opacity of the top background image between 0 and 1.
+   * - Toggles the active form between login and register.
+   * - This function is passed to the LoginForm and RegisterForm components to handle the image/form switching.
+   */
   function toggleImages() {
     setTopImageOpacity(topImageOpacity === 1 ? 0 : 1);
     setToggle(toggle === 0 ? 1 : 0);
   }
-
 
   return (
     <>

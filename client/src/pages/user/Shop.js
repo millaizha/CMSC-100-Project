@@ -13,6 +13,29 @@ import Lenis from "@studio-freight/lenis";
 import IMAGE from "../../assets/shop/empty.png";
 import BG from "../../assets/shop/bg-wheat.png";
 
+/**
+ * PAGE: Shop
+ * PURPOSE: Displays the product catalog with filtering and sorting options, allows adding products to cart, and shows a popup notification.
+ *
+ * STATE:
+ *  - showPopup (boolean): Controls the visibility of the popup notification.
+ *  - popupImage (string): URL of the image displayed in the popup.
+ *  - popupName (string): Name of the product displayed in the popup.
+ *  - products (array): The full list of product objects fetched from the server.
+ *  - filteredProducts (array): The list of product objects after applying filters and sorting.
+ *  - loading (boolean): Indicates whether products are being loaded.
+ *  - sortOption (object): Stores the current sorting option (e.g., { price: -1 } for descending price).
+ *  - filterOption (object): Stores the current filter values (e.g., { name: 'rice' }).
+ *  - activeSort (object or null): Stores the currently active sorting key and order.
+ *
+ * CONTEXT:
+ *  - CartContext: Used to access the `addToCart` function to add products to the cart.
+ *  - AuthContext: Used to access the user's authentication token.
+ *
+ * USAGE:
+ *  - Renders the main shopping page where users can browse and select products.
+ */
+
 export default function Shop() {
   const [showPopup, setShowPopup] = useState(false);
   const [popupImage, setPopupImage] = useState("");
@@ -28,6 +51,11 @@ export default function Shop() {
   const { addToCart } = useContext(CartContext);
   const { token } = useContext(AuthContext);
 
+  /**
+   * useEffect (for smooth scrolling):
+   * - Initializes and configures the Lenis smooth scrolling library.
+   * - This effect runs only once when the component mounts.
+   */
   useEffect(() => {
     const lenis = new Lenis();
 
@@ -39,6 +67,13 @@ export default function Shop() {
     requestAnimationFrame(raf);
   }, []);
 
+  /**
+   * useEffect (for fetching products):
+   * - Fetches the product data from the backend API when the component mounts.
+   * - Updates the `products` and `filteredProducts` state with the fetched data.
+   * - Sets `loading` to `false` after the data is fetched.
+   * - This effect has a dependency on the `token` to re-fetch data if the user's authentication changes.
+   */
   useEffect(() => {
     const fetchProducts = async () => {
       if (!token) {
@@ -77,6 +112,12 @@ export default function Shop() {
     fetchProducts();
   }, [token]);
 
+  /**
+   * useEffect (for filtering and sorting):
+   * - Filters and sorts the `products` array based on the `filterOption` and `sortOption` states.
+   * - Updates the `filteredProducts` state with the resulting array.
+   * - This effect runs whenever `filterOption`, `sortOption`, or `products` change.
+   */
   useEffect(() => {
     let filtered = [...products];
 
@@ -97,10 +138,13 @@ export default function Shop() {
     setFilteredProducts(filtered);
   }, [filterOption, sortOption, products]);
 
+  // --- Event Handlers ---
+  /** handleClosePopup: Hides the popup notification. */
   const handleClosePopup = () => {
     setShowPopup(false);
   };
 
+  /** handleAddToCart: Adds the selected product to the cart and shows the popup. */
   const handleAddToCart = (product) => {
     addToCart(product);
     setShowPopup(true);
@@ -108,15 +152,18 @@ export default function Shop() {
     setPopupName(product.name);
   };
 
+  /** handleSort: Sets the sorting option based on the clicked button. */
   const handleSort = (key, order) => {
     setActiveSort({ key, order });
     setSortOption({ [key]: order === "Ascending" ? 1 : -1 });
   };
 
+  /** handleFilter: Updates the filter options based on user input. */
   const handleFilter = (key, value) => {
     setFilterOption((prev) => ({ ...prev, [key]: value }));
   };
 
+  /** handleReset: Clears all filter and sorting options. */
   const handleReset = () => {
     setFilterOption({});
     setSortOption(null);

@@ -9,14 +9,35 @@ import IMAGE from "../../assets/shop/empty.png";
 import BG from "../../assets/shop/cart.png";
 import { useNavigate } from "react-router-dom";
 
-export default function Cart({ cartList }) {
+/**
+ * PAGE: Cart
+ * PURPOSE: Displays the user's shopping cart, including a list of items, total price, shipping fee, and option to confirm the order.
+ *
+ * CONTEXT:
+ *  - CartContext: Used to access and manage the cart data, including creating orders.
+ *  - AuthContext: Used to access user authentication details.
+ *
+ * STATE:
+ *  - totalPrice (number): The total price of the items in the cart.
+ *  - shippingFee (number): The shipping fee based on the total price.
+ *
+ * USAGE:
+ *  - Renders the main cart page, allowing users to review and confirm their orders.
+ */
+
+export default function Cart() {
   const { cart, createOrder } = useContext(CartContext);
-  const { token, userFirstName, userEmail } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [totalPrice, setTotalPrice] = useState(0);
   const [shippingFee, setShippingFee] = useState(25);
 
+  /**
+   * useEffect (for updating price and shipping):
+   * - Calculates the total price and shipping fee whenever the cart contents (the 'cart' variable) change.
+   * - If the total price exceeds 500 PHP, shipping is free.
+   */
   useEffect(() => {
     let newTotalPrice = 0;
     for (const item of cart) {
@@ -26,6 +47,11 @@ export default function Cart({ cartList }) {
     setShippingFee(newTotalPrice > 500 ? 0 : 25);
   }, [cart]);
 
+  /**
+   * handleConfirmOrder:
+   * - Creates an order by calling the 'createOrder' function from CartContext.
+   * - Redirects the user to their order history page ("/my-orders") after successful order creation.
+   */
   const handleConfirmOrder = async () => {
     await createOrder(shippingFee, token);
     navigate("/my-orders");
@@ -69,7 +95,9 @@ export default function Cart({ cartList }) {
                   <div className="flex items-end gap-1 text-gray-400">
                     <div className="text-xl font-bold">PHP</div>
 
-                    <div className="text-4xl font-bold">{totalPrice}</div>
+                    <div className="text-4xl font-bold">
+                      {totalPrice.toFixed(2)}
+                    </div>
 
                     <div className="spacer w-[90px]"></div>
                   </div>

@@ -109,10 +109,59 @@ customerRoutes.post("/cancelOrder", verifyToken, verifyIfUser, cancelOrder);
  */
 customerRoutes.get("/getOrders", verifyToken, verifyIfUser, getOrders);
 
+/**
+ * GET /customer/getCart
+ * Get the user's cart.
+ *
+ * Requires the Authorization header with the value "Bearer <token>".
+ * User accessing it must be a regular user.
+ *
+ * Input for req.query:
+ * email - String
+ *
+ * Response:
+ * If successful: Status code 200, <cart>
+ * If cart not found: Status code 404, "Cart not found"
+ * Else: Status code 500; "Error fetching cart items"
+ */
 customerRoutes.get("/getCart", verifyToken, verifyIfUser, getCart);
 
+/**
+ * POST /customer/addToCart
+ * Add a product and its quantity to the user's cart.
+ * Creates a new cart if one doesn't exist.
+ *
+ * Requires the Authorization header with the value "Bearer <token>".
+ * User accessing it must be a regular user.
+ *
+ * Inputs for req.body:
+ * email - String
+ * product - Object
+ *  _id - String (product ID)
+ *  selectedQuantity - Number
+ *
+ * Response:
+ * If successful: Status code 200, <updated cart>
+ * Else: Status code 500; "Error adding to cart"
+ */
 customerRoutes.post("/addToCart", verifyToken, verifyIfUser, addToCart);
 
+/**
+ * POST /customer/removeFromCart
+ * Remove a product from the user's cart.
+ *
+ * Requires the Authorization header with the value "Bearer <token>".
+ * User accessing it must be a regular user.
+ *
+ * Inputs for req.body:
+ * email - String
+ * productId - String
+ *
+ * Response:
+ * If successful: Status code 200, <updated cart>
+ * If cart not found: Status code 404, "Cart not found"
+ * Else: Status code 500; "Error removing from cart"
+ */
 customerRoutes.post(
   "/removeFromCart",
   verifyToken,
@@ -120,6 +169,24 @@ customerRoutes.post(
   removeFromCart
 );
 
+/**
+ * POST /customer/updateCartQuantity
+ * Update the quantity of a product in the user's cart.
+ *
+ * Requires the Authorization header with the value "Bearer <token>".
+ * User accessing it must be a regular user.
+ *
+ * Inputs for req.body:
+ * email - String
+ * productId - String
+ * quantity - Number (new quantity)
+ *
+ * Response:
+ * If successful: Status code 200, <updated cart>
+ * If cart not found: Status code 404, "Cart not found"
+ * If product not found in cart: Status code 404, "Product not found in cart"
+ * Else: Status code 500; "Error updating cart quantity"
+ */
 customerRoutes.post(
   "/updateCartQuantity",
   verifyToken,
@@ -127,6 +194,21 @@ customerRoutes.post(
   updateCartQuantity
 );
 
+/**
+ * POST /customer/clearCart
+ * Clears the user's cart.
+ *
+ * Requires the Authorization header with the value "Bearer <token>".
+ * User accessing it must be a regular user.
+ *
+ * Inputs for req.body:
+ * email - String
+ *
+ * Response:
+ * If successful: Status code 200, "Cart cleared successfully"
+ * If cart not found: Status code 404, "Cart not found"
+ * Else: Status code 500; "Error clearing cart"
+ */
 customerRoutes.post("/clearCart", verifyToken, verifyIfUser, clearCart);
 
 export default customerRoutes;

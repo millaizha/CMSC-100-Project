@@ -6,6 +6,17 @@ import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { IoPowerOutline } from "react-icons/io5";
 
+/**
+ * COMPONENT: Navbar
+ * PURPOSE: Displays the website's navigation bar, including the logo, user greeting, and links to orders, cart, and logout.
+ *
+ * CONTEXT:
+ *  - AuthContext: Provides user authentication information (e.g., userFirstName, logout function).
+ *
+ * USAGE:
+ *  - Place on the top of the page layout.
+ */
+
 export default function Navbar() {
   const { logout, userFirstName } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -24,7 +35,6 @@ export default function Navbar() {
       </div>
       <div className="spacer flex-grow"></div>
       <div className="right flex gap-6 items-center pr-12">
-        {/* Responsive Order Button */}
         <button
           className="flex items-center gap-2 xl:gap-2 xl:px-4"
           onClick={() => navigate("/my-orders")}

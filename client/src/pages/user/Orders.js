@@ -1,26 +1,46 @@
-import OrderListCard from "../../components/OrderListCard";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { CartContext } from "../../contexts/CartContext";
+import OrderListCard from "../../components/OrderListCard";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import IMAGE from "../../assets/shop/empty1.png";
 import BG from "../../assets/shop/orders.png";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { parseJSON, format } from "date-fns";
 import Lenis from "@studio-freight/lenis";
-import { MdPendingActions } from "react-icons/md";
 import { FaCircleMinus, FaCircleCheck, FaCircleXmark } from "react-icons/fa6";
 
+/**
+ * PAGE: Orders
+ * PURPOSE: Displays a user's order history, allowing filtering by status (Pending, Completed, Cancelled) and showing order details.
+ *
+ * CONTEXT:
+ *  - AuthContext: Used to access the user's authentication token and email.
+ *  - CartContext: Used to cancel orders.
+ *
+ * STATE:
+ *  - orders (array): Stores the user's orders fetched from the backend.
+ *  - activeStatus (number): Represents the currently selected order status filter.
+ *  - forceUpdate (number): Used to trigger re-rendering of the component when an order is cancelled.
+ *
+ * USAGE:
+ *  - Renders the "My Orders" page, providing users with an overview of their past and current orders.
+ */
+
 export default function Orders({}) {
-  const navigate = useNavigate();
   const { token, userEmail } = useContext(AuthContext);
   const { cancelOrder } = useContext(CartContext);
   const [orders, setOrders] = useState([]);
   const [activeStatus, setActiveStatus] = useState(0);
   const [forceUpdate, setForceUpdate] = useState(0);
 
+  /**
+   * useEffect (for fetching and updating orders):
+   * - Fetches the user's orders when the component mounts or when dependencies change (token, userEmail, activeStatus, forceUpdate).
+   * - Makes an API request to get orders based on the selected status filter.
+   * - Updates the 'orders' state with the fetched data.
+   */
   useEffect(() => {
     const fetchOrders = async () => {
       if (!token) {
@@ -61,6 +81,11 @@ export default function Orders({}) {
     requestAnimationFrame(raf);
   }, [token, userEmail, activeStatus, forceUpdate]);
 
+  /**
+   * handleCancelOrder:
+   * - Calls the 'cancelOrder' function from CartContext to cancel the specified order.
+   * - Triggers a re-render to update the order list by incrementing 'forceUpdate'.
+   */
   async function handleCancelOrder(orderId) {
     await cancelOrder(orderId);
     setForceUpdate(forceUpdate + 1);
