@@ -873,6 +873,10 @@ video {
   cursor: pointer;
 }
 
+.flex-row{
+  flex-direction: row;
+}
+
 .flex-col{
   flex-direction: column;
 }
@@ -1037,6 +1041,11 @@ video {
 .bg-\[\#F2F2F2\]{
   --tw-bg-opacity: 1;
   background-color: rgb(242 242 242 / var(--tw-bg-opacity));
+}
+
+.bg-\[\#FF6961\]{
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 105 97 / var(--tw-bg-opacity));
 }
 
 .bg-\[\#ffc64d\]{

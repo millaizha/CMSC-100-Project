@@ -1,5 +1,25 @@
 import { useState, useEffect } from "react";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 export default function Tab({ items }) {
   const tabsData = [
@@ -16,33 +36,43 @@ export default function Tab({ items }) {
       content: null
     },
   ];
+  
+  const data = {};
+  const options = {
+    layout: {
+      padding: 50
+  }
+  };
 
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [weeklySalesData, setWeeklySalesData] = useState([]);
+  const [monthlySalesData, setMonthlySalesData] = useState([]);
+  const [annualSalesData, setAnnualSalesData] = useState([]);
 
   useEffect(() => {
-    // TODO: add monthly and annual sales
+    // TODO: efficient change data based on selection
     const calculateWeeklySales = () => {
       const weeklySales = {};
   
       items.forEach((item) => {
-        const itemDate = new Date(item.date);
-        const weekNumber = getWeekNumber(itemDate);
-  
-        // Calculate first and last day of the week
-        const firstDayOfWeek = getFirstDayOfWeek(itemDate);
-        const lastDayOfWeek = getLastDayOfWeek(firstDayOfWeek);
-  
-        const weekString = `${firstDayOfWeek.toLocaleDateString('default', { month: 'long', day: 'numeric', year: 'numeric' })} - ${lastDayOfWeek.toLocaleDateString('default', { month: 'long', day: 'numeric', year: 'numeric' })}`;
-  
-        if (!weeklySales[weekNumber]) {
-          weeklySales[weekNumber] = { week: weekString, total: 0 };
-        }
-  
-        weeklySales[weekNumber].total += item.products.reduce(
-          (acc, product) => acc + product.count * product.price,
-          0
-        );
+        if (item.status == 'Confirmed'){ 
+          const itemDate = new Date(item.date);
+          const weekNumber = getWeekNumber(itemDate);
+    
+          // Calculate first and last day of the week
+          const firstDayOfWeek = getFirstDayOfWeek(itemDate);
+          const lastDayOfWeek = getLastDayOfWeek(firstDayOfWeek);
+    
+          const weekString = `${firstDayOfWeek.toLocaleDateString('default', { month: 'long', day: 'numeric', year: 'numeric' })} - ${lastDayOfWeek.toLocaleDateString('default', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+    
+          if (!weeklySales[weekNumber]) {
+            weeklySales[weekNumber] = { range: weekString, total: 0 };
+          }
+    
+          weeklySales[weekNumber].total += item.products.reduce(
+            (acc, product) => acc + product.count * product.price,
+            0
+          );}
       });
   
       setWeeklySalesData(Object.values(weeklySales)); // Convert to array
@@ -52,12 +82,65 @@ export default function Tab({ items }) {
   }, []);
 
   useEffect(() => {
+    const calculateMonthlySales = () => {
+      const monthlySales = {};
+
+      items.forEach((item) => {
+        if (item.status == 'Confirmed'){ 
+          const itemDate = new Date(item.date);
+          const month = itemDate.toLocaleDateString('default', { month: 'long', year: 'numeric' });
+
+          if (!monthlySales[month]) {
+            monthlySales[month] = { range: month, total: 0 };
+          }
+
+          monthlySales[month].total += item.products.reduce(
+            (acc, product) => acc + product.count * product.price,
+            0
+          );}
+      });
+
+      setMonthlySalesData(Object.values(monthlySales)); // Convert to array
+    };
+
+    calculateMonthlySales();
+  }, []);
+
+  useEffect(() => {
+    const calculateAnnualSales = () => {
+      const annualSales = {};
+
+      items.forEach((item) => {
+        if (item.status == 'Confirmed'){ 
+          const itemDate = new Date(item.date);
+          const year = itemDate.getFullYear();
+
+          if (!annualSales[year]) {
+            annualSales[year] = { range: year, total: 0 };
+          }
+
+          annualSales[year].total += item.products.reduce(
+            (acc, product) => acc + product.count * product.price,
+            0
+          );}
+      });
+
+      setAnnualSalesData(Object.values(annualSales));
+    };
+
+    calculateAnnualSales();
+  }, []);
+
+
+  useEffect(() => {
     const updateTabsData = () => {
       tabsData[0].content = weeklySalesData; // Assign weeklySalesData to "Weekly" tab content
+      tabsData[1].content = monthlySalesData;
+      tabsData[2].content = annualSalesData;
     };
 
     updateTabsData();
-  }, [weeklySalesData]);
+  }, [weeklySalesData, monthlySalesData, annualSalesData]);
 
   const getFirstDayOfWeek = (date) => {
     date.setHours(0, 0, 0, 0); // Set time to midnight
@@ -83,18 +166,49 @@ export default function Tab({ items }) {
     return Math.floor((dif + (startDay * oneDay) - ((startDay === 0) ? oneDay : 0)) / (oneDay * 7));
   };
 
-  function showWeeklySales() {
-    return weeklySalesData.map((week) => {
+  function showTimeSales(range) {
+    var salesData
+    if (range == 'Weekly') salesData = weeklySalesData
+    else if (range == 'Monthly') salesData = monthlySalesData
+    else salesData = annualSalesData
+
+    data.labels = salesData.map((timeRange) => timeRange.range);
+    data.datasets = [
+      {
+        label: "Total Sales",
+        data: salesData.map((timeRange) => timeRange.total),
+        fill: false,
+        borderColor: "#EEDBDB",
+        tension: 0.1,
+      },
+    ];
+
+    return salesData.map((timeRange) => {
       return (
         <div
-          key={week.week}
+          key={timeRange.range}
           className="flex items-center justify-between border-b py-2">
-          <p>{week.week}</p>
-          <p>Total: {week.total}</p>
+          <p>{timeRange.range}</p>
+          <p>Total: {timeRange.total}</p>
         </div>
       );
     });
   }
+
+  function getOverallSales() {
+    let totalSales = 0;
+
+    items.forEach(item => {
+      if (item.status == 'Confirmed')
+        item.products.forEach(product => {
+            totalSales += product.count * product.price;
+        });
+    });
+
+    return totalSales
+  }
+
+
 
   return (
     <div>
@@ -118,10 +232,15 @@ export default function Tab({ items }) {
       </div>
       {/* Show active tab content. */}
       <div className="py-4">
-        {/* <p>{tabsData[activeTabIndex].content}</p> */}
         <div className="flex flex-col gap-4">
-          {showWeeklySales()}
+          <Line options={ options } data={ data }/>
+          {showTimeSales(tabsData[activeTabIndex].label)}
+          <div className="flex flex-row justify-center w-full h-16 bg-[#EEDBDB] rounded-xl px-4 py-2 items-center">
+            <div className="flex items-center gap-3">
+                <h1 className="font-black">Total Overall Sales: {getOverallSales()}</h1>
+            </div>
           </div>
+        </div>
       </div>
     </div>
   );

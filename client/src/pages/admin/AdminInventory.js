@@ -1,5 +1,5 @@
 import InventoryCard from "../../components/InventoryCard";
-// import Navbar from "../components/Navbar";
+import AdminNavbar from "../../components/AdminNavbar";
 import Popup from "../../components/Popup";
 import { useState } from "react";
 
@@ -39,7 +39,7 @@ export default function Shop() {
 
   return (
     <div className="h-screen w-screen">
-      {/* <Navbar /> */}
+      <AdminNavbar />
 
       <div className="main-container flex flex-grow mt-3">
         <div className="filter-container w-[275px] h-[600px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0">

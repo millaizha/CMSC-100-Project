@@ -1,5 +1,6 @@
 import SaleReportCard from "../../components/SaleReportCard";
 import TimeReportCard from "../../components/TimeReportCard";
+import AdminNavbar from "../../components/AdminNavbar";
 
 export default function AdminReport() {
     const items = [
@@ -73,7 +74,7 @@ export default function AdminReport() {
       ];
     return (
         <div className="h-screen w-screen">
-          {/* <Navbar /> */}
+          <AdminNavbar />
     
           <div className="main-container flex flex-grow mt-3">
             

@@ -1,5 +1,5 @@
 import UserCard from "../../components/UserCard";
-// import Navbar from "../components/Navbar";
+import AdminNavbar from "../../components/AdminNavbar";
 
 export default function AdminUsers({ userList }) {
   const users = [
@@ -18,7 +18,7 @@ export default function AdminUsers({ userList }) {
   ];
   return (
     <div className="h-screen w-screen">
-      {/* <Navbar /> */}
+      <AdminNavbar />
 
       <div className="main-container mt-3 flex">
         <div className="spacer mx-auto"></div>
