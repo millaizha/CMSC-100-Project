@@ -7,29 +7,43 @@ import Cart from "./pages/user/Cart";
 import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./contexts/ProtectedRoute";
-import AdminSales from "./pages/admin/AdminSales";
+import Orders from "./pages/user/Orders";
 
 function App() {
   return (
-    // <Router>
-    //   <AuthProvider>
-    //     <CartProvider>
-    //       <Routes>
-    //         <Route path="/" element={
-    //           <ProtectedRoute>
-    //               <Shop />
-    //           </ProtectedRoute>
-      
-    //         } />
-    //         <Route path="/login" element={<Login />} />
-    //         <Route path="/cart" element={<ProtectedRoute>
-    //             <Cart />
-    //           </ProtectedRoute>} />
-    //       </Routes>
-    //     </CartProvider>
-    //   </AuthProvider>
-    // </Router>
-    <AdminSales />
+    <Router>
+      <AuthProvider>
+        <CartProvider>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Shop />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/cart"
+              element={
+                <ProtectedRoute>
+                  <Cart />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/my-orders"
+              element={
+                <ProtectedRoute>
+                  <Orders />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </CartProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 
