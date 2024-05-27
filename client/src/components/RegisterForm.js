@@ -1,5 +1,19 @@
-import { useState, useRef, useContext } from "react";
+import { useRef, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+
+/**
+ * COMPONENT: RegisterForm
+ * PURPOSE: Provides a form for users to create a new account.
+ *
+ * PROPS:
+ *  - toggleFunc (Function): Function to switch between login and registration forms.
+ *
+ * CONTEXT:
+ *  - AuthContext: Provides the `register` function for user registration.
+ *
+ * USAGE:
+ *  - Used on registration section of the login page to collect new user information and create accounts.
+ */
 
 export default function RegisterForm({ toggleFunc }) {
   const firstNameRef = useRef(null);
@@ -14,8 +28,9 @@ export default function RegisterForm({ toggleFunc }) {
     e.preventDefault();
     const user = {
       firstName: firstNameRef.current.value,
-      middleName: middleNameRef.current.value,
+      middleName: middleNameRef.current.value || "",
       lastName: lastNameRef.current.value,
+      userType: "user",
       email: emailRef.current.value,
       password: passwordRef.current.value,
     };
@@ -48,7 +63,6 @@ export default function RegisterForm({ toggleFunc }) {
         />
         <input
           type="text"
-          required="true"
           id="mname"
           className="input-box"
           placeholder="Middle Name (Optional)"
@@ -74,16 +88,16 @@ export default function RegisterForm({ toggleFunc }) {
         />
 
         <input
-          type="text"
+          type="password"
           required="true"
-          id="password"
+          id="password1"
           className="input-box"
           placeholder="Password"
           ref={passwordRef}
         />
 
         <input
-          type="text"
+          type="password"
           required="true"
           id="password_dup"
           className="input-box"
