@@ -1,12 +1,17 @@
 import InventoryCard from "../../components/InventoryCard";
 import AdminNavbar from "../../components/AdminNavbar";
 import Popup from "../../components/Popup";
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
+import Lenis from "@studio-freight/lenis";
 
 export default function Shop() {
   const [showPopup, setShowPopup] = useState(false);
   const [popupImage, setPopupImage] = useState("");
   const [popupName, setPopupName] = useState("");
+  const [products, setProducts] = useState([]);
+
+  const { token } = useContext(AuthContext);
 
   const handleButtonClick = (image, name) => {
     setShowPopup(true);
@@ -18,24 +23,66 @@ export default function Shop() {
     setShowPopup(false);
   };
 
-  const products = [
-    {
-        name: "Orange",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Orange-Fruit-Pieces.jpg/2560px-Orange-Fruit-Pieces.jpg",
-        description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Asperiores cupiditate quam veniam vel fugit error explicabo quaerat ducimus doloremque nesciunt mollitia laborum eius ullam quod velit, nostrum consequuntur delectus illo.",
-        type: "Fruit",
-        price: 99,
-        item: "piece"
-    },
-    {
-        name: "Orange orange",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Orange-Fruit-Pieces.jpg/2560px-Orange-Fruit-Pieces.jpg",
-        description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Asperiores cupiditate quam veniam vel fugit error explicabo quaerat ducimus doloremque nesciunt mollitia laborum eius ullam quod velit, nostrum consequuntur delectus illo.",
-        type: "Fruit",
-        price: 299,
-        item: "piece"
-    },
-  ]
+  /**
+   * useEffect (for smooth scrolling):
+   * - Initializes and configures the Lenis smooth scrolling library.
+   * - This effect runs only once when the component mounts.
+   */
+  useEffect(() => {
+    const lenis = new Lenis();
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+  }, []);
+
+  /**
+   * useEffect (for fetching products):
+   * - Fetches the product data from the backend API when the component mounts.
+   * - Updates the `products` and `filteredProducts` state with the fetched data.
+   * - Sets `loading` to `false` after the data is fetched.
+   * - This effect has a dependency on the `token` to re-fetch data if the user's authentication changes.
+   */
+  useEffect(() => {
+    const fetchProducts = async () => {
+      if (!token) {
+        console.error("No token found");
+        // setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          "http://localhost:3001/admin/getProductListings",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Fetched products:", data);
+          setProducts(data);
+          // setFilteredProducts(data);
+        } else {
+          console.error("Error fetching products:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [token]);
 
   return (
     <div className="h-screen w-screen">
@@ -82,7 +129,7 @@ export default function Shop() {
             <Card show={handleButtonClick} />
             <Card show={handleButtonClick} />
             <Card show={handleButtonClick} /> */}
-            <InventoryCard show={handleButtonClick} products={products}/>
+            <InventoryCard show={handleButtonClick} products={products} />
           </div>
         </div>
       </div>

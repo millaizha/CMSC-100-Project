@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }) => {
 
   const [userEmail, setUserEmail] = useState(null);
   const [userFirstName, setUserFirstName] = useState(null);
+  const [userType, setUserType] = useState(null);
 
   /**
    * checkAuth:
@@ -40,11 +41,13 @@ export const AuthProvider = ({ children }) => {
     const storedToken = localStorage.getItem("token");
     const storedEmail = localStorage.getItem("email");
     const storedFirstName = localStorage.getItem("firstName");
+    const storedUserType = localStorage.getItem("userType");
 
     if (storedToken) {
       setToken(storedToken);
       setUserEmail(storedEmail);
       setUserFirstName(storedFirstName);
+      setUserType(storedUserType);
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);
@@ -78,11 +81,17 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("email", email);
         localStorage.setItem("firstName", response.data.firstName);
+        localStorage.setItem("userType", response.data.userType);
         checkAuth();
 
         setUserEmail(email);
         setUserFirstName(response.data.firstName);
-        navigate("/");
+
+        if (response.data.userType === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
       } else {
         return response.data.error;
       }

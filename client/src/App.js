@@ -8,6 +8,8 @@ import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./contexts/ProtectedRoute";
 import Orders from "./pages/user/Orders";
+import AdminReport from "./pages/admin/AdminReport";
+import AdminInventory from "./pages/admin/AdminInventory";
 
 function App() {
   return (
@@ -37,6 +39,15 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Orders />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  {/* <AdminReport /> */}
+                  <AdminInventory />
                 </ProtectedRoute>
               }
             />
