@@ -1,3 +1,5 @@
+import SkeletonCard from "../../components/SkeletonCard";
+import IMAGE from "../../assets/shop/empty.png";
 import InventoryCard from "../../components/InventoryCard";
 import AdminNavbar from "../../components/AdminNavbar";
 import { FaRegCircleXmark  } from 'react-icons/fa6'
@@ -22,6 +24,8 @@ export default function Shop() {
   const [showModal, setShowModal] = useState(false);
   const [products, setProducts] = useState([]);
 
+  const [loading, setLoading] = useState(true);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [filterOption, setFilterOption] = useState({});
   const [sortOption, setSortOption] = useState();
   const [activeSort, setActiveSort] = useState(null);
@@ -29,145 +33,174 @@ export default function Shop() {
 
   const { token } = useContext(AuthContext);
 
-  const handleButtonClick = (image, name) => {
-    setShowPopup(true);
-    setPopupImage(image);
-    setPopupName(name);
-  };
+  useEffect(() => {
+    let filtered = [...products];
 
-  const handleClosePopup = () => {
-    setShowPopup(false);
-  };
-
-  const openModal = () => {
-    setShowModal(true);
-  };
-
-  const handleProductImageChange = (event) => {
-    const newImageURL = event.target.value;
-    setImageURL(newImageURL);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setShowModal(false);
-    try{
-      await axios.post(
-        "http://localhost:3001/admin/addProduct",
-        { name: productName, 
-          type: productType, 
-          description: productDescription, 
-          price: productPrice, 
-          quantity: productStock, 
-          imageUrl: imageURL},
-        { headers: { Authorization: `Bearer ${token}` } }
+    if (filterOption.name) {
+      filtered = filtered.filter((product) =>
+        product.name.toLowerCase().includes(filterOption.name.toLowerCase())
       );
-    } catch (error) {
-      console.error("Error adding order:", error);
     }
-    window.location.reload(); // refresh page to get current data
-    // console.log({
-    //   imageURL,
-    //   productName,
-    //   productType,
-    //   productDescription,
-    //   productPrice,
-    //   productStock
-    // });
 
-    setImageURL('');
-    setProductName('');
-    setProductType('');
-    setProductDescription('');
-    setProductPrice('');
-    setProductStock('');
+    if (sortOption) {
+      const [key, order] = Object.entries(sortOption)[0];
+      filtered.sort((a, b) => {
+        if (order === 1) return a[key] > b[key] ? 1 : -1;
+        else return a[key] < b[key] ? 1 : -1;
+      });
+    }
+
+    setFilteredProducts(filtered);
+  }, [filterOption, sortOption, products]);
+
+  // /** handleFilter: Updates the filter options based on user input. */
+  const handleFilter = (key, value) => {
+    setFilterOption((prev) => ({ ...prev, [key]: value }));
   };
 
-  /**
-   * useEffect (for smooth scrolling):
-   * - Initializes and configures the Lenis smooth scrolling library.
-   * - This effect runs only once when the component mounts.
-   */
-  useEffect(() => {
-    const lenis = new Lenis();
-
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-  }, []);
-
-  /**
-   * useEffect (for fetching products):
-   * - Fetches the product data from the backend API when the component mounts.
-   * - Updates the `products` and `filteredProducts` state with the fetched data.
-   * - Sets `loading` to `false` after the data is fetched.
-   * - This effect has a dependency on the `token` to re-fetch data if the user's authentication changes.
-   */
-  useEffect(() => {
-    const fetchProducts = async () => {
-      if (!token) {
-        console.error("No token found");
-        return;
-      }
-
-      try {
-        const response = await fetch(
-          "http://localhost:3001/admin/getProductListings",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          console.log("Fetched products:", data);
-          setProducts(data);
-        } else {
-          console.error("Error fetching products:", response.statusText);
+  const handleButtonClick = (image, name) => {
+        setShowPopup(true);
+        setPopupImage(image);
+        setPopupName(name);
+      };
+    
+      const handleClosePopup = () => {
+        setShowPopup(false);
+      };
+    
+      const openModal = () => {
+        setShowModal(true);
+      };
+    
+      const handleProductImageChange = (event) => {
+        const newImageURL = event.target.value;
+        setImageURL(newImageURL);
+      };
+    
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        setShowModal(false);
+        try{
+          await axios.post(
+            "http://localhost:3001/admin/addProduct",
+            { name: productName, 
+              type: productType, 
+              description: productDescription, 
+              price: productPrice, 
+              quantity: productStock, 
+              imageUrl: imageURL},
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+        } catch (error) {
+          console.error("Error adding order:", error);
         }
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchProducts();
-  }, [token]);
-
-  /** handleSort: Sets the sorting option based on the clicked button. */
-  const handleSort = (key, order) => {
-    setActiveSort({ key, order });
-    setSortOption({ [key]: order === "Ascending" ? 1 : -1 });
-  };
-
-  /** handleReset: Clears all filter and sorting options. */
-  const handleReset = () => {
-    setFilterOption({});
-    setSortOption(null);
-    setActiveSort(null);
-    filterRef.current.value = "";
-  };
+        window.location.reload(); // refresh page to get current data
+    
+        setImageURL('');
+        setProductName('');
+        setProductType('');
+        setProductDescription('');
+        setProductPrice('');
+        setProductStock('');
+      };
+    
+      /**
+       * useEffect (for smooth scrolling):
+       * - Initializes and configures the Lenis smooth scrolling library.
+       * - This effect runs only once when the component mounts.
+       */
+      useEffect(() => {
+        const lenis = new Lenis();
+    
+        function raf(time) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+    
+        requestAnimationFrame(raf);
+      }, []);
+    
+      /**
+       * useEffect (for fetching products):
+       * - Fetches the product data from the backend API when the component mounts.
+       * - Updates the `products` and `filteredProducts` state with the fetched data.
+       * - Sets `loading` to `false` after the data is fetched.
+       * - This effect has a dependency on the `token` to re-fetch data if the user's authentication changes.
+       */
+      useEffect(() => {
+        const fetchProducts = async () => {
+          if (!token) {
+            console.error("No token found");
+            setLoading(false)
+            return;
+          }
+    
+          try {
+            const response = await fetch(
+              "http://localhost:3001/admin/getProductListings",
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+    
+            if (response.ok) {
+              const data = await response.json();
+              console.log("Fetched products:", data);
+              setProducts(data);
+            } else {
+              console.error("Error fetching products:", response.statusText);
+            }
+          } catch (error) {
+            console.error("Error fetching products:", error);
+          } finally {
+            setLoading(false)
+          }
+        };
+    
+        fetchProducts();
+      }, [token]);
+    
+      /** handleSort: Sets the sorting option based on the clicked button. */
+      const handleSort = (key, order) => {
+        setActiveSort({ key, order });
+        setSortOption({ [key]: order === "Ascending" ? 1 : -1 });
+      };
+    
+      /** handleReset: Clears all filter and sorting options. */
+      const handleReset = () => {
+        setFilterOption({});
+        setSortOption(null);
+        setActiveSort(null);
+        filterRef.current.value = "";
+      };
 
   return (
-    <div className="h-screen w-screen">
+    <div className="min-h-screen w-screen flex flex-col">
       <AdminNavbar />
-
-      <div className="main-container flex flex-grow mt-3">
-        <div className="filter-container w-5/6 sm:w-[275px] h-[780px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0 sm:sticky sm:top-36">
-          <div className="flex flex-row justify-center items-center gap-2">
-            <button
+      <div className="main-container flex flex-col sm:flex-row flex-grow pt-3">
+        <div className="filter-container w-5/6 sm:w-[275px] h-[870px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0 sm:sticky sm:top-36">
+        <div className="flex flex-row justify-center items-center gap-2">
+             <button
               className="form-button mb-6"
               // onClick={addProduct}
               onClick={() => openModal()}
             >
               + Add Product
             </button>
+          </div>
+        <div className="flex flex-col gap-2">
+            <h1 className="text-2xl font-black mb-2">SEARCH</h1>
+            <input
+              type="text"
+              placeholder="Name"
+              className="bg-white text-xl rounded-lg w-full p-4"
+              onChange={(e) => handleFilter("name", e.target.value)}
+              ref={filterRef}
+            />
           </div>
           <div className="flex flex-col gap-2 mt-6">
             <h1 className="text-2xl font-black mb-2">SORT BY</h1>
@@ -266,11 +299,30 @@ export default function Shop() {
             </button>
           </div>
         </div>
-        <div className="content-container p-6 pt-0 h-screen overflow-y-auto">
-          <h1 className="font-black text-6xl mb-6">PRODUCT INVENTORY</h1>
-          <div className="flex flex-wrap gap-2">
-            <InventoryCard show={handleButtonClick} products={products} />
-          </div>
+        <div className="content-container p-6 pt-0 h-full w-full overflow-y-auto flex flex-col items-center sm:items-start">
+          <h1 className="font-black text-6xl mb-6">OUR PRODUCTS</h1>
+
+          {loading ? (
+            <div className="flex flex-wrap gap-2">
+              {Array.from({ length: 12 }).map((_, index) => (
+                <SkeletonCard key={index} />
+              ))}
+            </div>
+          ) : filteredProducts.length == 0 ? (
+            <div className="w-full flex flex-col items-center justify-center mt-20 lg:pr-48">
+              <img src={IMAGE} alt="No product" />
+              <span className="font-semibold">Oops! No products found.</span>
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+              {filteredProducts.map((product) => (
+                <InventoryCard
+                  key={product._id}
+                  product={product}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
       {showModal && (
@@ -446,12 +498,12 @@ export default function Shop() {
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       )}
-      {/* <Popup
+      <Popup
         show={showPopup}
         onClose={handleClosePopup}
         image={popupImage}
         title={popupName}
-      /> */}
+      />
     </div>
   );
 }
