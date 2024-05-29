@@ -1,3 +1,5 @@
+import SkeletonCard from "../../components/SkeletonCard";
+import IMAGE from "../../assets/shop/empty.png";
 import InventoryCard from "../../components/InventoryCard";
 import AdminNavbar from "../../components/AdminNavbar";
 import { FaRegCircleXmark  } from 'react-icons/fa6'
@@ -6,15 +8,23 @@ import Popup from "../../components/AdminUpdatePopup";
 import { useState, useEffect, useContext, useRef } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import Lenis from "@studio-freight/lenis";
+import axios from "axios";
 
 export default function Shop() {
+  const [imageURL, setImageURL] = useState('');
+  const [productName, setProductName] = useState('');
+  const [productType, setProductType] = useState('');
+  const [productDescription, setProductDescription] = useState('');
+  const [productPrice, setProductPrice] = useState('');
+  const [productStock, setProductStock] = useState('');
+
   const [showPopup, setShowPopup] = useState(false);
   const [popupImage, setPopupImage] = useState("");
   const [popupName, setPopupName] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [imageURL, setImageURL] = useState("");
   const [products, setProducts] = useState([]);
 
+  const [loading, setLoading] = useState(true);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [filterOption, setFilterOption] = useState({});
   const [sortOption, setSortOption] = useState();
@@ -22,89 +32,6 @@ export default function Shop() {
   const filterRef = useRef(null);
 
   const { token } = useContext(AuthContext);
-
-  const handleButtonClick = (image, name) => {
-    setShowPopup(true);
-    setPopupImage(image);
-    setPopupName(name);
-  };
-
-  const handleClosePopup = () => {
-    setShowPopup(false);
-  };
-  const openModal = () => {
-    setShowModal(true);
-  };
-
-  const handleProductImageChange = (event) => {
-    const newImageURL = event.target.value;
-    setImageURL(newImageURL);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  };
-
-  /**
-   * useEffect (for smooth scrolling):
-   * - Initializes and configures the Lenis smooth scrolling library.
-   * - This effect runs only once when the component mounts.
-   */
-  useEffect(() => {
-    const lenis = new Lenis();
-
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-  }, []);
-
-  /**
-   * useEffect (for fetching products):
-   * - Fetches the product data from the backend API when the component mounts.
-   * - Updates the `products` and `filteredProducts` state with the fetched data.
-   * - Sets `loading` to `false` after the data is fetched.
-   * - This effect has a dependency on the `token` to re-fetch data if the user's authentication changes.
-   */
-  useEffect(() => {
-    const fetchProducts = async () => {
-      if (!token) {
-        console.error("No token found");
-        // setLoading(false);
-        return;
-      }
-
-      try {
-        const response = await fetch(
-          "http://localhost:3001/admin/getProductListings",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          console.log("Fetched products:", data);
-          setProducts(data);
-          setFilteredProducts(data);
-        } else {
-          console.error("Error fetching products:", response.statusText);
-        }
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      } finally {
-        // setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [token]);
 
   useEffect(() => {
     let filtered = [...products];
@@ -126,39 +53,154 @@ export default function Shop() {
     setFilteredProducts(filtered);
   }, [filterOption, sortOption, products]);
 
-  /** handleSort: Sets the sorting option based on the clicked button. */
-  const handleSort = (key, order) => {
-    setActiveSort({ key, order });
-    setSortOption({ [key]: order === "Ascending" ? 1 : -1 });
-  };
-
-  /** handleFilter: Updates the filter options based on user input. */
+  // /** handleFilter: Updates the filter options based on user input. */
   const handleFilter = (key, value) => {
     setFilterOption((prev) => ({ ...prev, [key]: value }));
   };
 
-  /** handleReset: Clears all filter and sorting options. */
-  const handleReset = () => {
-    setFilterOption({});
-    setSortOption(null);
-    setActiveSort(null);
-    filterRef.current.value = "";
-  };
+  const handleButtonClick = (image, name) => {
+        setShowPopup(true);
+        setPopupImage(image);
+        setPopupName(name);
+      };
+    
+      const handleClosePopup = () => {
+        setShowPopup(false);
+      };
+    
+      const openModal = () => {
+        setShowModal(true);
+      };
+    
+      const handleProductImageChange = (event) => {
+        const newImageURL = event.target.value;
+        setImageURL(newImageURL);
+      };
+    
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        setShowModal(false);
+        try{
+          await axios.post(
+            "http://localhost:3001/admin/addProduct",
+            { name: productName, 
+              type: productType, 
+              description: productDescription, 
+              price: productPrice, 
+              quantity: productStock, 
+              imageUrl: imageURL},
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+        } catch (error) {
+          console.error("Error adding order:", error);
+        }
+        window.location.reload(); // refresh page to get current data
+    
+        setImageURL('');
+        setProductName('');
+        setProductType('');
+        setProductDescription('');
+        setProductPrice('');
+        setProductStock('');
+      };
+    
+      /**
+       * useEffect (for smooth scrolling):
+       * - Initializes and configures the Lenis smooth scrolling library.
+       * - This effect runs only once when the component mounts.
+       */
+      useEffect(() => {
+        const lenis = new Lenis();
+    
+        function raf(time) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+    
+        requestAnimationFrame(raf);
+      }, []);
+    
+      /**
+       * useEffect (for fetching products):
+       * - Fetches the product data from the backend API when the component mounts.
+       * - Updates the `products` and `filteredProducts` state with the fetched data.
+       * - Sets `loading` to `false` after the data is fetched.
+       * - This effect has a dependency on the `token` to re-fetch data if the user's authentication changes.
+       */
+      useEffect(() => {
+        const fetchProducts = async () => {
+          if (!token) {
+            console.error("No token found");
+            setLoading(false)
+            return;
+          }
+    
+          try {
+            const response = await fetch(
+              "http://localhost:3001/admin/getProductListings",
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+    
+            if (response.ok) {
+              const data = await response.json();
+              console.log("Fetched products:", data);
+              setProducts(data);
+            } else {
+              console.error("Error fetching products:", response.statusText);
+            }
+          } catch (error) {
+            console.error("Error fetching products:", error);
+          } finally {
+            setLoading(false)
+          }
+        };
+    
+        fetchProducts();
+      }, [token]);
+    
+      /** handleSort: Sets the sorting option based on the clicked button. */
+      const handleSort = (key, order) => {
+        setActiveSort({ key, order });
+        setSortOption({ [key]: order === "Ascending" ? 1 : -1 });
+      };
+    
+      /** handleReset: Clears all filter and sorting options. */
+      const handleReset = () => {
+        setFilterOption({});
+        setSortOption(null);
+        setActiveSort(null);
+        filterRef.current.value = "";
+      };
 
   return (
-    <div className="h-screen w-screen">
+    <div className="min-h-screen w-screen flex flex-col">
       <AdminNavbar />
-
-      <div className="main-container flex flex-grow mt-3">
-        <div className="filter-container w-5/6 sm:w-[275px] h-[780px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0 sm:sticky sm:top-36">
-          <div className="flex flex-row justify-center items-center gap-2">
-            <button
+      <div className="main-container flex flex-col sm:flex-row flex-grow pt-3">
+        <div className="filter-container w-5/6 sm:w-[275px] h-[870px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0 sm:sticky sm:top-36">
+        <div className="flex flex-row justify-center items-center gap-2">
+             <button
               className="form-button mb-6"
               // onClick={addProduct}
               onClick={() => openModal()}
             >
               + Add Product
             </button>
+          </div>
+        <div className="flex flex-col gap-2">
+            <h1 className="text-2xl font-black mb-2">SEARCH</h1>
+            <input
+              type="text"
+              placeholder="Name"
+              className="bg-white text-xl rounded-lg w-full p-4"
+              onChange={(e) => handleFilter("name", e.target.value)}
+              ref={filterRef}
+            />
           </div>
           <div className="flex flex-col gap-2 mt-6">
             <h1 className="text-2xl font-black mb-2">SORT BY</h1>
@@ -257,11 +299,30 @@ export default function Shop() {
             </button>
           </div>
         </div>
-        <div className="content-container p-6 pt-0 h-screen overflow-y-auto">
-          <h1 className="font-black text-6xl mb-6">PRODUCT INVENTORY</h1>
-          <div className="flex flex-wrap gap-2">
-            <InventoryCard show={handleButtonClick} products={products} />
-          </div>
+        <div className="content-container p-6 pt-0 h-full w-full overflow-y-auto flex flex-col items-center sm:items-start">
+          <h1 className="font-black text-6xl mb-6">OUR PRODUCTS</h1>
+
+          {loading ? (
+            <div className="flex flex-wrap gap-2">
+              {Array.from({ length: 12 }).map((_, index) => (
+                <SkeletonCard key={index} />
+              ))}
+            </div>
+          ) : filteredProducts.length == 0 ? (
+            <div className="w-full flex flex-col items-center justify-center mt-20 lg:pr-48">
+              <img src={IMAGE} alt="No product" />
+              <span className="font-semibold">Oops! No products found.</span>
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+              {filteredProducts.map((product) => (
+                <InventoryCard
+                  key={product._id}
+                  product={product}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
       {showModal && (
@@ -294,7 +355,7 @@ export default function Shop() {
                         <div class="md:w-1/3">
                           <label
                             class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                            for="inline-full-name"
+                            for="inline-image-url"
                           >
                             Product Image URL
                           </label>
@@ -304,9 +365,8 @@ export default function Shop() {
                             class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-emerald-600"
                             id="image"
                             type="text"
-                            placeholder="Product Name"
+                            placeholder="Product Image URL"
                             onChange={handleProductImageChange}
-                            // ref={nameRef}
                           />
                         </div>
                       </div>
@@ -326,6 +386,8 @@ export default function Shop() {
                           id="name"
                           type="text"
                           placeholder="Product Name"
+                          value={productName}
+                          onChange={(e) => setProductName(e.target.value)}
                           // ref={nameRef}
                         />
                       </div>
@@ -334,7 +396,7 @@ export default function Shop() {
                       <div class="md:w-1/3">
                         <label
                           class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                          for="inline-full-name"
+                          for="inline-type"
                         >
                           Product Type
                         </label>
@@ -345,6 +407,8 @@ export default function Shop() {
                           id="type"
                           type="text"
                           placeholder="Product Type"
+                          value={productType} // change to dropdown
+                          onChange={(e) => setProductType(e.target.value)}
                           // ref={typeRef}
                         />
                       </div>
@@ -353,7 +417,7 @@ export default function Shop() {
                       <div class="md:w-1/3">
                         <label
                           class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                          for="inline-full-name"
+                          for="inline-description"
                         >
                           Product Description
                         </label>
@@ -361,8 +425,10 @@ export default function Shop() {
                       <div class="md:w-2/3">
                         <textarea
                           class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-emerald-600"
-                          id="type"
+                          id="description"
                           placeholder="Product Description"
+                          value={productDescription}
+                          onChange={(e) => setProductDescription(e.target.value)}
                           // ref={typeRef}
                         />
                       </div>
@@ -371,26 +437,7 @@ export default function Shop() {
                       <div class="md:w-1/3">
                         <label
                           class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                          for="inline-full-name"
-                        >
-                          Product Unit
-                        </label>
-                      </div>
-                      <div class="md:w-2/3">
-                        <input
-                          class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-emerald-600"
-                          id="type"
-                          type="text"
-                          placeholder="Product Unit"
-                          // ref={typeRef}
-                        />
-                      </div>
-                    </div>
-                    <div class="md:flex md:items-center mb-6">
-                      <div class="md:w-1/3">
-                        <label
-                          class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                          for="inline-full-name"
+                          for="inline-price"
                         >
                           Product Price
                         </label>
@@ -398,9 +445,11 @@ export default function Shop() {
                       <div class="md:w-2/3">
                         <input
                           class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-emerald-600"
-                          id="type"
+                          id="price"
                           type="number"
                           placeholder="Product Price"
+                          value={productPrice}
+                          onChange={(e) => setProductPrice(e.target.value)}
                           // ref={typeRef}
                         />
                       </div>
@@ -409,7 +458,7 @@ export default function Shop() {
                       <div class="md:w-1/3">
                         <label
                           class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                          for="inline-full-name"
+                          for="inline-stock"
                         >
                           Product Stocks
                         </label>
@@ -417,9 +466,11 @@ export default function Shop() {
                       <div class="md:w-2/3">
                         <input
                           class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-emerald-600"
-                          id="type"
+                          id="stock"
                           type="number"
                           placeholder="Product Stocks"
+                          value={productStock}
+                          onChange={(e) => setProductStock(e.target.value)}
                           // ref={typeRef}
                         />
                       </div>
@@ -435,7 +486,6 @@ export default function Shop() {
                       <button
                         className="bg-[#40573C] text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                         type="submit"
-                        onClick={() => setShowModal(false)}
                       >
                         Add
                       </button>
@@ -448,12 +498,12 @@ export default function Shop() {
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       )}
-      {/* <Popup
+      <Popup
         show={showPopup}
         onClose={handleClosePopup}
         image={popupImage}
         title={popupName}
-      /> */}
+      />
     </div>
   );
 }

@@ -55,8 +55,8 @@ export default function Tab({ items }) {
       const weeklySales = {};
   
       items.forEach((item) => {
-        if (item.status == 'Confirmed'){ 
-          const itemDate = new Date(item.date);
+        if (item.status == 1){ 
+          const itemDate = new Date(item.dateTimeOrdered);
           const weekNumber = getWeekNumber(itemDate);
     
           // Calculate first and last day of the week
@@ -86,8 +86,8 @@ export default function Tab({ items }) {
       const monthlySales = {};
 
       items.forEach((item) => {
-        if (item.status == 'Confirmed'){ 
-          const itemDate = new Date(item.date);
+        if (item.status == 1){ 
+          const itemDate = new Date(item.dateTimeOrdered);
           const month = itemDate.toLocaleDateString('default', { month: 'long', year: 'numeric' });
 
           if (!monthlySales[month]) {
@@ -111,8 +111,8 @@ export default function Tab({ items }) {
       const annualSales = {};
 
       items.forEach((item) => {
-        if (item.status == 'Confirmed'){ 
-          const itemDate = new Date(item.date);
+        if (item.status == 1){ 
+          const itemDate = new Date(item.dateTimeOrdered);
           const year = itemDate.getFullYear();
 
           if (!annualSales[year]) {
@@ -199,7 +199,7 @@ export default function Tab({ items }) {
     let totalSales = 0;
 
     items.forEach(item => {
-      if (item.status == 'Confirmed')
+      if (item.status == 1)
         item.products.forEach(product => {
             totalSales += product.count * product.price;
         });

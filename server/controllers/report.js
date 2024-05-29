@@ -4,7 +4,7 @@ import Order from "../models/orderModel.js";
 // only includes the orders that are sold, sorted by recency
 // the cutoff would be in a latest provided date, along with the limit
 const getRecentSales = async (req, res) => {
-  const { earliestDate, limit } = req.body;
+  const { earliestDate, limit } = req.query;
 
   try {
     const sales = await Order.find({

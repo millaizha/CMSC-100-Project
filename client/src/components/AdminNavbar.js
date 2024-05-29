@@ -43,14 +43,14 @@ export default function AdminNavbar() {
         </button>
         <button
           className="flex items-center gap-2"
-          onClick={() => navigate("/admin")}
+          onClick={() => navigate("/admin-sales")}
         >
           <HiOutlineReceiptTax />
           Orders
         </button>
         <button
           className="flex items-center gap-2"
-          onClick={() => navigate("/admin-sales")}
+          onClick={() => navigate("/admin")}
         >
           <MdOutlineShoppingCart />
           Sales

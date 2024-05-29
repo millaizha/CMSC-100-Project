@@ -30,15 +30,16 @@ export default function AdminReport() {
       }
 
       try {
+        const earliestDate = "2020-01-01";
+        const limit = 5;
         const response = await fetch(
-          `http://localhost:3001/report/getRecentSales`,
+          `http://localhost:3001/report/getRecentSales?earliestDate=${earliestDate}&limit=${limit}`,
           {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`
             },
-            body: JSON.stringify({ earliestDate: "2024-01-01", limit: 5}),
           }
         );
 
@@ -56,76 +57,6 @@ export default function AdminReport() {
 
     fetchOrders();
   }, [token]);
-
-    // const items = [
-    //     {
-    //       name: "Mill Valencia",
-    //       email: "mill@mail.com",
-    //       products: [
-    //         {
-    //           name: "Product 1",
-    //           count: 1,
-    //           price: 100,
-    //         },
-    //         {
-    //           name: "Product 2",
-    //           count: 2,
-    //           price: 200,
-    //         },
-    //       ],
-    //       date: "2024-01-18",
-    //       status: "Pending"
-    //     },
-    //     {
-    //       name: "Kyle Vinuya",
-    //       email: "kyle@mail.com",
-    //       products: [
-    //         {
-    //           name: "Product 1",
-    //           count: 1,
-    //           price: 100,
-    //         },
-    //       ],
-    //       date: "2024-01-01",
-    //       status: "Confirmed"
-    //     },
-    //     {
-    //       name: "Farrel Beso",
-    //       email: "farrel@mail.com",
-    //       products: [
-    //         {
-    //           name: "Product 1",
-    //           count: 1,
-    //           price: 100,
-    //         },
-    //         {
-    //           name: "Product 1",
-    //           count: 1,
-    //           price: 100,
-    //         },
-    //         {
-    //           name: "Product 1",
-    //           count: 1,
-    //           price: 100,
-    //         },
-    //       ],
-    //       date: "2024-01-01",
-    //       status: "Confirmed"
-    //     },
-    //     {
-    //         name: "Kyle Vinuya",
-    //         email: "kyle@mail.com",
-    //         products: [
-    //           {
-    //             name: "Product 1",
-    //             count: 1,
-    //             price: 100,
-    //           },
-    //         ],
-    //         date: "2024-01-01",
-    //         status: "Confirmed"
-    //       },
-    //   ];
     return (
         <div className="h-screen w-screen">
           <AdminNavbar />
@@ -139,7 +70,7 @@ export default function AdminReport() {
             <div className="spacer mx-auto"></div>
 
             <div className="filter-container w-[1000px] p-6 m-12 mt-0 rounded-2xl flex-shrink-0">
-              {/* <TimeReportCard items={items}/> */}
+              <TimeReportCard items={items}/>
             </div>
 
         </div>
