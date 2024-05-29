@@ -8,6 +8,7 @@ const register = async (req, res) => {
       firstName,
       middleName = null,
       lastName,
+      address,
       userType = "user",
       email,
       password,
@@ -17,6 +18,7 @@ const register = async (req, res) => {
       firstName,
       middleName,
       lastName,
+      address,
       userType,
       email,
       password: hashedPassword,
@@ -51,14 +53,12 @@ const login = async (req, res) => {
         expiresIn: "1hr",
       }
     );
-    res
-      .status(200)
-      .json({
-        message: "Login successful",
-        token,
-        firstName: user.firstName,
-        userType: user.userType,
-      });
+    res.status(200).json({
+      message: "Login successful",
+      token,
+      firstName: user.firstName,
+      userType: user.userType,
+    });
   } catch (error) {
     res.status(500).json({ error: "Error logging in" });
   }

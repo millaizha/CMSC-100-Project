@@ -36,29 +36,26 @@ export default function AdminNavbar() {
         </button>
         <button
           className="flex items-center gap-2"
-          onClick={() => navigate("/admin")}
+          onClick={() => navigate("/admin-products")}
         >
           <MdOutlineShoppingBag />
           Products
         </button>
         <button
           className="flex items-center gap-2"
-          onClick={() => navigate("/admin-sales")}
+          onClick={() => navigate("/admin")}
         >
           <HiOutlineReceiptTax />
           Orders
         </button>
         <button
           className="flex items-center gap-2"
-          onClick={() => navigate("/admin-report")}
+          onClick={() => navigate("/admin-sales")}
         >
           <MdOutlineShoppingCart />
           Sales
         </button>
-        <button
-          className="form-button"
-          onClick={logout}
-        >
+        <button className="form-button" onClick={logout}>
           Log Out
         </button>
       </div>

@@ -19,7 +19,6 @@ import { useCart } from "../contexts/CartContext";
 export default function OrderListCard({ product }) {
   const [quantity, setQuantity] = useState(product.count);
 
-  console.log(product);
   return (
     <div className="w-full h-24 bg-gray-50 rounded-xl px-4 py-2">
       <div className="flex h-full items-center gap-3">

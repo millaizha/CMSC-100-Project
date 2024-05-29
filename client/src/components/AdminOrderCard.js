@@ -11,8 +11,8 @@ export default function AdminOrderCard({ users }) {
   const { token } = useContext(AuthContext);
 
   const openModal = (index) => {
-      setShowModal(true);
-      setSelectedIndex(index);
+    setShowModal(true);
+    setSelectedIndex(index);
   };
 
  
@@ -31,23 +31,27 @@ export default function AdminOrderCard({ users }) {
   }
 
   const getOverallSales = () => {
-      let total = 0;
-      if (selectedIndex !== null && users[selectedIndex] && users[selectedIndex].products) {
-          users[selectedIndex].products.forEach(product => {
-              total += product.count * product.price;
-          });
-      }
-      return total;
+    let total = 0;
+    if (
+      selectedIndex !== null &&
+      users[selectedIndex] &&
+      users[selectedIndex].products
+    ) {
+      users[selectedIndex].products.forEach((product) => {
+        total += product.count * product.price;
+      });
+    }
+    return total;
   };
 
-  return( 
+  return (
     <div className="list-container mt-8 flex flex-col gap-2 h-full">
-    {users.map((user, i) => {
+      {users.map((user, i) => {
         return (
-          <div 
+          <div
             className="list-container mt-8 flex flex-col gap-2 h-full cursor-pointer"
             onClick={() => openModal(i)}
-            key = {i}
+            key={i}
           >
             <div className="w-full h-16 rounded-xl px-4 py-2">
                 <div className="flex h-full items-center gap-3">
@@ -83,20 +87,20 @@ export default function AdminOrderCard({ users }) {
                         
                         <div className="spacer mx-auto"></div>
 
-                        <div className="flex bg-white rounded-xl px-4 py-2 justify-between items-center">
-                            <div className="flex items-end gap-1">
-                                <div className="font-black">x{product.count}</div>
-                            </div>
-                        </div>
+                    <div className="flex bg-white rounded-xl px-4 py-2 justify-between items-center">
+                      <div className="flex items-end gap-1">
+                        <div className="font-black">x{product.count}</div>
+                      </div>
                     </div>
+                  </div>
                 </div>
-              )
+              );
             })}
           </div>
-        )
-    })}
-    {showModal && selectedIndex !== null && (
-      <>
+        );
+      })}
+      {showModal && selectedIndex !== null && (
+        <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
               <div className="relative w-auto my-6 mx-auto max-w-3xl">
                   <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
@@ -169,9 +173,8 @@ export default function AdminOrderCard({ users }) {
               </div>
           </div>
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-      </>
-    )}
+        </>
+      )}
     </div>
   );
 }
-  

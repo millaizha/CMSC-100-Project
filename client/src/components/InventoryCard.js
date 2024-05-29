@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FaRegCircleXmark  } from 'react-icons/fa6'
+import { FaRegCircleXmark } from "react-icons/fa6";
 
 export default function InventoryCard({ show, products }) {
   const [showModal, setShowModal] = useState(false);
@@ -14,8 +14,8 @@ export default function InventoryCard({ show, products }) {
   const [imageURL, setImageURL] = useState('');
   
   const openModal = (index) => {
-      setShowModal(true);
-      setSelectedIndex(index);
+    setShowModal(true);
+    setSelectedIndex(index);
   };
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function InventoryCard({ show, products }) {
   }, [selectedIndex, products]);
 
   const handleProductNameChange = (event) => {
-      setProductName(event.target.value);
+    setProductName(event.target.value);
   };
 
   const handleProductTypeChange = (event) => {
@@ -52,8 +52,8 @@ export default function InventoryCard({ show, products }) {
 
   const handleProductImageChange = (event) => {
     const newImageURL = event.target.value;
-        setImageURL(newImageURL); // Update imageURL with the new value from the input field
-        setProductImage(newImageURL); // Update productImage with the new value from the input field
+    setImageURL(newImageURL); // Update imageURL with the new value from the input field
+    setProductImage(newImageURL); // Update productImage with the new value from the input field
   };
 
   const handleSubmit = async (e) => {
@@ -62,9 +62,12 @@ export default function InventoryCard({ show, products }) {
 
   return (
     <>
-        {products.map((product, i) => {
-        return(
-          <div className="h-[470px] w-[270px] bg-[#F2F2F2] rounded-2xl flex flex-col p-2" key = {i}>
+      {products.map((product, i) => {
+        return (
+          <div
+            className="h-[470px] w-[270px] bg-[#F2F2F2] rounded-2xl flex flex-col p-2"
+            key={i}
+          >
             <div className="h-[230px] w-full object-cover rounded-2xl overflow-hidden">
               <img
                 src={product.imageUrl}
@@ -72,9 +75,11 @@ export default function InventoryCard({ show, products }) {
                 className="object-cover w-full h-full"
               />
             </div>
-      
+
             <div className="flex flex-col gap-1 p-2">
-              <span className="font-bold text-xl overflow-hidden whitespace-nowrap text-ellipsis">{product.name}</span>
+              <span className="font-bold text-xl overflow-hidden whitespace-nowrap text-ellipsis">
+                {product.name}
+              </span>
               <div className="bg-white p-1 rounded-md text-sm w-16 flex justify-center">
                 {product.type}
               </div>
@@ -96,36 +101,42 @@ export default function InventoryCard({ show, products }) {
             </div>
             {showModal && selectedIndex !== null && (
               <>
-              <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+                <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
                   <div className="relative w-auto my-6 mx-auto max-w-3xl">
-                      <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                          <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                              <h3 className="text-3xl font-semibold">Product Information</h3>
-                              <button
-                                  className="p-1 ml-16 text-black float-right text-3xl"
-                                  onClick={() => setShowModal(false)}
-                              >
-                                  <FaRegCircleXmark />
-                              </button>
+                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                      <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
+                        <h3 className="text-3xl font-semibold">
+                          Product Information
+                        </h3>
+                        <button
+                          className="p-1 ml-16 text-black float-right text-3xl"
+                          onClick={() => setShowModal(false)}
+                        >
+                          <FaRegCircleXmark />
+                        </button>
+                      </div>
+                      <div className="relative p-6 flex-auto border-b border-solid border-blueGray-200 rounded-t">
+                        <form onSubmit={handleSubmit}>
+                          <div className="flex flex-row justify-center">
+                            <img
+                              src={imageURL}
+                              alt=""
+                              className="object-cover w-20 h-20 "
+                            />
                           </div>
-                          <div className="relative p-6 flex-auto border-b border-solid border-blueGray-200 rounded-t">
-                            <form onSubmit={handleSubmit}>
-                              <div className="flex flex-row justify-center">
-                                <img
-                                  src={imageURL}
-                                  alt=""
-                                  className="object-cover w-20 h-20 "
-                                />
+                          <div className="flex items-center gap-3">
+                            <div class="md:flex md:items-center mb-6">
+                              <div class="md:w-1/3">
+                                <label
+                                  class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+                                  for="inline-full-name"
+                                >
+                                  Product Image URL
+                                </label>
                               </div>
-                              <div className="flex items-center gap-3">
-                                <div class="md:flex md:items-center mb-6">
-                                <div class="md:w-1/3">
-                                  <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-full-name">
-                                    Product Image URL
-                                  </label>
-                                </div>
-                                <div class="md:w-2/3">
-                                  <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-emerald-600" 
+                              <div class="md:w-2/3">
+                                <input
+                                  class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-emerald-600"
                                   id="image"
                                   type="text"
                                   placeholder="Product Name"
@@ -236,18 +247,17 @@ export default function InventoryCard({ show, products }) {
                               Update
                             </button>
                           </div>
-                            </form>
-                          </div>
+                        </form>
                       </div>
+                    </div>
                   </div>
-              </div>
-              <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                </div>
+                <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
               </>
             )}
           </div>
-        )
-  })}
-  </>
+        );
+      })}
+    </>
   );
 }
-  
