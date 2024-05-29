@@ -3,6 +3,10 @@ import AdminNavbar from "../../components/AdminNavbar";
 import { FaRegCircleXmark  } from 'react-icons/fa6'
 import Popup from "../../components/AdminUpdatePopup";
 import { useState } from "react";
+import Popup from "../../components/Popup";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
+import Lenis from "@studio-freight/lenis";
 
 export default function Shop() {
   const [showPopup, setShowPopup] = useState(false);
@@ -10,6 +14,10 @@ export default function Shop() {
   const [popupName, setPopupName] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [imageURL, setImageURL] = useState("");
+  const [products, setProducts] = useState([]);
+
+  const { token } = useContext(AuthContext);
+
   const handleButtonClick = (image, name) => {
     setShowPopup(true);
     setPopupImage(image);
@@ -19,7 +27,6 @@ export default function Shop() {
   const handleClosePopup = () => {
     setShowPopup(false);
   };
-
   const openModal = () => {
     setShowModal(true);
   };
@@ -53,6 +60,66 @@ export default function Shop() {
         stock: 100
     },
   ]
+  /**
+   * useEffect (for smooth scrolling):
+   * - Initializes and configures the Lenis smooth scrolling library.
+   * - This effect runs only once when the component mounts.
+   */
+  useEffect(() => {
+    const lenis = new Lenis();
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+  }, []);
+
+  /**
+   * useEffect (for fetching products):
+   * - Fetches the product data from the backend API when the component mounts.
+   * - Updates the `products` and `filteredProducts` state with the fetched data.
+   * - Sets `loading` to `false` after the data is fetched.
+   * - This effect has a dependency on the `token` to re-fetch data if the user's authentication changes.
+   */
+  useEffect(() => {
+    const fetchProducts = async () => {
+      if (!token) {
+        console.error("No token found");
+        // setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          "http://localhost:3001/admin/getProductListings",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Fetched products:", data);
+          setProducts(data);
+          // setFilteredProducts(data);
+        } else {
+          console.error("Error fetching products:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [token]);
 
   return (
     <div className="h-screen w-screen">

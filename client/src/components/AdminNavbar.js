@@ -1,7 +1,11 @@
 import { useContext } from "react";
 import LOGO from "../assets/logo/100_LOGO.png";
 import { HiOutlineReceiptTax } from "react-icons/hi";
-import { MdPeopleOutline, MdOutlineShoppingBag, MdOutlineShoppingCart } from "react-icons/md";
+import {
+  MdPeopleOutline,
+  MdOutlineShoppingBag,
+  MdOutlineShoppingCart,
+} from "react-icons/md";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -41,7 +45,7 @@ export default function AdminNavbar() {
           className="flex items-center gap-2"
           // onClick={() => navigate("/getOrders")}
         >
-          <HiOutlineReceiptTax  />
+          <HiOutlineReceiptTax />
           Orders
         </button>
         <button
@@ -51,8 +55,9 @@ export default function AdminNavbar() {
           <MdOutlineShoppingCart />
           Sales
         </button>
-        <button className="form-button" 
-        // onClick={logout}
+        <button
+          className="form-button"
+          // onClick={logout}
         >
           Log Out
         </button>
