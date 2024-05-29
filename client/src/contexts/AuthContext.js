@@ -161,6 +161,7 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated,
         userEmail,
         userFirstName,
+        userType,
       }}
     >
       {children}

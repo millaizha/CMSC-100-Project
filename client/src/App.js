@@ -20,7 +20,7 @@ function App() {
             <Route
               path="/"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute requiredRole="user">
                   <Shop />
                 </ProtectedRoute>
               }
@@ -29,7 +29,7 @@ function App() {
             <Route
               path="/cart"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute requiredRole="user">
                   <Cart />
                 </ProtectedRoute>
               }
@@ -37,7 +37,7 @@ function App() {
             <Route
               path="/my-orders"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute requiredRole="user">
                   <Orders />
                 </ProtectedRoute>
               }
@@ -45,7 +45,7 @@ function App() {
             <Route
               path="/admin"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute requiredRole="admin">
                   {/* <AdminReport /> */}
                   <AdminInventory />
                 </ProtectedRoute>
