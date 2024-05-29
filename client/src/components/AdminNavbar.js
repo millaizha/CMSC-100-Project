@@ -10,8 +10,8 @@ import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function AdminNavbar() {
-  // const { logout } = useContext(AuthContext);
-  // const navigate = useNavigate();
+  const { logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   return (
     <div className="h-32 p-6 w-screen flex sticky top-0 bg-white z-10">
@@ -20,7 +20,7 @@ export default function AdminNavbar() {
           src={LOGO}
           alt="Website Logo"
           className="w-24 cursor-pointer"
-          // onClick={() => navigate("/")}
+          onClick={() => navigate("/admin")}
         />
         <h1 className="font-black text-3xl">FARM-TO-TABLE</h1>
         <h2 className="text-2xl">Hello, Admin!</h2>
@@ -29,36 +29,33 @@ export default function AdminNavbar() {
       <div className="right flex gap-12 items-center pr-12">
         <button
           className="flex items-center gap-2"
-          // onClick={() => navigate("/registeredUsers")}
+          onClick={() => navigate("/admin-users")}
         >
           <MdPeopleOutline />
           Users
         </button>
         <button
           className="flex items-center gap-2"
-          // onClick={() => navigate("/getProductListings")}
+          onClick={() => navigate("/admin-products")}
         >
           <MdOutlineShoppingBag />
           Products
         </button>
         <button
           className="flex items-center gap-2"
-          // onClick={() => navigate("/getOrders")}
+          onClick={() => navigate("/admin")}
         >
           <HiOutlineReceiptTax />
           Orders
         </button>
         <button
           className="flex items-center gap-2"
-          // onClick={() => navigate("/report")}
+          onClick={() => navigate("/admin-sales")}
         >
           <MdOutlineShoppingCart />
           Sales
         </button>
-        <button
-          className="form-button"
-          // onClick={logout}
-        >
+        <button className="form-button" onClick={logout}>
           Log Out
         </button>
       </div>

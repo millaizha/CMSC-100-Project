@@ -17,8 +17,8 @@ import { AuthContext } from "./AuthContext";
  *  - Redirects unauthenticated users to the login page.
  */
 
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, checkAuth } = useContext(AuthContext);
+const ProtectedRoute = ({ children, requiredRole }) => {
+  const { isAuthenticated, checkAuth, userType } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -38,7 +38,11 @@ const ProtectedRoute = ({ children }) => {
     return <></>;
   }
 
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  return isAuthenticated && (!requiredRole || requiredRole === userType) ? (
+    children
+  ) : (
+    <Navigate to="/login" />
+  );
 };
 
 export default ProtectedRoute;
