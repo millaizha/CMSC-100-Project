@@ -19,9 +19,9 @@ export default function RegisterForm({ toggleFunc }) {
   const firstNameRef = useRef(null);
   const middleNameRef = useRef(null);
   const lastNameRef = useRef(null);
+  const addressRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
-  const passwordRef_dup = useRef(null);
   const { register } = useContext(AuthContext);
 
   const handleSubmit = (e) => {
@@ -30,15 +30,11 @@ export default function RegisterForm({ toggleFunc }) {
       firstName: firstNameRef.current.value,
       middleName: middleNameRef.current.value || "",
       lastName: lastNameRef.current.value,
+      address: addressRef.current.value,
       userType: "user",
       email: emailRef.current.value,
       password: passwordRef.current.value,
     };
-
-    if (user.password !== passwordRef_dup.current.value) {
-      alert("Passwords do not match!");
-      return;
-    }
 
     register(user);
   };
@@ -81,6 +77,15 @@ export default function RegisterForm({ toggleFunc }) {
         <input
           type="text"
           required="true"
+          id="address"
+          className="input-box"
+          placeholder="Address"
+          ref={addressRef}
+        />
+
+        <input
+          type="text"
+          required="true"
           id="email"
           className="input-box"
           placeholder="Email"
@@ -96,14 +101,6 @@ export default function RegisterForm({ toggleFunc }) {
           ref={passwordRef}
         />
 
-        <input
-          type="password"
-          required="true"
-          id="password_dup"
-          className="input-box"
-          placeholder="Password (Again)"
-          ref={passwordRef_dup}
-        />
         <button className="form-button mt-8" type="submit">
           Sign up
         </button>

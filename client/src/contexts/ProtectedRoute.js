@@ -38,8 +38,6 @@ const ProtectedRoute = ({ children, requiredRole }) => {
     return <></>;
   }
 
-  console.log(requiredRole);
-
   return isAuthenticated && (!requiredRole || requiredRole === userType) ? (
     children
   ) : (

@@ -106,7 +106,6 @@ export function CartProvider({ children }) {
   const updateQuantity = async (productId, quantity) => {
     if (quantity) {
       try {
-        console.log(productId);
         const response = await axios.post(
           "http://localhost:3001/customer/updateCartQuantity",
           { email: userEmail, productId, quantity },
