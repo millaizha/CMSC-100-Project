@@ -30,7 +30,7 @@ export default function AdminReport() {
       }
 
       try {
-        const earliestDate = "2024-01-01";
+        const earliestDate = "2020-01-01";
         const limit = 5;
         const response = await fetch(
           `http://localhost:3001/report/getRecentSales?earliestDate=${earliestDate}&limit=${limit}`,

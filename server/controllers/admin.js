@@ -20,9 +20,12 @@ const addProduct = async (req, res) => {
       quantity,
       imageUrl,
     });
+    console.log(newProduct)
     await newProduct.save();
     res.status(201).json({ message: "Product created successfully." });
+    console.log("added")
   } catch (error) {
+    console.error("Error adding product:", error); 
     res.status(500).json({ error: "Error adding the new product." });
   }
 };

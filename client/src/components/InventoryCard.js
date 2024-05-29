@@ -81,7 +81,7 @@ export default function InventoryCard({ show, products }) {
                 {product.name}
               </span>
               <div className="bg-white p-1 rounded-md text-sm w-16 flex justify-center">
-                {product.type}
+                {product.type == 1 ? "Crop" : "Poultry"}
               </div>
               <p className="h-12 w-full overflow-hidden text-ellipsis line-clamp-3 text-sm text-[12px] leading-4">{product.description}</p>
             <div className="flex gap-1 items-end mb-1">
@@ -95,7 +95,6 @@ export default function InventoryCard({ show, products }) {
             </div>
             
             <div className="flex gap-2">
-              {/* <button className="rounded-xl bg-[#40573C] text-white px-4 w-full mx-auto text-md font-bold" onClick={() => show(product.imageUrl, product.name)}>Update stock</button> */}
               <button className="rounded-xl bg-[#40573C] text-white px-4 w-full mx-auto text-md font-bold" onClick={() => openModal(i)}>Edit Product</button>
             </div>
             </div>
