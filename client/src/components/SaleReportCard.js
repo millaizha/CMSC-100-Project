@@ -10,7 +10,6 @@ export default function SaleReportCard({ users }) {
         return total;
     }
 
-    // todo: Add status color
     function getStatusColor(status) {
         if (status == "Confirmed") 
             return "rounded-xl px-4 py-2 font-black bg-[#80EF80]";

@@ -1,72 +1,49 @@
 import AdminOrderCard from "../../components/AdminOrderCard";
 import AdminNavbar from "../../components/AdminNavbar";
+import { useState, useEffect, useContext, useRef } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
+import Lenis from "@studio-freight/lenis";
 
-export default function Cart({ userList }) {
-  const items = [
-    {
-      name: "Mill Valencia",
-      email: "mill@mail.com",
-      address: "Manila",
-      products: [
-        {
-          name: "Product 1",
-          count: 1,
-          imageURL: "https://via.placeholder.com/150",
-          type: "Fruit",
-          price: 100,
-        },
-        {
-          name: "Product 2",
-          count: 2,
-          imageURL: "https://via.placeholder.com/150",
-          type: "Veggie",
-          price: 200,
-        },
-      ],
-    },
-    {
-      name: "Kyle Vinuya",
-      email: "kyle@mail.com",
-      address: "Manila",
-      products: [
-        {
-          name: "Product 1",
-          count: 1,
-          imageURL: "https://via.placeholder.com/150",
-          type: "Fruit",
-          price: 100,
-        },
-      ],
-    },
-    {
-      name: "Farrel Beso",
-      email: "farrel@mail.com",
-      address: "Manila",
-      products: [
-        {
-          name: "Product 1",
-          count: 1,
-          imageURL: "https://via.placeholder.com/150",
-          type: "Fruit",
-          price: 100,
-        },
-        {
-          name: "Product 1",
-          count: 1,
-          imageURL: "https://via.placeholder.com/150",
-          type: "Fruit",
-          price: 100,
-        },
-        {
-          name: "Product 1",
-          count: 1,
-          imageURL: "https://via.placeholder.com/150",
-          type: "Fruit",
-          price: 100,
-        },
-      ],
-    },
-  ];
+export default function Cart() {
+  const { token } = useContext(AuthContext);
+
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (!token) {
+        console.error("No token found");
+        return;
+      }
+
+      try {
+        const status = 0; 
+        const response = await fetch(
+          `http://localhost:3001/admin/getOrders?status=${status}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Fetched orders:", data);
+          setItems(data);
+        } else {
+          console.error("Error fetching orders:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+
+    fetchOrders();
+  }, [token]);
+
   return (
     <div className="h-screen w-screen">
       <AdminNavbar />

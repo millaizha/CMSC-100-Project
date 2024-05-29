@@ -59,7 +59,7 @@ const getRegisteredUsers = async (req, res) => {
 
 // show all orders
 const getOrders = async (req, res) => {
-  const { status } = req.body;
+  const { status } = req.query;
   try {
     const orders = await Order.find({ status: status }).sort({
       dateTimeOrdered: -1,
@@ -74,7 +74,7 @@ const getOrders = async (req, res) => {
 const confirmOrder = async (req, res) => {
   try {
     const { orderId } = req.body;
-    const order = await Order.findById(orderId);
+    const order = await Order.findById(orderId);          
     const productOrders = order.products;
     // check if the inventory suffices
     let orderSuffices = true;

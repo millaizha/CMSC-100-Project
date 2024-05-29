@@ -1,16 +1,34 @@
-import { useState } from "react";
 import { FaRegCircleXmark  } from 'react-icons/fa6'
+import { useState, useEffect, useContext, useRef } from "react";
+import { AuthContext } from "../contexts/AuthContext";
+import axios from 'axios';
 
 // TODO: connect to db
 
 export default function AdminOrderCard({ users }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const { token } = useContext(AuthContext);
 
   const openModal = (index) => {
       setShowModal(true);
       setSelectedIndex(index);
   };
+
+ 
+  const confirmOrder = async (id) => {
+    setShowModal(false)
+    try{
+      await axios.post(
+        "http://localhost:3001/admin/confirmOrder",
+        { orderId: id },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } catch (error) {
+      console.error("Error confirming order:", error);
+    }
+    window.location.reload(); // refresh page to get current data
+  }
 
   const getOverallSales = () => {
       let total = 0;
@@ -42,7 +60,13 @@ export default function AdminOrderCard({ users }) {
                             <div className="font-light">({user.email})</div>
                         </div>
                     </div>
+                    <div className="spacer mx-auto"></div>
+
+                    <div className="flex flex-col gap-1 rounded-xl px-4 py-2 font-black bg-[#ffc64d]">
+                        <h1>Pending</h1>
+                    </div>
                 </div>
+
             </div>
             {user.products.map((product, key) => {
               return (
@@ -50,7 +74,7 @@ export default function AdminOrderCard({ users }) {
                     <div className="flex items-center gap-3">
                         <div className="flex gap-4">
                             <img
-                              src={product.imageURL}
+                              src={product.imageUrl}
                               alt=""
                               className="object-cover w-20 h-20"
                             />
@@ -98,7 +122,7 @@ export default function AdminOrderCard({ users }) {
                               <div className="w-full h-24 px-4 py-2 ">
                                   <div className="flex items-center gap-3">
                                       <img
-                                        src={product.imageURL}
+                                        src={product.imageUrl}
                                         alt=""
                                         className="object-cover w-20 h-20"
                                       />
@@ -124,7 +148,8 @@ export default function AdminOrderCard({ users }) {
                           <h1 className="font-bold">P{getOverallSales()}</h1>
                       </div>
                       <div className="flex items-center justify-end p-6">
-                        <button
+                        <div>
+                          <button
                           className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                           type="button"
                           onClick={() => setShowModal(false)}
@@ -134,10 +159,11 @@ export default function AdminOrderCard({ users }) {
                         <button
                           className="bg-[#40573C] text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                           type="button"
-                          onClick={() => setShowModal(false)}
+                          onClick={() => confirmOrder(users[selectedIndex]._id)}
                         >
                           Confirm
                         </button>
+                        </div>
                       </div>
                   </div>
               </div>

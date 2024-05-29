@@ -1,10 +1,9 @@
 import InventoryCard from "../../components/InventoryCard";
 import AdminNavbar from "../../components/AdminNavbar";
 import { FaRegCircleXmark  } from 'react-icons/fa6'
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import Popup from "../../components/AdminUpdatePopup";
-import { useState } from "react";
-import Popup from "../../components/Popup";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import Lenis from "@studio-freight/lenis";
 
@@ -15,6 +14,12 @@ export default function Shop() {
   const [showModal, setShowModal] = useState(false);
   const [imageURL, setImageURL] = useState("");
   const [products, setProducts] = useState([]);
+
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [filterOption, setFilterOption] = useState({});
+  const [sortOption, setSortOption] = useState();
+  const [activeSort, setActiveSort] = useState(null);
+  const filterRef = useRef(null);
 
   const { token } = useContext(AuthContext);
 
@@ -40,26 +45,6 @@ export default function Shop() {
     e.preventDefault();
   };
 
-  const products = [
-    {
-        name: "Orange",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Orange-Fruit-Pieces.jpg/2560px-Orange-Fruit-Pieces.jpg",
-        description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Asperiores cupiditate quam veniam vel fugit error explicabo quaerat ducimus doloremque nesciunt mollitia laborum eius ullam quod velit, nostrum consequuntur delectus illo.",
-        type: "Fruit",
-        price: 99,
-        unit: "piece",
-        stock: 100
-    },
-    {
-        name: "Orange orange",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Orange-Fruit-Pieces.jpg/2560px-Orange-Fruit-Pieces.jpg",
-        description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Asperiores cupiditate quam veniam vel fugit error explicabo quaerat ducimus doloremque nesciunt mollitia laborum eius ullam quod velit, nostrum consequuntur delectus illo.",
-        type: "Fruit",
-        price: 299,
-        unit: "piece",
-        stock: 100
-    },
-  ]
   /**
    * useEffect (for smooth scrolling):
    * - Initializes and configures the Lenis smooth scrolling library.
@@ -107,7 +92,7 @@ export default function Shop() {
           const data = await response.json();
           console.log("Fetched products:", data);
           setProducts(data);
-          // setFilteredProducts(data);
+          setFilteredProducts(data);
         } else {
           console.error("Error fetching products:", response.statusText);
         }
@@ -121,12 +106,51 @@ export default function Shop() {
     fetchProducts();
   }, [token]);
 
+  useEffect(() => {
+    let filtered = [...products];
+
+    if (filterOption.name) {
+      filtered = filtered.filter((product) =>
+        product.name.toLowerCase().includes(filterOption.name.toLowerCase())
+      );
+    }
+
+    if (sortOption) {
+      const [key, order] = Object.entries(sortOption)[0];
+      filtered.sort((a, b) => {
+        if (order === 1) return a[key] > b[key] ? 1 : -1;
+        else return a[key] < b[key] ? 1 : -1;
+      });
+    }
+
+    setFilteredProducts(filtered);
+  }, [filterOption, sortOption, products]);
+
+  /** handleSort: Sets the sorting option based on the clicked button. */
+  const handleSort = (key, order) => {
+    setActiveSort({ key, order });
+    setSortOption({ [key]: order === "Ascending" ? 1 : -1 });
+  };
+
+  /** handleFilter: Updates the filter options based on user input. */
+  const handleFilter = (key, value) => {
+    setFilterOption((prev) => ({ ...prev, [key]: value }));
+  };
+
+  /** handleReset: Clears all filter and sorting options. */
+  const handleReset = () => {
+    setFilterOption({});
+    setSortOption(null);
+    setActiveSort(null);
+    filterRef.current.value = "";
+  };
+
   return (
     <div className="h-screen w-screen">
       <AdminNavbar />
 
       <div className="main-container flex flex-grow mt-3">
-        <div className="filter-container w-[275px] h-[650px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0">
+        <div className="filter-container w-5/6 sm:w-[275px] h-[780px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0 sm:sticky sm:top-36">
           <div className="flex flex-row justify-center items-center gap-2">
             <button className="form-button mb-6" 
             // onClick={addProduct}
@@ -135,28 +159,100 @@ export default function Shop() {
               + Add Product
             </button>
           </div>
-          <div className="flex flex-col gap-2">
-            <h1 className="text-2xl font-black mb-2">FILTER BY</h1>
-            <button className="bg-white text-xl rounded-lg w-full p-4 ">
-              Name
-            </button>
-            <button className="bg-white text-xl rounded-lg w-full p-4 ">
-              Type
-            </button>
-            <button className="bg-white text-xl rounded-lg w-full p-4 ">
-              Price
-            </button>
-            <button className="bg-white text-xl rounded-lg w-full p-4 ">
-              Quantity
-            </button>
-          </div>
           <div className="flex flex-col gap-2 mt-6">
             <h1 className="text-2xl font-black mb-2">SORT BY</h1>
-            <button className="bg-white text-xl rounded-lg w-full p-4 ">
-              Ascending
+            <button
+              className={`bg-white text-xl rounded-lg w-full p-4 py-3  flex items-center gap-2 transition-colors ease-out ${
+                activeSort?.key === "name" && activeSort?.order === "Ascending"
+                  ? "bg-green-300"
+                  : ""
+              }`}
+              onClick={() => handleSort("name", "Ascending")}
+            >
+              <FaArrowUp /> Name Ascending
             </button>
-            <button className="bg-white text-xl rounded-lg w-full p-4 ">
-              Descending
+            <button
+              className={`bg-white text-xl rounded-lg w-full p-4 py-3  flex items-center gap-2 transition-colors ease-out ${
+                activeSort?.key === "price" && activeSort?.order === "Ascending"
+                  ? "bg-green-300"
+                  : ""
+              }`}
+              onClick={() => handleSort("price", "Ascending")}
+            >
+              <FaArrowUp />
+              Price Ascending
+            </button>
+
+            <button
+              className={`bg-white text-xl rounded-lg w-full p-4  py-3 flex items-center gap-2 transition-colors ease-out ${
+                activeSort?.key === "type" && activeSort?.order === "Ascending"
+                  ? "bg-green-300"
+                  : ""
+              }`}
+              onClick={() => handleSort("type", "Ascending")}
+            >
+              <FaArrowUp /> Type Ascending
+            </button>
+            <button
+              className={`bg-white text-lg rounded-lg w-full p-4 py-3  flex items-center gap-2 transition-colors ease-out ${
+                activeSort?.key === "quantity" &&
+                activeSort?.order === "Ascending"
+                  ? "bg-green-300"
+                  : ""
+              }`}
+              onClick={() => handleSort("quantity", "Ascending")}
+            >
+              <FaArrowUp /> Quantity Ascending
+            </button>
+            <button
+              className={`bg-white text-xl rounded-lg w-full p-4 py-3  flex items-center gap-2  transition-colors ease-out mt-4 ${
+                activeSort?.key === "name" && activeSort?.order === "Descending"
+                  ? "bg-green-300"
+                  : ""
+              }`}
+              onClick={() => handleSort("name", "Descending")}
+            >
+              <FaArrowDown /> Name Descending
+            </button>
+            <button
+              className={`bg-white text-xl rounded-lg w-full p-4 py-3  flex items-center gap-2 transition-colors ease-out ${
+                activeSort?.key === "price" &&
+                activeSort?.order === "Descending"
+                  ? "bg-green-300"
+                  : ""
+              }`}
+              onClick={() => handleSort("price", "Descending")}
+            >
+              <FaArrowDown />
+              Price Descending
+            </button>
+            <button
+              className={`bg-white text-xl rounded-lg w-full p-4 py-3  flex items-center gap-2 transition-colors ease-out ${
+                activeSort?.key === "type" && activeSort?.order === "Descending"
+                  ? "bg-green-300"
+                  : ""
+              }`}
+              onClick={() => handleSort("type", "Descending")}
+            >
+              <FaArrowDown />
+              Type Descending
+            </button>
+            <button
+              className={`bg-white text-lg rounded-lg w-full p-4  py-3 flex items-center gap-2  transition-colors ease-out ${
+                activeSort?.key === "quantity" &&
+                activeSort?.order === "Descending"
+                  ? "bg-green-300"
+                  : ""
+              }`}
+              onClick={() => handleSort("quantity", "Descending")}
+            >
+              <FaArrowDown /> Quantity Descending
+            </button>
+            <button
+              className="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded mt-4"
+              onClick={handleReset}
+            >
+              Reset Filters
             </button>
           </div>
         </div>

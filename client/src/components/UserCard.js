@@ -21,7 +21,7 @@ export default function UserCard({ users }) {
                     >
                         <div className="flex h-full items-center gap-3">
                             <div className="flex flex-col gap-1">
-                                <h1 className="font-black">{user.name}</h1>
+                                <h1 className="font-black">{user.firstName} {user.middleName} {user.lastName}</h1>
                             </div>
                     
                             <div className="spacer mx-auto"></div>
@@ -50,7 +50,7 @@ export default function UserCard({ users }) {
                                     </button>
                                 </div>
                                 <div className="relative p-6 flex-auto">
-                                    <h1 className="font-bold">Name: <p className="font-medium">{users[selectedIndex].name}</p></h1>
+                                    <h1 className="font-bold">Name: <p className="font-medium">{users[selectedIndex].firstName} {users[selectedIndex].middleName} {users[selectedIndex].lastName}</p></h1>
                                     <div className="font-bold">Email: <p className="font-medium">{users[selectedIndex].email}</p></div>
                                     <div className="font-bold">Address: <p className="font-medium">{users[selectedIndex].address}</p></div>
                                 </div>

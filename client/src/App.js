@@ -10,6 +10,8 @@ import ProtectedRoute from "./contexts/ProtectedRoute";
 import Orders from "./pages/user/Orders";
 import AdminReport from "./pages/admin/AdminReport";
 import AdminInventory from "./pages/admin/AdminInventory";
+import AdminSales from "./pages/admin/AdminSales";
+import AdminUsers from "./pages/admin/AdminUsers";
 
 function App() {
   return (
@@ -46,8 +48,31 @@ function App() {
               path="/admin"
               element={
                 <ProtectedRoute>
-                  {/* <AdminReport /> */}
                   <AdminInventory />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin-report"
+              element={
+                <ProtectedRoute>
+                <AdminReport />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin-sales"
+              element={
+                <ProtectedRoute>
+                  <AdminSales />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin-users"
+              element={
+                <ProtectedRoute>
+                  <AdminUsers />
                 </ProtectedRoute>
               }
             />

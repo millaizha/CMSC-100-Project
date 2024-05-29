@@ -8,7 +8,6 @@ export default function InventoryCard({ show, products }) {
   const [productName, setProductName] = useState('');
   const [productType, setProductType] = useState('');
   const [productDescription, setProductDescription] = useState('');
-  const [productUnit, setProductUnit] = useState('');
   const [productPrice, setProductPrice] = useState('');
   const [productStock, setProductStock] = useState('');
   const [productImage, setProductImage] = useState('');
@@ -24,11 +23,10 @@ export default function InventoryCard({ show, products }) {
           setProductName(products[selectedIndex].name);
           setProductType(products[selectedIndex].type);
           setProductDescription(products[selectedIndex].description);
-          setProductUnit(products[selectedIndex].unit);
           setProductPrice(products[selectedIndex].price);
-          setProductStock(products[selectedIndex].stock);
-          setProductImage(products[selectedIndex].image);
-          setImageURL(products[selectedIndex].image); // Initialize imageURL with the product image
+          setProductStock(products[selectedIndex].quantity);
+          setProductImage(products[selectedIndex].imageUrl);
+          setImageURL(products[selectedIndex].imageUrl); // Initialize imageURL with the product image
       }
   }, [selectedIndex, products]);
 
@@ -42,10 +40,6 @@ export default function InventoryCard({ show, products }) {
 
   const handleProductDescriptionChange = (event) => {
     setProductDescription(event.target.value);
-  };
-
-  const handleProductUnitChange = (event) => {
-    setProductUnit(event.target.value);
   };
 
   const handleProductPriceChange = (event) => {
@@ -73,7 +67,7 @@ export default function InventoryCard({ show, products }) {
           <div className="h-[470px] w-[270px] bg-[#F2F2F2] rounded-2xl flex flex-col p-2" key = {i}>
             <div className="h-[230px] w-full object-cover rounded-2xl overflow-hidden">
               <img
-                src={product.image}
+                src={product.imageUrl}
                 alt=""
                 className="object-cover w-full h-full"
               />
@@ -88,15 +82,15 @@ export default function InventoryCard({ show, products }) {
             <div className="flex gap-1 items-end mb-1">
               <div className="text-xl font-bold">PHP</div>
               <div className="text-4xl font-bold">{product.price}</div>
-              <div className="font-bold">/ {product.unit}</div>
+              <div className="font-bold">/ piece</div>
             </div>
             <div className="flex gap-1 items-end mb-1">
               <div className="text-xl font-bold">Stocks:</div>
-              <div className="text-xl font-bold">{product.stock}</div>
+              <div className="text-xl font-bold">{product.quantity}</div>
             </div>
             
             <div className="flex gap-2">
-              {/* <button className="rounded-xl bg-[#40573C] text-white px-4 w-full mx-auto text-md font-bold" onClick={() => show(product.image, product.name)}>Update stock</button> */}
+              {/* <button className="rounded-xl bg-[#40573C] text-white px-4 w-full mx-auto text-md font-bold" onClick={() => show(product.imageUrl, product.name)}>Update stock</button> */}
               <button className="rounded-xl bg-[#40573C] text-white px-4 w-full mx-auto text-md font-bold" onClick={() => openModal(i)}>Edit Product</button>
             </div>
             </div>
@@ -188,23 +182,6 @@ export default function InventoryCard({ show, products }) {
                                   placeholder="Product Description"
                                   value={productDescription}
                                   onChange={handleProductDescriptionChange}
-                                  // ref={typeRef}
-                                  />
-                                </div>
-                              </div>
-                              <div class="md:flex md:items-center mb-6">
-                                <div class="md:w-1/3">
-                                  <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-full-name">
-                                    Product Unit
-                                  </label>
-                                </div>
-                                <div class="md:w-2/3">
-                                  <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-emerald-600" 
-                                  id="type"
-                                  type="text"
-                                  placeholder="Product Unit"
-                                  value={productUnit}
-                                  onChange={handleProductUnitChange}
                                   // ref={typeRef}
                                   />
                                 </div>
