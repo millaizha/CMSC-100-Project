@@ -44,6 +44,20 @@ export default function AdminOrderCard({ users }) {
     return total;
   };
 
+  const cancelOrder = async (id) => {
+    setShowModal(false)
+    try{
+      await axios.post(
+        "http://localhost:3001/admin/cancelOrder",
+        { orderId: id },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } catch (error) {
+      console.error("Error canceling order:", error);
+    }
+    window.location.reload(); // refresh page to get current data
+  }
+
   return (
     <div className="list-container mt-8 flex flex-col gap-2 h-full">
       {users.map((user, i) => {
@@ -156,7 +170,7 @@ export default function AdminOrderCard({ users }) {
                           <button
                           className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                           type="button"
-                          onClick={() => setShowModal(false)}
+                          onClick={() => cancelOrder(users[selectedIndex]._id)}
                         >
                           Cancel
                         </button>

@@ -5,6 +5,7 @@ import {
   getProductListings,
   getRegisteredUsers,
   getOrders,
+  cancelOrder,
   updateStock,
 } from "../controllers/admin.js";
 import { verifyToken, verifyIfAdmin } from "../utils/middleware.js";
@@ -120,6 +121,8 @@ adminRoutes.get("/getOrders", verifyToken, verifyIfAdmin, getOrders);
  * Else: Status code 500; "Order confirmation failed"
  */
 adminRoutes.post("/confirmOrder", verifyToken, verifyIfAdmin, confirmOrder);
+
+adminRoutes.post("/cancelOrder", verifyToken, verifyIfAdmin, cancelOrder);
 
 adminRoutes.post("/updateStock", verifyToken, verifyIfAdmin, updateStock);
 

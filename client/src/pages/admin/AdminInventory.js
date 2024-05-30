@@ -59,124 +59,124 @@ export default function Shop() {
   };
 
   const handleButtonClick = (image, name) => {
-        setShowPopup(true);
-        setPopupImage(image);
-        setPopupName(name);
-      };
-    
-      const handleClosePopup = () => {
-        setShowPopup(false);
-      };
-    
-      const openModal = () => {
-        setShowModal(true);
-      };
-    
-      const handleProductImageChange = (event) => {
-        const newImageURL = event.target.value;
-        setImageURL(newImageURL);
-      };
-    
-      const handleSubmit = async (e) => {
-        e.preventDefault();
-        setShowModal(false);
-        try{
-          await axios.post(
-            "http://localhost:3001/admin/addProduct",
-            { name: productName, 
-              type: productType, 
-              description: productDescription, 
-              price: productPrice, 
-              quantity: productStock, 
-              imageUrl: imageURL},
-            { headers: { Authorization: `Bearer ${token}` } }
-          );
-        } catch (error) {
-          console.error("Error adding order:", error);
-        }
-        window.location.reload(); // refresh page to get current data
-    
-        setImageURL('');
-        setProductName('');
-        setProductType('');
-        setProductDescription('');
-        setProductPrice('');
-        setProductStock('');
-      };
-    
-      /**
-       * useEffect (for smooth scrolling):
-       * - Initializes and configures the Lenis smooth scrolling library.
-       * - This effect runs only once when the component mounts.
-       */
-      useEffect(() => {
-        const lenis = new Lenis();
-    
-        function raf(time) {
-          lenis.raf(time);
-          requestAnimationFrame(raf);
-        }
-    
-        requestAnimationFrame(raf);
-      }, []);
-    
-      /**
-       * useEffect (for fetching products):
-       * - Fetches the product data from the backend API when the component mounts.
-       * - Updates the `products` and `filteredProducts` state with the fetched data.
-       * - Sets `loading` to `false` after the data is fetched.
-       * - This effect has a dependency on the `token` to re-fetch data if the user's authentication changes.
-       */
-      useEffect(() => {
-        const fetchProducts = async () => {
-          if (!token) {
-            console.error("No token found");
-            setLoading(false)
-            return;
+    setShowPopup(true);
+    setPopupImage(image);
+    setPopupName(name);
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const handleProductImageChange = (event) => {
+    const newImageURL = event.target.value;
+    setImageURL(newImageURL);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setShowModal(false);
+    try{
+      await axios.post(
+        "http://localhost:3001/admin/addProduct",
+        { name: productName, 
+          type: productType, 
+          description: productDescription, 
+          price: productPrice, 
+          quantity: productStock, 
+          imageUrl: imageURL},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } catch (error) {
+      console.error("Error adding order:", error);
+    }
+    window.location.reload(); // refresh page to get current data
+
+    setImageURL('');
+    setProductName('');
+    setProductType('');
+    setProductDescription('');
+    setProductPrice('');
+    setProductStock('');
+  };
+
+  /**
+   * useEffect (for smooth scrolling):
+   * - Initializes and configures the Lenis smooth scrolling library.
+   * - This effect runs only once when the component mounts.
+   */
+  useEffect(() => {
+    const lenis = new Lenis();
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+  }, []);
+
+  /**
+   * useEffect (for fetching products):
+   * - Fetches the product data from the backend API when the component mounts.
+   * - Updates the `products` and `filteredProducts` state with the fetched data.
+   * - Sets `loading` to `false` after the data is fetched.
+   * - This effect has a dependency on the `token` to re-fetch data if the user's authentication changes.
+   */
+  useEffect(() => {
+    const fetchProducts = async () => {
+      if (!token) {
+        console.error("No token found");
+        setLoading(false)
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          "http://localhost:3001/admin/getProductListings",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           }
-    
-          try {
-            const response = await fetch(
-              "http://localhost:3001/admin/getProductListings",
-              {
-                method: "GET",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-    
-            if (response.ok) {
-              const data = await response.json();
-              console.log("Fetched products:", data);
-              setProducts(data);
-            } else {
-              console.error("Error fetching products:", response.statusText);
-            }
-          } catch (error) {
-            console.error("Error fetching products:", error);
-          } finally {
-            setLoading(false)
-          }
-        };
-    
-        fetchProducts();
-      }, [token]);
-    
-      /** handleSort: Sets the sorting option based on the clicked button. */
-      const handleSort = (key, order) => {
-        setActiveSort({ key, order });
-        setSortOption({ [key]: order === "Ascending" ? 1 : -1 });
-      };
-    
-      /** handleReset: Clears all filter and sorting options. */
-      const handleReset = () => {
-        setFilterOption({});
-        setSortOption(null);
-        setActiveSort(null);
-        filterRef.current.value = "";
-      };
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Fetched products:", data);
+          setProducts(data);
+        } else {
+          console.error("Error fetching products:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false)
+      }
+    };
+
+    fetchProducts();
+  }, [token]);
+
+  /** handleSort: Sets the sorting option based on the clicked button. */
+  const handleSort = (key, order) => {
+    setActiveSort({ key, order });
+    setSortOption({ [key]: order === "Ascending" ? 1 : -1 });
+  };
+
+  /** handleReset: Clears all filter and sorting options. */
+  const handleReset = () => {
+    setFilterOption({});
+    setSortOption(null);
+    setActiveSort(null);
+    filterRef.current.value = "";
+  };
 
   return (
     <div className="min-h-screen w-screen flex flex-col">
