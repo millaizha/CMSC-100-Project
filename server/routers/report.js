@@ -45,16 +45,10 @@ reportRoutes.get(
  * Only sales are included (orders that are completed with status 1).
  * Ordered by aggregate sales per product.
  * Orders between the earliest and latest dates are included.
- * Ex: 2024-05-25 doesn't include that day in 5 PM, it strictly means at 12 MN.
  * Limit indicates the maximum number of collections to be shown.
  *
  * Requires the Authorization header with the value "Bearer <token>".
  * User accessing it must be an admin.
- *
- * Inputs for req.body:
- * earliestDate - String (format: YYYY-MM-DD)
- * latestDate - String (format: YYYY-MM-DD)
- * limit - Integer
  *
  * Returns:
  * An array containing the aggregated product info with the format:

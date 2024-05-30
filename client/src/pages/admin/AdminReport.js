@@ -1,4 +1,4 @@
-import SaleReportCard from "../../components/SaleReportCard";
+import ProductSaleReport from "../../components/ProductSaleReport";
 import TimeReportCard from "../../components/TimeReportCard";
 import AdminNavbar from "../../components/AdminNavbar";
 import Lenis from "@studio-freight/lenis";
@@ -23,17 +23,15 @@ export default function AdminReport() {
   }, []);
 
   useEffect(() => {
-    const fetchOrders = async () => {
+    const fetchProducts = async () => {
       if (!token) {
         console.error("No token found");
         return;
       }
 
       try {
-        const earliestDate = "2020-01-01";
-        const limit = 5;
         const response = await fetch(
-          `http://localhost:3001/report/getRecentSales?earliestDate=${earliestDate}&limit=${limit}`,
+          `http://localhost:3001/report/getProductsSold`,
           {
             method: "GET",
             headers: {
@@ -45,18 +43,19 @@ export default function AdminReport() {
 
         if (response.ok) {
           const data = await response.json();
-          console.log("Fetched orders:", data);
+          console.log("Fetched products:", data);
           setItems(data);
         } else {
-          console.error("Error fetching orders:", response.statusText);
+          console.error("Error fetching products:", response.statusText);
         }
       } catch (error) {
-        console.error("Error fetching orders:", error);
+        console.error("Error fetching orproductsders:", error);
       }
     };
 
-    fetchOrders();
+    fetchProducts();
   }, [token]);
+
     return (
         <div className="h-screen w-screen">
           <AdminNavbar />
@@ -64,13 +63,17 @@ export default function AdminReport() {
           <div className="main-container flex flex-grow mt-3">
             
             <div className="filter-container w-[700px] p-6 m-12 mt-0 rounded-2xl flex-shrink-0">
-              <SaleReportCard users={items}/>
+              <h1 className="font-black text-4xl mb-6">PRODUCT SALES REPORT</h1>
+              {items.map((product) => (
+                <ProductSaleReport product={product}/>
+              ))}
             </div>
 
             <div className="spacer mx-auto"></div>
 
             <div className="filter-container w-[1000px] p-6 m-12 mt-0 rounded-2xl flex-shrink-0">
-              <TimeReportCard items={items}/>
+            <h1 className="font-black text-4xl mb-6"> SALES REPORT</h1>
+              {/* <TimeReportCard items={items}/> */}
             </div>
 
         </div>

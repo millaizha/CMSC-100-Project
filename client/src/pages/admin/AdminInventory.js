@@ -300,7 +300,7 @@ export default function Shop() {
           </div>
         </div>
         <div className="content-container p-6 pt-0 h-full w-full overflow-y-auto flex flex-col items-center sm:items-start">
-          <h1 className="font-black text-6xl mb-6">OUR PRODUCTS</h1>
+          <h1 className="font-black text-6xl mb-6">INVENTORY</h1>
 
           {loading ? (
             <div className="flex flex-wrap gap-2">

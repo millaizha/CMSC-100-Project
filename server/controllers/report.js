@@ -46,7 +46,11 @@ const getCancelledOrders = async (req, res) => {
 // Ex: 2024-05-25 doesn't include that day in 5 PM, it strictly means at 12 MN
 // limit is applied in case the products are too much
 const getProductsSold = async (req, res) => {
-  const { earliestDate, latestDate, limit } = req.body;
+  const earliestDate = "2020-01-01";
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1); // Add 1 day to the current date
+  const latestDate = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${tomorrow.getDate().toString().padStart(2, '0')}`;
+  const limit = 50;
   try {
     const productsSold = await Order.aggregate([
       {
@@ -82,6 +86,7 @@ const getProductsSold = async (req, res) => {
       {
         $project: {
           name: "$productInfo.name",
+          imageUrl: "$productInfo.imageUrl",
           description: "$productInfo.description",
           price: "$productInfo.price",
           totalQuantity: "$totalQuantity",
