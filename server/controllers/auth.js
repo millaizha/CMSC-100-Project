@@ -58,6 +58,7 @@ const login = async (req, res) => {
       token,
       firstName: user.firstName,
       userType: user.userType,
+      address: user.address,
     });
   } catch (error) {
     res.status(500).json({ error: "Error logging in" });
