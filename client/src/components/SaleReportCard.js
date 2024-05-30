@@ -34,10 +34,7 @@ export default function SaleReportCard({ users }) {
       };
 
     return( 
-        <div className="main-container mt-3 flex">
-        <div className="spacer mx-auto"></div>
         <div className="cart-container w-[800px]">
-          <h1 className="font-black text-6xl">Sales Report</h1>
           <div className="list-container mt-8 flex flex-col gap-2 h-full">
             {users.map((user, i) => {
                 return (
@@ -59,16 +56,28 @@ export default function SaleReportCard({ users }) {
                             <div className="flex flex-col gap-1">
                                 <h1 className="font-bold">Total - P{getTotal(user.products)}</h1>
                             </div>
-                            
+                            {user.status === 1 ? (
                             <div className="flex flex-col gap-1 rounded-xl px-4 py-2 font-black bg-[#80EF80]">
                                 <h1>Confirmed</h1>
                             </div>
+                            ) : (
+                            <div className="flex flex-col gap-1 rounded-xl px-4 py-2 font-black bg-[#FF6961]">
+                                <h1>Cancelled</h1>
+                            </div>
+                            )}
                         </div>
                     </div>
                     {user.products.map((product, key) => {
                         return (
-                        <div className="w-full h-16 bg-[#EEDBDB] rounded-xl px-4 py-2">
+                        <div className="w-full h-20 bg-[#EEDBDB] rounded-xl px-4 py-2">
                             <div className="flex items-center gap-3">
+                                <div className="overflow-hidden h-full w-24 bg-red-300 rounded-xl">
+                                    <img
+                                        src={product.imageUrl}
+                                        alt={product.name}
+                                        className="object-cover h-16 w-full"
+                                    />
+                                </div>
                                 <div className="flex flex-col gap-1">
                                     <h1 className="font-black">{product.name}</h1>
                                 </div>
@@ -92,8 +101,6 @@ export default function SaleReportCard({ users }) {
                 )
             })}
         </div>
-        </div>
-        <div className="spacer mx-auto"></div>
         {showModal && selectedIndex !== null && (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -139,12 +146,22 @@ export default function SaleReportCard({ users }) {
                                   </div>
                               </div>
                             )
-                          })}
+                        })}
                       </div>
                       <div className="flex items-center relative p-6 flex-auto">
                           <h1 className="font-bold">Order Total </h1>
                           <div className="spacer mx-auto"></div>
                           <h1 className="font-bold">P{getOverallSales()}</h1>
+                          <div className="spacer mx-auto"></div>
+                          {users[selectedIndex].status === 1 ? (
+                            <div className="flex flex-col gap-1 rounded-xl px-4 py-2 font-black bg-[#80EF80]">
+                                <h1>Confirmed</h1>
+                            </div>
+                            ) : (
+                            <div className="flex flex-col gap-1 rounded-xl px-4 py-2 font-black bg-[#FF6961]">
+                                <h1>Cancelled</h1>
+                            </div>                                                                          
+                          )}
                       </div>
                   </div>
               </div>

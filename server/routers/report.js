@@ -3,6 +3,7 @@ import {
   getMonthlyReport,
   getProductsSold,
   getRecentSales,
+  getCancelledOrders,
   getWeeklyReport,
   getYearlyReport,
 } from "../controllers/report.js";
@@ -30,6 +31,13 @@ const reportRoutes = express.Router();
  * Else: Status code 500; "Unable to get recent sales"
  */
 reportRoutes.get("/getRecentSales", verifyToken, verifyIfAdmin, getRecentSales);
+
+reportRoutes.get(
+  "/getCancelledOrders",
+  verifyToken,
+  verifyIfAdmin,
+  getCancelledOrders
+);
 
 /**
  * GET /report/getProductsSold

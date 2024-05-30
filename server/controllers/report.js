@@ -22,6 +22,25 @@ const getRecentSales = async (req, res) => {
   }
 };
 
+const getCancelledOrders = async (req, res) => {
+  const { earliestDate, limit } = req.query;
+
+  try {
+    const sales = await Order.find({
+      status: 2,
+      dateTimeOrdered: { $gte: new Date(earliestDate) },
+    })
+      .sort({
+        dateTimeOrdered: -1,
+      })
+      .limit(limit);
+    res.status(200).json(sales);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Unable to get cancelled orders." });
+  }
+};
+
 // get all the list of products sold in a given time interval
 // YYYY-MM-DD format
 // Ex: 2024-05-25 doesn't include that day in 5 PM, it strictly means at 12 MN
@@ -221,6 +240,7 @@ const getYearlyReport = async (req, res) => {
 
 export {
   getRecentSales,
+  getCancelledOrders,
   getProductsSold,
   getWeeklyReport,
   getMonthlyReport,
