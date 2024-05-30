@@ -15,6 +15,22 @@ export default function Cart() {
   const [cancelledItems, setCancelledItems] = useState([]);
   const [activeStatus, setActiveStatus] = useState(0);
 
+   /**
+   * useEffect (for smooth scrolling):
+   * - Initializes and configures the Lenis smooth scrolling library.
+   * - This effect runs only once when the component mounts.
+   */
+   useEffect(() => {
+    const lenis = new Lenis();
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+  }, []);
+
   useEffect(() => {
     const fetchPendingOrders = async () => {
       if (!token) {
@@ -120,20 +136,7 @@ export default function Cart() {
     <div className="h-screen w-screen">
       <AdminNavbar />
 
-      {/* <div className="main-container mt-3 flex">
-        <div className="spacer mx-auto"></div>
-        <div className="cart-container w-[800px]">
-          <h1 className="font-black text-6xl flex flex-row justify-center">Orders</h1>
-          {items.length === 0 ? 
-          <div className="flex flex-col items-center justify-center mt-20">
-          <img src={IMAGE} alt="No product" />
-          <span className="font-semibold">Oops! No orders placed yet.</span>
-        </div>:
-         <AdminOrderCard users={items} />}
-        </div>
-        <div className="spacer mx-auto"></div>
-      </div> */}
-      <div className="main-container pt-3 flex flex-grow mb-12">
+      <div className="main-container p-3 flex flex-grow mb-12">
         <div className="spacer mx-auto"></div>
         <div className="cart-container w-[800px]">
           <h1 className="font-black text-6xl">ORDERS</h1>
@@ -173,18 +176,40 @@ export default function Cart() {
             </button>
           </div>
           {activeStatus === 0 ? (
-            <div className="mt-4 mb-10">
-              <AdminOrderCard users={pendingItems} />
-            </div>
-          ) : (  
-            activeStatus === 1 ? (
-              <div className="mt-4 mb-10">
-                <SaleReportCard users={confirmedItems} />
+            pendingItems.length === 0 ? (
+              <div className="flex flex-col items-center justify-center mt-20">
+                <img src={IMAGE} alt="No product" />
+                <span className="font-semibold">Oops! No orders placed yet.</span>
               </div>
-            ) : 
-            <div className="mt-4 mb-10">
+            ) : (
+              <div className="mt-4 mb-10">
+                <AdminOrderCard users={pendingItems} />
+              </div>
+            )
+          ) : (
+            activeStatus === 1 ? (
+              confirmedItems.length === 0 ? (
+                <div className="flex flex-col items-center justify-center mt-20">
+                  <img src={IMAGE} alt="No product" />
+                  <span className="font-semibold">Oops! No orders confirmed yet.</span>
+                </div>
+              ) : (
+                <div className="mt-4 mb-10">
+                  <SaleReportCard users={confirmedItems} />
+                </div>
+              )
+            ) : (
+              cancelledItems.length === 0 ? (
+                <div className="flex flex-col items-center justify-center mt-20">
+                  <img src={IMAGE} alt="No product" />
+                  <span className="font-semibold">Oops! No orders cancelled yet.</span>
+                </div>
+              ) : (
+              <div className="mt-4 mb-10">
                 <SaleReportCard users={cancelledItems} />
-              </div>  
+              </div>
+              )
+            )
           )}
         </div>
         <div className="spacer mx-auto"></div>
