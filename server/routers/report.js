@@ -85,10 +85,6 @@ reportRoutes.get(
  * Requires the Authorization header with the value "Bearer <token>".
  * User accessing it must be an admin.
  *
- * Inputs for req.body:
- * earliestDate - String (format: YYYY-MM-DD)
- * latestDate - String (format: YYYY-MM-DD)
- *
  * Returns:
  * An array containing aggregated info with the format:
  * {
@@ -119,10 +115,6 @@ reportRoutes.get(
  * Requires the Authorization header with the value "Bearer <token>".
  * User accessing it must be an admin.
  *
- * Inputs for req.body:
- * earliestDate - String (format: YYYY-MM-DD)
- * latestDate - String (format: YYYY-MM-DD)
- *
  * Returns:
  * An array containing aggregated info with the format:
  * {
@@ -152,10 +144,6 @@ reportRoutes.get(
  *
  * Requires the Authorization header with the value "Bearer <token>".
  * User accessing it must be an admin.
- *
- * Inputs for req.body:
- * earliestDate - String (format: YYYY-MM-DD)
- * latestDate - String (format: YYYY-MM-DD)
  *
  * Returns:
  * An array containing aggregated info with the format:

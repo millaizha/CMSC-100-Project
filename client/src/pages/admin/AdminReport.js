@@ -9,6 +9,9 @@ export default function AdminReport() {
   const { token } = useContext(AuthContext);
 
   const [items, setItems] = useState([]);
+  const [weeklyData, setWeeklyData] = useState([]);
+  const [monthlyData, setMonthlyData] = useState([]);
+  const [yearlyData, setYearlyData] = useState([]);
 
 
   useEffect(() => {
@@ -49,10 +52,103 @@ export default function AdminReport() {
           console.error("Error fetching products:", response.statusText);
         }
       } catch (error) {
-        console.error("Error fetching orproductsders:", error);
+        console.error("Error fetching products:", error);
       }
     };
 
+    const fetchWeeklyData = async () => {
+      if (!token) {
+        console.error("No token found");
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `http://localhost:3001/report/getWeeklyReport`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Fetched products:", data);
+          setWeeklyData(data);
+        } else {
+          console.error("Error fetching reports:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching reports:", error);
+      }
+    };
+
+    const fetchMonthlyData = async () => {
+      if (!token) {
+        console.error("No token found");
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `http://localhost:3001/report/getMonthlyReport`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Fetched products:", data);
+          setMonthlyData(data);
+        } else {
+          console.error("Error fetching reports:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching reports:", error);
+      }
+    };
+
+    const fetchYearlyData = async () => {
+      if (!token) {
+        console.error("No token found");
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `http://localhost:3001/report/getYearlyReport`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Fetched products:", data);
+          setYearlyData(data);
+        } else {
+          console.error("Error fetching reports:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching reports:", error);
+      }
+    };
+
+    fetchWeeklyData();
+    fetchMonthlyData();
+    fetchYearlyData();
     fetchProducts();
   }, [token]);
 
@@ -73,7 +169,7 @@ export default function AdminReport() {
 
             <div className="filter-container w-[1000px] p-6 m-12 mt-0 rounded-2xl flex-shrink-0">
             <h1 className="font-black text-4xl mb-6"> SALES REPORT</h1>
-              {/* <TimeReportCard items={items}/> */}
+              <TimeReportCard items={items} week={weeklyData} month={monthlyData} year={yearlyData}/>
             </div>
 
         </div>

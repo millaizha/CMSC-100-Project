@@ -112,7 +112,11 @@ const getProductsSold = async (req, res) => {
 // it just returns the total sales per week provided
 // the _id denotes the _id-th week in a year
 const getWeeklyReport = async (req, res) => {
-  const { earliestDate, latestDate } = req.body;
+  const earliestDate = "2020-01-01";
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1); // Add 1 day to the current date
+  const latestDate = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${tomorrow.getDate().toString().padStart(2, '0')}`;
+
   try {
     const salesReport = await Order.aggregate([
       {
@@ -157,7 +161,11 @@ const getWeeklyReport = async (req, res) => {
 // it just returns the total sales per month provided
 // the _id denotes the numerical month in a year
 const getMonthlyReport = async (req, res) => {
-  const { earliestDate, latestDate } = req.body;
+  const earliestDate = "2020-01-01";
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1); // Add 1 day to the current date
+  const latestDate = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${tomorrow.getDate().toString().padStart(2, '0')}`;
+
   try {
     const salesReport = await Order.aggregate([
       {
@@ -202,7 +210,11 @@ const getMonthlyReport = async (req, res) => {
 // it just returns the total sales per month provided
 // the _id denotes the year
 const getYearlyReport = async (req, res) => {
-  const { earliestDate, latestDate } = req.body;
+  const earliestDate = "2020-01-01";
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1); // Add 1 day to the current date
+  const latestDate = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${tomorrow.getDate().toString().padStart(2, '0')}`;
+
   try {
     const salesReport = await Order.aggregate([
       {
