@@ -1,0 +1,26 @@
+[{
+  "_id": {
+    "$oid": "6659c2b5f1e834f8a107fd73"
+  },
+  "firstName": "Kyle Nathaniel",
+  "middleName": "Pangilinan",
+  "lastName": "Vinuya",
+  "address": "Mint by ZDI",
+  "userType": "user",
+  "email": "knpvinuya@gmail.com",
+  "password": "$2b$10$ugi8JRJjymRBJ52VM9WDT.3piTf.JX37Qio.3RaZeQ59NiXD86R/i",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6659c323f1e834f8a107fdc8"
+  },
+  "firstName": "admin",
+  "middleName": "",
+  "lastName": "admin",
+  "address": "admin",
+  "userType": "admin",
+  "email": "admin@gmail.com",
+  "password": "$2b$10$rPY27VF.ILoJr5oPQk8KhOmerM5M5duTBlPQmKeUPMAQmvR49Kr8S",
+  "__v": 0
+}]
