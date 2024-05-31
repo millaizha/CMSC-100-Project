@@ -55,15 +55,20 @@ export default function Card({ product, addToCart }) {
         </div>
 
         <div className="flex gap-2">
-          <input
-            type="number"
-            min="1"
-            max="99"
-            step="1"
+          <select
             value={quantity}
-            onChange={(e) => setQuantity(e.target.value)} // Update quantity state on change
-            className="p-2 pl-4 rounded-xl"
-          />
+            onChange={(e) => setQuantity(e.target.value)}
+            className="p-2 pl-4 h-10 rounded-xl"
+          >
+            {Array.from({ length: product.quantity }, (_, i) => i + 1).map(
+              (num) => (
+                <option key={num} value={num}>
+                  {num}
+                </option>
+              )
+            )}
+          </select>
+
           <button
             className="rounded-xl bg-[#40573C] text-white px-4 w-full mx-auto text-md font-bold"
             onClick={
