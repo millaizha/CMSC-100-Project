@@ -94,7 +94,14 @@ npm install
 npm install
 ```
 
-This command will install all the necessary dependencies listed in your `package.json` file.
+These command will install all the necessary dependencies listed in your `package.json` file.
+
+Next, create a .env file in the server directory and include this line:
+
+```
+SECRET_KEY=MERN_STACK
+```
+
 If you want sample products to be in the app, you must have MongoDB Compass and import `farm-to-table.products.json` to the products collection.
 
 **Running the Project:**
