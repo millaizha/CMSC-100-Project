@@ -31,10 +31,11 @@ export default function AdminOrderCard({ users }) {
         { orderId: id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-    } catch (error) {
-      console.error("Error confirming order:", error);
+        window.location.reload(); // refresh page to get current data
+      } catch (error) {
+        console.error("Error confirming order:", error);
+        alert("Insufficient stock for one or more items in the order.");
     }
-    window.location.reload(); // refresh page to get current data
   }
 
   const getOverallSales = () => {
