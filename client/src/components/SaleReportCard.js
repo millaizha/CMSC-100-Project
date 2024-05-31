@@ -29,7 +29,7 @@ export default function SaleReportCard({ users }) {
             total += product.count * product.price;
           });
         }
-        return total;
+        return total.toFixed(2);
       };
 
     return( 
@@ -53,7 +53,7 @@ export default function SaleReportCard({ users }) {
                             <div className="spacer mx-auto"></div>
 
                             <div className="flex flex-col gap-1">
-                                <h1 className="font-bold">Total - P{getTotal(user.products)}</h1>
+                                <h1 className="font-bold">Total - P{getTotal(user.products).toFixed(2)}</h1>
                             </div>
                             {user.status === 1 ? (
                             <div className="flex flex-col gap-1 rounded-xl px-4 py-2 font-black bg-[#80EF80]">
@@ -134,7 +134,7 @@ export default function SaleReportCard({ users }) {
 
                                       <div className="flex flex-col items-end gap-1">
                                         <div className="font-regular">x{product.count}</div>
-                                        <div className="font-semibold">P{product.count * product.price}</div>
+                                        <div className="font-semibold">P{(product.count * product.price).toFixed(2)}</div>
                                       </div>
                                   </div>
                               </div>

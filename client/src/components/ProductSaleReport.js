@@ -49,7 +49,7 @@ export default function ProductSaleReport({ product }) {
 
         <div className="flex justify-between items-center">
             <div className="flex items-end gap-1">
-            <div className="font-bold">Total Sale: <span className=" bg-white rounded-xl px-4 py-2 font-black">P{product.totalSales}</span></div>
+            <div className="font-bold">Total Sale: <span className=" bg-white rounded-xl px-4 py-2 font-black">P{product.totalSales.toFixed(2)}</span></div>
             </div>
         </div>
         </div>
@@ -81,7 +81,7 @@ export default function ProductSaleReport({ product }) {
                       <div className="flex items-center justify-center relative p-6 flex-auto border-b border-solid border-blueGray-200 rounded-t">
                           <p className="font-black text-3xl">Total Sale</p>    
                           <div className="spacer mx-5"></div>
-                          <p className="font-black text-3xl">P{product.totalSales}</p>
+                          <p className="font-black text-3xl">P{product.totalSales.toFixed(2)}</p>
                       </div>
                   </div>
               </div>
