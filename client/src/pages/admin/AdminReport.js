@@ -153,24 +153,21 @@ export default function AdminReport() {
   }, [token]);
 
     return (
-        <div className="h-screen w-screen">
-          <AdminNavbar />
-    
-          <div className="main-container flex flex-grow mt-3">
-            
-            <div className="filter-container max-w-[700px] p-6 m-12 mt-0 rounded-2xl flex-shrink-0">
-              <h1 className="font-black text-4xl mb-6">PRODUCT SALES REPORT</h1>
-              {items.map((product) => (
-                <ProductSaleReport product={product}/>
-              ))}
-            </div>
-              {/* // TimeReportCard component */}
-            <div className="filter-container flex-grow p-6 m-12 mt-0 rounded-2xl flex-shrink-0">
-            <h1 className="font-black text-4xl mb-6">TIME SALES REPORT</h1>
-              <TimeReportCard items={items} week={weeklyData} month={monthlyData} year={yearlyData}/>
-            </div>
+      <div className="h-screen w-screen flex flex-col">
+  <AdminNavbar />
+  <div className="main-container flex flex-grow mt-3">
+    <div className="filter-container p-6 m-12 mt-0 rounded-2xl flex-1">
+      <h1 className="font-black text-4xl mb-6">PRODUCT SALES REPORT</h1>
+      {items.map((product) => (
+        <ProductSaleReport key={product.id} product={product}/>
+      ))}
+    </div>
+    <div className="filter-container p-6 m-12 mt-0 rounded-2xl flex-1">
+      <h1 className="font-black text-4xl mb-6">TIME SALES REPORT</h1>
+      <TimeReportCard items={items} week={weeklyData} month={monthlyData} year={yearlyData}/>
+    </div>
+  </div>
+</div>
 
-        </div>
-        </div>
       );
 }

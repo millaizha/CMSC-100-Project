@@ -167,7 +167,7 @@ export default function Tab({ items, week, month, year}) {
         })}
       </div>
       {/* Show active tab content. */}
-      <div className="py-4">
+      <div>
         <div className="flex flex-col gap-4">
           <Line options={ options } data={ data }/>
           {showTimeSales(tabsData[activeTabIndex].label)}
