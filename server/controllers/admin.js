@@ -109,6 +109,21 @@ const confirmOrder = async (req, res) => {
   }
 };
 
+// cancel an order
+const cancelOrder = async (req, res) => {
+  try{
+    const { orderId } = req.body;
+    const order = await Order.findById(orderId);  
+
+    await Order.findOneAndUpdate({ _id: orderId }, { status: 2 });
+    res.status(200).json({ message: "Order cancelled." });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Order cancellation failed." });
+  }
+}
+
+// update stock in inventory
 const updateStock = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
@@ -126,5 +141,6 @@ export {
   getRegisteredUsers,
   getOrders,
   confirmOrder,
+  cancelOrder,
   updateStock
 };

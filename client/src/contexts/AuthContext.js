@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }) => {
   const [userEmail, setUserEmail] = useState(null);
   const [userFirstName, setUserFirstName] = useState(null);
   const [userType, setUserType] = useState(null);
+  const [userAddress, setUserAddress] = useState(null);
 
   /**
    * checkAuth:
@@ -42,12 +43,14 @@ export const AuthProvider = ({ children }) => {
     const storedEmail = localStorage.getItem("email");
     const storedFirstName = localStorage.getItem("firstName");
     const storedUserType = localStorage.getItem("userType");
+    const storedAddress = localStorage.getItem("address");
 
     if (storedToken) {
       setToken(storedToken);
       setUserEmail(storedEmail);
       setUserFirstName(storedFirstName);
       setUserType(storedUserType);
+      setUserAddress(storedAddress);
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);
@@ -82,10 +85,12 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("email", email);
         localStorage.setItem("firstName", response.data.firstName);
         localStorage.setItem("userType", response.data.userType);
+        localStorage.setItem("address", response.data.address);
         checkAuth();
 
         setUserEmail(email);
         setUserFirstName(response.data.firstName);
+        setUserAddress(response.data.address);
 
         if (response.data.userType === "admin") {
           navigate("/admin");
@@ -118,10 +123,12 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("email");
     localStorage.removeItem("firstName");
+    localStorage.removeItem("address");
 
     checkAuth();
     setUserEmail(null);
     setUserFirstName(null);
+    setUserAddress(null);
     navigate("/login");
   };
 
@@ -162,6 +169,7 @@ export const AuthProvider = ({ children }) => {
         userEmail,
         userFirstName,
         userType,
+        userAddress,
       }}
     >
       {children}

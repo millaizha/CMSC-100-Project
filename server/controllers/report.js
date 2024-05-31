@@ -22,12 +22,35 @@ const getRecentSales = async (req, res) => {
   }
 };
 
+const getCancelledOrders = async (req, res) => {
+  const { earliestDate, limit } = req.query;
+
+  try {
+    const sales = await Order.find({
+      status: 2,
+      dateTimeOrdered: { $gte: new Date(earliestDate) },
+    })
+      .sort({
+        dateTimeOrdered: -1,
+      })
+      .limit(limit);
+    res.status(200).json(sales);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Unable to get cancelled orders." });
+  }
+};
+
 // get all the list of products sold in a given time interval
 // YYYY-MM-DD format
 // Ex: 2024-05-25 doesn't include that day in 5 PM, it strictly means at 12 MN
 // limit is applied in case the products are too much
 const getProductsSold = async (req, res) => {
-  const { earliestDate, latestDate, limit } = req.body;
+  const earliestDate = "2020-01-01";
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1); // Add 1 day to the current date
+  const latestDate = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${tomorrow.getDate().toString().padStart(2, '0')}`;
+  const limit = 50;
   try {
     const productsSold = await Order.aggregate([
       {
@@ -63,6 +86,7 @@ const getProductsSold = async (req, res) => {
       {
         $project: {
           name: "$productInfo.name",
+          imageUrl: "$productInfo.imageUrl",
           description: "$productInfo.description",
           price: "$productInfo.price",
           totalQuantity: "$totalQuantity",
@@ -88,7 +112,11 @@ const getProductsSold = async (req, res) => {
 // it just returns the total sales per week provided
 // the _id denotes the _id-th week in a year
 const getWeeklyReport = async (req, res) => {
-  const { earliestDate, latestDate } = req.body;
+  const earliestDate = "2020-01-01";
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1); // Add 1 day to the current date
+  const latestDate = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${tomorrow.getDate().toString().padStart(2, '0')}`;
+
   try {
     const salesReport = await Order.aggregate([
       {
@@ -133,7 +161,11 @@ const getWeeklyReport = async (req, res) => {
 // it just returns the total sales per month provided
 // the _id denotes the numerical month in a year
 const getMonthlyReport = async (req, res) => {
-  const { earliestDate, latestDate } = req.body;
+  const earliestDate = "2020-01-01";
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1); // Add 1 day to the current date
+  const latestDate = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${tomorrow.getDate().toString().padStart(2, '0')}`;
+
   try {
     const salesReport = await Order.aggregate([
       {
@@ -178,7 +210,11 @@ const getMonthlyReport = async (req, res) => {
 // it just returns the total sales per month provided
 // the _id denotes the year
 const getYearlyReport = async (req, res) => {
-  const { earliestDate, latestDate } = req.body;
+  const earliestDate = "2020-01-01";
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1); // Add 1 day to the current date
+  const latestDate = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${tomorrow.getDate().toString().padStart(2, '0')}`;
+
   try {
     const salesReport = await Order.aggregate([
       {
@@ -221,6 +257,7 @@ const getYearlyReport = async (req, res) => {
 
 export {
   getRecentSales,
+  getCancelledOrders,
   getProductsSold,
   getWeeklyReport,
   getMonthlyReport,

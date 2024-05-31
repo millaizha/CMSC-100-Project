@@ -21,7 +21,7 @@ import axios from "axios";
 export const CartContext = createContext();
 
 export function CartProvider({ children }) {
-  const { userEmail, userFirstName, token } = useContext(AuthContext);
+  const { userEmail, userFirstName, userAddress, token } = useContext(AuthContext);
   const [forceUpdate, setForceUpdate] = useState(0);
   const [cart, setCart] = useState([]);
 
@@ -130,6 +130,7 @@ export function CartProvider({ children }) {
       const orderData = {
         name: userFirstName,
         email: userEmail,
+        address: userAddress,
         products: cart.map((item) => ({
           productId: item.product._id,
           name: item.product.name,

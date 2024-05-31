@@ -5,7 +5,6 @@ export default function SaleReportCard({ users }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
 
-    
   const openModal = (index) => {
     setShowModal(true);
     setSelectedIndex(index);
@@ -34,10 +33,7 @@ export default function SaleReportCard({ users }) {
       };
 
     return( 
-        <div className="main-container mt-3 flex">
-        <div className="spacer mx-auto"></div>
         <div className="cart-container w-[800px]">
-          <h1 className="font-black text-6xl">Sales Report</h1>
           <div className="list-container mt-8 flex flex-col gap-2 h-full">
             {users.map((user, i) => {
                 return (
@@ -59,32 +55,38 @@ export default function SaleReportCard({ users }) {
                             <div className="flex flex-col gap-1">
                                 <h1 className="font-bold">Total - P{getTotal(user.products)}</h1>
                             </div>
-                            
+                            {user.status === 1 ? (
                             <div className="flex flex-col gap-1 rounded-xl px-4 py-2 font-black bg-[#80EF80]">
                                 <h1>Confirmed</h1>
                             </div>
+                            ) : (
+                            <div className="flex flex-col gap-1 rounded-xl px-4 py-2 font-black bg-[#FF6961]">
+                                <h1>Cancelled</h1>
+                            </div>
+                            )}
                         </div>
                     </div>
                     {user.products.map((product, key) => {
                         return (
-                        <div className="w-full h-16 bg-[#EEDBDB] rounded-xl px-4 py-2">
+                        <div className="w-full h-24 bg-[#EEDBDB] rounded-xl px-4 py-2">
                             <div className="flex items-center gap-3">
-                                <div className="flex flex-col gap-1">
+                                <div className="flex gap-4">
+                                    <img
+                                      src={product.imageUrl}
+                                      alt=""
+                                      className="object-cover w-20 h-20 rounded-xl"z
+                                    />
                                     <h1 className="font-black">{product.name}</h1>
                                 </div>
                                 
                                 <div className="spacer mx-auto"></div>
-
-                                <div className="flex items-end gap-1">
-                                    <div className="font-black">P{product.price}</div>
-                                </div>
-
-                                <div className="flex bg-white rounded-xl px-4 py-2 justify-between items-center">
-                                    <div className="flex items-end gap-1">
-                                        <div className="font-black">x{product.count}</div>
-                                    </div>
-                                </div>
+        
+                            <div className="flex bg-white rounded-xl px-4 py-2 justify-between items-center">
+                              <div className="flex items-end gap-1">
+                                <div className="font-black">x{product.count}</div>
+                              </div>
                             </div>
+                          </div>
                         </div>
                         )
                     })}
@@ -92,8 +94,6 @@ export default function SaleReportCard({ users }) {
                 )
             })}
         </div>
-        </div>
-        <div className="spacer mx-auto"></div>
         {showModal && selectedIndex !== null && (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -109,7 +109,7 @@ export default function SaleReportCard({ users }) {
                           </button>
                       </div>
                       <div className="relative p-6 flex-auto border-b border-solid border-blueGray-200 rounded-t">
-                          <h1 className="font-bold">Delivery Information </h1>
+                          <h1 className="font-bold">Delivery Information  <span className='font-light'> ({new Date(users[selectedIndex].dateTimeOrdered).toLocaleDateString('default', { month: 'long', day: 'numeric', year: 'numeric' })})</span></h1>
                           <p className="font-medium">{users[selectedIndex].name}</p>
                           <p className="font-medium">{users[selectedIndex].email}</p>
                           <p className="font-medium">{users[selectedIndex].address}</p>
@@ -139,12 +139,22 @@ export default function SaleReportCard({ users }) {
                                   </div>
                               </div>
                             )
-                          })}
+                        })}
                       </div>
                       <div className="flex items-center relative p-6 flex-auto">
                           <h1 className="font-bold">Order Total </h1>
                           <div className="spacer mx-auto"></div>
                           <h1 className="font-bold">P{getOverallSales()}</h1>
+                          <div className="spacer mx-auto"></div>
+                          {users[selectedIndex].status === 1 ? (
+                            <div className="flex flex-col gap-1 rounded-xl px-4 py-2 font-black bg-[#80EF80]">
+                                <h1>Confirmed</h1>
+                            </div>
+                            ) : (
+                            <div className="flex flex-col gap-1 rounded-xl px-4 py-2 font-black bg-[#FF6961]">
+                                <h1>Cancelled</h1>
+                            </div>                                                                          
+                          )}
                       </div>
                   </div>
               </div>
