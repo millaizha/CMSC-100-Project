@@ -3,7 +3,6 @@ import { useState, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
 
-
 export default function Card({ product }) {
   const [quantity, setQuantity] = useState(product.quantity);
 
@@ -11,6 +10,11 @@ export default function Card({ product }) {
 
 
   const handleUpdate =  async (e) => {
+    if (!quantity) {
+      alert("Please input number of stocks!");
+      return; // Prevent further execution if not all fields are filled
+    }
+
     try{
       await axios.post(
         "http://localhost:3001/admin/updateStock",
@@ -20,7 +24,7 @@ export default function Card({ product }) {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       )
-
+      alert("Stock updated!");
       window.location.reload(); // refresh page to get current data
     } catch (error) {
       console.log(error);
