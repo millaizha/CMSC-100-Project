@@ -32,6 +32,11 @@ const orderProduct = async (req, res) => {
     // recalculate the total product sales
     let totalOrderSales = 0;
     for (let product of products) {
+      const productInventory = await Product.findById(product.productId);
+
+      if (productInventory.quantity < product.count) 
+        return res.status(400).json({ error: "Insufficient stock for one or more items" });
+
       product.totalProductSales = product.count * product.price;
       totalOrderSales += product.totalProductSales;
     }

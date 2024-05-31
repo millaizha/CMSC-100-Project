@@ -54,7 +54,6 @@ export default function Cart() {
    */
   const handleConfirmOrder = async () => {
     await createOrder(shippingFee, token);
-    navigate("/my-orders");
   };
 
   return (

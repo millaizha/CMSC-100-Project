@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 /**
@@ -24,6 +25,7 @@ export function CartProvider({ children }) {
   const { userEmail, userFirstName, userAddress, token } = useContext(AuthContext);
   const [forceUpdate, setForceUpdate] = useState(0);
   const [cart, setCart] = useState([]);
+  const navigate = useNavigate();
 
   /**
    * useEffect (for fetching cart data):
@@ -165,6 +167,7 @@ export function CartProvider({ children }) {
           }
         )
         .then((response) => {
+          navigate("/my-orders");
           setCart([]);
           setForceUpdate(forceUpdate + 1);
           console.log(response.data.message);
@@ -174,6 +177,7 @@ export function CartProvider({ children }) {
         });
     } catch (error) {
       console.error("Error creating order:", error);
+      alert("Insufficient stock for one or more items in the order.");
     }
   };
 
