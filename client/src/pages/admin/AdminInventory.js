@@ -75,7 +75,7 @@ export default function Shop() {
       !productType ||
       !productDescription ||
       !productPrice ||
-      !productStock
+      isNaN(productStock) || productStock < 0
     ) {
       alert("Please fill out all fields!");
       return;
