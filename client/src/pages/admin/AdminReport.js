@@ -158,7 +158,7 @@ export default function AdminReport() {
     
           <div className="main-container flex flex-grow mt-3">
             
-            <div className="filter-container w-[700px] p-6 m-12 mt-0 rounded-2xl flex-shrink-0">
+            <div className="filter-container max-w-[700px] p-6 m-12 mt-0 rounded-2xl flex-shrink-0">
               <h1 className="font-black text-4xl mb-6">PRODUCT SALES REPORT</h1>
               {items.map((product) => (
                 <ProductSaleReport product={product}/>
@@ -167,7 +167,7 @@ export default function AdminReport() {
 
             <div className="spacer mx-auto"></div>
 
-            <div className="filter-container w-[1000px] p-6 m-12 mt-0 rounded-2xl flex-shrink-0">
+            <div className="filter-container max-w-[1000px] p-6 m-12 mt-0 rounded-2xl flex-shrink-0">
             <h1 className="font-black text-4xl mb-6">TIME SALES REPORT</h1>
               <TimeReportCard items={items} week={weeklyData} month={monthlyData} year={yearlyData}/>
             </div>
