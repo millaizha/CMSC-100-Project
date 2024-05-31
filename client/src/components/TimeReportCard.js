@@ -35,11 +35,7 @@ export default function Tab({ items, week, month, year}) {
   ];
   
   const data = {};
-  const options = {
-    layout: {
-      padding: 50
-  }
-  };
+  const options = {};
 
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
