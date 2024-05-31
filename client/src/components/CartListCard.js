@@ -42,11 +42,13 @@ export default function CartListCard({ product }) {
           onChange={handleQuantityChange}
           className="p-2 pl-4 h-10 rounded-xl"
         >
-          {Array.from({ length: 99 }, (_, i) => i + 1).map((num) => (
-            <option key={num} value={num}>
-              {num}
-            </option>
-          ))}
+          {Array.from({ length: product.quantity }, (_, i) => i + 1).map(
+            (num) => (
+              <option key={num} value={num}>
+                {num}
+              </option>
+            )
+          )}
         </select>
         <div className="overflow-hidden h-full w-24 bg-red-300 rounded-xl">
           <img
