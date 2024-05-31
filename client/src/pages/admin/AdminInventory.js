@@ -470,7 +470,7 @@ export default function Shop() {
                           type="number"
                           placeholder="Product Stocks"
                           value={productStock}
-                          onChange={(e) => setProductStock(e.target.value)}
+                          onChange={(e) => setProductStock(Math.max(0, parseInt(e.target.value)))}
                         />
                       </div>
                     </div>

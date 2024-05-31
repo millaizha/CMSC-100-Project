@@ -71,7 +71,7 @@ export default function Card({ product }) {
             step="1"
             value={quantity}
             // onChange={handleProductStockChange} // Update quantity state on change
-            onChange={(e) => setQuantity(e.target.value)} // Update quantity state on change
+            onChange={(e) => setQuantity(Math.max(0, parseInt(e.target.value)))} // Update quantity state on change
 
             className="p-2 pl-4 rounded-xl"
           />
