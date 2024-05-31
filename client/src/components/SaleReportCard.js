@@ -5,7 +5,6 @@ export default function SaleReportCard({ users }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
 
-    
   const openModal = (index) => {
     setShowModal(true);
     setSelectedIndex(index);
@@ -69,31 +68,25 @@ export default function SaleReportCard({ users }) {
                     </div>
                     {user.products.map((product, key) => {
                         return (
-                        <div className="w-full h-20 bg-[#EEDBDB] rounded-xl px-4 py-2">
+                        <div className="w-full h-24 bg-[#EEDBDB] rounded-xl px-4 py-2">
                             <div className="flex items-center gap-3">
-                                <div className="overflow-hidden h-full w-24 bg-red-300 rounded-xl">
+                                <div className="flex gap-4">
                                     <img
-                                        src={product.imageUrl}
-                                        alt={product.name}
-                                        className="object-cover h-16 w-full"
+                                      src={product.imageUrl}
+                                      alt=""
+                                      className="object-cover w-20 h-20 rounded-xl"z
                                     />
-                                </div>
-                                <div className="flex flex-col gap-1">
                                     <h1 className="font-black">{product.name}</h1>
                                 </div>
                                 
                                 <div className="spacer mx-auto"></div>
-
-                                <div className="flex items-end gap-1">
-                                    <div className="font-black">P{product.price}</div>
-                                </div>
-
-                                <div className="flex bg-white rounded-xl px-4 py-2 justify-between items-center">
-                                    <div className="flex items-end gap-1">
-                                        <div className="font-black">x{product.count}</div>
-                                    </div>
-                                </div>
+        
+                            <div className="flex bg-white rounded-xl px-4 py-2 justify-between items-center">
+                              <div className="flex items-end gap-1">
+                                <div className="font-black">x{product.count}</div>
+                              </div>
                             </div>
+                          </div>
                         </div>
                         )
                     })}
@@ -116,7 +109,7 @@ export default function SaleReportCard({ users }) {
                           </button>
                       </div>
                       <div className="relative p-6 flex-auto border-b border-solid border-blueGray-200 rounded-t">
-                          <h1 className="font-bold">Delivery Information </h1>
+                          <h1 className="font-bold">Delivery Information  <span className='font-light'> ({new Date(users[selectedIndex].dateTimeOrdered).toLocaleDateString('default', { month: 'long', day: 'numeric', year: 'numeric' })})</span></h1>
                           <p className="font-medium">{users[selectedIndex].name}</p>
                           <p className="font-medium">{users[selectedIndex].email}</p>
                           <p className="font-medium">{users[selectedIndex].address}</p>

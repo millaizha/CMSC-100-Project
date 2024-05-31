@@ -40,7 +40,7 @@ export default function ProductSaleReport({ product }) {
                 <img
                     src={product.imageUrl}
                     alt=""
-                    className="object-cover w-20 h-20"
+                    className="object-cover w-20 h-20 rounded-xl"
                 />
                 <h1 className="font-black">{product.name}</h1>
             </div>

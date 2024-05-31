@@ -9,13 +9,20 @@ export default function AdminOrderCard({ users }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const { token } = useContext(AuthContext);
-
+  
   const openModal = (index) => {
     setShowModal(true);
     setSelectedIndex(index);
   };
 
- 
+  function getTotal(products) {
+    let total = 0;
+    products.forEach((product) => {
+        total += product.count * product.price;
+    });
+    return total;
+}
+
   const confirmOrder = async (id) => {
     setShowModal(false)
     try{
@@ -75,11 +82,13 @@ export default function AdminOrderCard({ users }) {
                     
                     <div className="flex justify-between items-center">
                         <div className="flex items-end gap-1">
-                            <div className="font-light">({user.email})</div>
+                            <div className="font-light">({new Date(user.dateTimeOrdered).toLocaleDateString('default', { month: 'long', day: 'numeric', year: 'numeric' })})</div>
                         </div>
                     </div>
                     <div className="spacer mx-auto"></div>
-
+                    <div className="flex flex-col gap-1">
+                        <h1 className="font-bold">Total - P{getTotal(user.products)}</h1>
+                    </div>
                     <div className="flex flex-col gap-1 rounded-xl px-4 py-2 font-black bg-[#ffc64d]">
                         <h1>Pending</h1>
                     </div>
@@ -94,7 +103,7 @@ export default function AdminOrderCard({ users }) {
                             <img
                               src={product.imageUrl}
                               alt=""
-                              className="object-cover w-20 h-20"
+                              className="object-cover w-20 h-20 rounded-xl"
                             />
                             <h1 className="font-black">{product.name}</h1>
                         </div>
@@ -128,7 +137,7 @@ export default function AdminOrderCard({ users }) {
                           </button>
                       </div>
                       <div className="relative p-6 flex-auto border-b border-solid border-blueGray-200 rounded-t">
-                          <h1 className="font-bold">Delivery Information </h1>
+                          <h1 className="font-bold">Delivery Information <span className='font-light'> ({new Date(users[selectedIndex].dateTimeOrdered).toLocaleDateString('default', { month: 'long', day: 'numeric', year: 'numeric' })})</span></h1>
                           <p className="font-medium">{users[selectedIndex].name}</p>
                           <p className="font-medium">{users[selectedIndex].email}</p>
                           <p className="font-medium">{users[selectedIndex].address}</p>

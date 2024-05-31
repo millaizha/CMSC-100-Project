@@ -48,7 +48,6 @@ export default function Tab({ items, week, month, year}) {
     if (range == 'Weekly') salesData = week
     else if (range == 'Monthly') salesData = month
     else salesData = year
-    console.log(salesData)
 
     data.labels = salesData.slice().reverse().map((timeRange) => {   
       const year = timeRange._id.year;
@@ -87,7 +86,7 @@ export default function Tab({ items, week, month, year}) {
     data.datasets = [
       {
         label: "Total Sales",
-        data: salesData.slice().reverse().map((timeRange) => timeRange.totalSales),
+        data: salesData.slice().reverse().map((timeRange) => timeRange.totalSales.toFixed(2)),
         fill: false,
         borderColor: "#EEDBDB",
         tension: 0.1,
@@ -134,7 +133,7 @@ export default function Tab({ items, week, month, year}) {
         className="flex items-center justify-between border-b py-2"
       >
         <p>{formatDate}</p>
-        <p>Total: P{timeRange.totalSales}</p>
+        <p>Total: P{timeRange.totalSales.toFixed(2)}</p>
       </div>
       );
     });
@@ -143,17 +142,13 @@ export default function Tab({ items, week, month, year}) {
   function getOverallSales() {
     let totalSales = 0;
 
-    items.forEach(item => {
-      if (item.status == 1)
-        item.products.forEach(product => {
-            totalSales += product.count * product.price;
-        });
+    console.log(data)
+    year.forEach(item => {
+      totalSales += item.totalSales
     });
 
-    return totalSales
+    return totalSales.toFixed(2);
   }
-
-
 
   return (
     <div>
@@ -182,7 +177,7 @@ export default function Tab({ items, week, month, year}) {
           {showTimeSales(tabsData[activeTabIndex].label)}
           <div className="flex flex-row justify-center w-full h-16 bg-[#EEDBDB] rounded-xl px-4 py-2 items-center">
             <div className="flex items-center gap-3">
-                <h1 className="font-black">Total Overall Sales: {getOverallSales()}</h1>
+                <h1 className="font-black text-3xl">Total Overall Sales: P{getOverallSales()}</h1>
             </div>
           </div>
         </div>

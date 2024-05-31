@@ -181,7 +181,7 @@ export default function Orders({}) {
                             <div className="spacer w-[75px]"></div>
                           </div>
                           <div className="flex items-end gap-1">
-                            {order.shippingFee === 0 ? (
+                            {order.shippingFee != 0 ? (
                               <>
                                 <div className="text-xl font-bold text-gray-400">
                                   PHP
@@ -202,7 +202,7 @@ export default function Orders({}) {
                             <div className="text-xl font-bold">PHP</div>
 
                             <div className="text-4xl font-bold">
-                              {order.totalOrderSales}
+                              {order.totalOrderSales.toFixed(2)}
                               {}
                             </div>
 
