@@ -2,7 +2,7 @@ import SkeletonCard from "../../components/SkeletonCard";
 import IMAGE from "../../assets/shop/empty.png";
 import InventoryCard from "../../components/InventoryCard";
 import AdminNavbar from "../../components/AdminNavbar";
-import { FaRegCircleXmark  } from 'react-icons/fa6'
+import { FaRegCircleXmark } from "react-icons/fa6";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { useState, useEffect, useContext, useRef } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -10,16 +10,13 @@ import Lenis from "@studio-freight/lenis";
 import axios from "axios";
 
 export default function Shop() {
-  const [imageURL, setImageURL] = useState('');
-  const [productName, setProductName] = useState('');
-  const [productType, setProductType] = useState('');
-  const [productDescription, setProductDescription] = useState('');
-  const [productPrice, setProductPrice] = useState('');
-  const [productStock, setProductStock] = useState('');
+  const [imageURL, setImageURL] = useState("");
+  const [productName, setProductName] = useState("");
+  const [productType, setProductType] = useState("");
+  const [productDescription, setProductDescription] = useState("");
+  const [productPrice, setProductPrice] = useState("");
+  const [productStock, setProductStock] = useState("");
 
-  const [showUpdatePopup, setShowUpdatePopup] = useState(false);
-  const [popupImage, setPopupImage] = useState("");
-  const [popupName, setPopupName] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [products, setProducts] = useState([]);
 
@@ -75,36 +72,39 @@ export default function Shop() {
       !productType ||
       !productDescription ||
       !productPrice ||
-      isNaN(productStock) || productStock < 0
+      isNaN(productStock) ||
+      productStock < 0
     ) {
       alert("Please fill out all fields!");
       return;
     }
 
     setShowModal(false);
-    try{
+    try {
       await axios.post(
         "http://localhost:3001/admin/addProduct",
-        { name: productName, 
-          type: productType, 
-          description: productDescription, 
-          price: productPrice, 
-          quantity: productStock, 
-          imageUrl: imageURL},
+        {
+          name: productName,
+          type: productType,
+          description: productDescription,
+          price: productPrice,
+          quantity: productStock,
+          imageUrl: imageURL,
+        },
         { headers: { Authorization: `Bearer ${token}` } }
       );
     } catch (error) {
       console.error("Error adding order:", error);
     }
     alert("Added product!");
-    window.location.reload(); 
+    window.location.reload();
 
-    setImageURL('');
-    setProductName('');
-    setProductType('');
-    setProductDescription('');
-    setProductPrice('');
-    setProductStock('');
+    setImageURL("");
+    setProductName("");
+    setProductType("");
+    setProductDescription("");
+    setProductPrice("");
+    setProductStock("");
   };
 
   /**
@@ -134,7 +134,7 @@ export default function Shop() {
     const fetchProducts = async () => {
       if (!token) {
         console.error("No token found");
-        setLoading(false)
+        setLoading(false);
         return;
       }
 
@@ -160,7 +160,7 @@ export default function Shop() {
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     };
 
@@ -186,15 +186,12 @@ export default function Shop() {
       <AdminNavbar />
       <div className="main-container flex flex-col sm:flex-row flex-grow pt-3">
         <div className="filter-container w-5/6 sm:w-[275px] h-[870px] p-6 m-12 mt-0 bg-[#F2F2F2] rounded-2xl flex-shrink-0 sm:sticky sm:top-36">
-        <div className="flex flex-row justify-center items-center gap-2">
-             <button
-              className="form-button mb-6"
-              onClick={() => openModal()}
-            >
+          <div className="flex flex-row justify-center items-center gap-2">
+            <button className="form-button mb-6" onClick={() => openModal()}>
               + Add Product
             </button>
           </div>
-        <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2">
             <h1 className="text-2xl font-black mb-2">SEARCH</h1>
             <input
               type="text"
@@ -310,7 +307,7 @@ export default function Shop() {
                 <SkeletonCard key={index} />
               ))}
             </div>
-          ) : filteredProducts.length == 0 ? (
+          ) : filteredProducts.length === 0 ? (
             <div className="w-full flex flex-col items-center justify-center mt-20 lg:pr-48">
               <img src={IMAGE} alt="No product" />
               <span className="font-semibold">Oops! No products found.</span>
@@ -318,10 +315,7 @@ export default function Shop() {
           ) : (
             <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
               {filteredProducts.map((product) => (
-                <InventoryCard
-                  key={product._id}
-                  product={product}
-                />
+                <InventoryCard key={product._id} product={product} />
               ))}
             </div>
           )}
@@ -430,7 +424,9 @@ export default function Shop() {
                           id="description"
                           placeholder="Product Description"
                           value={productDescription}
-                          onChange={(e) => setProductDescription(e.target.value)}
+                          onChange={(e) =>
+                            setProductDescription(e.target.value)
+                          }
                         />
                       </div>
                     </div>
@@ -470,7 +466,11 @@ export default function Shop() {
                           type="number"
                           placeholder="Product Stocks"
                           value={productStock}
-                          onChange={(e) => setProductStock(Math.max(0, parseInt(e.target.value)))}
+                          onChange={(e) =>
+                            setProductStock(
+                              Math.max(0, parseInt(e.target.value))
+                            )
+                          }
                         />
                       </div>
                     </div>
