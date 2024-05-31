@@ -90,12 +90,6 @@ const confirmOrder = async (req, res) => {
     }
 
     if (orderSuffices) {
-      // then subtract for all the products
-      for (let productOrder of productOrders) {
-        await Product.findByIdAndUpdate(productOrder.productId, {
-          $inc: { quantity: -productOrder.count },
-        });
-      }
       await Order.findOneAndUpdate({ _id: orderId }, { status: 1 });
       res.status(200).json({ message: "Order confirmed." });
     } else {
@@ -115,7 +109,16 @@ const cancelOrder = async (req, res) => {
     const { orderId } = req.body;
     const order = await Order.findById(orderId);  
 
+    for (let product of order.products) {
+      const productInventory = await Product.findById(product.productId);
+
+      await Product.findByIdAndUpdate(product.productId, {
+        quantity: productInventory.quantity + product.count
+      });
+    }
+
     await Order.findOneAndUpdate({ _id: orderId }, { status: 2 });
+
     res.status(200).json({ message: "Order cancelled." });
   } catch (error) {
     console.log(error);

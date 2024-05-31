@@ -37,6 +37,9 @@ const orderProduct = async (req, res) => {
       if (productInventory.quantity < product.count) 
         return res.status(400).json({ error: "Insufficient stock for one or more items" });
 
+      await Product.findByIdAndUpdate(product.productId, {
+        quantity: productInventory.quantity - product.count});
+
       product.totalProductSales = product.count * product.price;
       totalOrderSales += product.totalProductSales;
     }
@@ -65,7 +68,18 @@ const orderProduct = async (req, res) => {
 const cancelOrder = async (req, res) => {
   try {
     const { orderId } = req.body;
+    const order = await Order.findById(orderId);
+
+    for (let product of order.products) {
+      const productInventory = await Product.findById(product.productId);
+
+      await Product.findByIdAndUpdate(product.productId, {
+        quantity: productInventory.quantity + product.count
+      });
+    }
+    
     await Order.findOneAndUpdate({ _id: orderId }, { status: 2 });
+    
     res.status(200).json({ message: "Cancellation confirmed." });
   } catch (error) {
     res.status(500).json({ error: "Cancellation failed." });
