@@ -85,7 +85,12 @@ Customers register with their email address and create a username.
 
 2. **MongoDB:** Download and install MongoDB from the official website [https://www.mongodb.com/try/download/community](https://www.mongodb.com/try/download/community). Follow the installation instructions for your operating system.
     
-3.  **Project dependencies:** Navigate to your project's root directory in your terminal and run the following command:
+3.  **Project dependencies:**
+   - Navigate to your project's server directory in your terminal and run the following command:
+```
+npm install
+```
+- Navigate to your project's client directory in your terminal and run the following command:
 ```
 npm install
 ```
@@ -94,15 +99,15 @@ This command will install all the necessary dependencies listed in your `package
 
 **Running the Project:**
 
-1.  **Start the server:** In your terminal, navigate to your project's root directory and run:
+1.  **Start the server:** In your terminal, navigate to your project's server directory and run:
 ```
 npm start
 ```
 
 This will typically start the server-side application.
 
-2.  **Start the client:** You might have a separate directory for the client-side application (e.g.,  `client`). In that case, navigate to that directory in your terminal and run:
+2.  **Start the client:** In your terminal, navigate to your project's client directory and run:
 ```
 npm start
 ```
-This will start the client-side application (e.g., a React app).
+This will start the client-side application.
