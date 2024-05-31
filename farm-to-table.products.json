@@ -1,0 +1,110 @@
+[{
+  "_id": {
+    "$oid": "6650bd35d02adc97196d8163"
+  },
+  "name": "Organic Fuji Apples",
+  "description": "Crisp and juicy, perfect for snacking or baking.",
+  "price": 1.99,
+  "type": 1,
+  "quantity": 85,
+  "imageUrl": "https://crate2plate.com/cdn/shop/products/product-image_1080x.png?v=1571122490"
+},
+{
+  "_id": {
+    "$oid": "6650bd35d02adc97196d8164"
+  },
+  "name": "Free-Range Chicken Eggs",
+  "description": "Farm-fresh eggs from happy hens.",
+  "price": 3.49,
+  "type": 2,
+  "quantity": 120,
+  "imageUrl": "https://media.post.rvohealth.io/wp-content/uploads/2020/12/duck-chicken-egg-eggs-732x549-thumbnail-732x549.jpg"
+},
+{
+  "_id": {
+    "$oid": "6650bd35d02adc97196d8165"
+  },
+  "name": "Russet Potatoes (5lb Bag)",
+  "description": "Great for mashed potatoes, fries, or baking.",
+  "price": 4.99,
+  "type": 1,
+  "quantity": 50,
+  "imageUrl": "https://www.finedininglovers.com/sites/g/files/xknfdk626/files/2021-03/russet-potatoes%C2%A9iStock.jpg"
+},
+{
+  "_id": {
+    "$oid": "6650bd35d02adc97196d8166"
+  },
+  "name": "Artisanal Sourdough Bread",
+  "description": "Crusty on the outside, chewy on the inside.",
+  "price": 5.5,
+  "type": 1,
+  "quantity": 35,
+  "imageUrl": "https://hips.hearstapps.com/thepioneerwoman/wp-content/uploads/2018/10/how-to-make-artisan-sourdough-bread-at-home-01.jpg"
+},
+{
+  "_id": {
+    "$oid": "6650bd35d02adc97196d8167"
+  },
+  "name": "Wild Caught Salmon Fillet",
+  "description": "Rich in Omega-3s, perfect for grilling or baking.",
+  "price": 12.99,
+  "type": 2,
+  "quantity": 25,
+  "imageUrl": "https://cdn11.bigcommerce.com/s-q1qpuo8ch5/images/stencil/2048x2048/products/1039/930/sockeye__33324.1657889759.jpg?c=2"
+},
+{
+  "_id": {
+    "$oid": "6650bd35d02adc97196d8168"
+  },
+  "name": "Local Honey (16oz)",
+  "description": "Raw, unfiltered honey with a delicate floral flavor.",
+  "price": 8.95,
+  "type": 1,
+  "quantity": 42,
+  "imageUrl": "https://brightland.co/cdn/shop/articles/a-jar-of-brightland-raw-california-honey-ft.jpg?v=1642822931"
+},
+{
+  "_id": {
+    "$oid": "6650bd35d02adc97196d8169"
+  },
+  "name": "Kale Bunch",
+  "description": "Nutrient-packed leafy green, great for salads or smoothies.",
+  "price": 2.75,
+  "type": 1,
+  "quantity": 60,
+  "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRC2-_c_QaWQI9IEu5Xv_8-zyznpcOkAX0F9Q&s"
+},
+{
+  "_id": {
+    "$oid": "6650bd35d02adc97196d816a"
+  },
+  "name": "Grass-Fed Ground Beef (1lb)",
+  "description": "Lean and flavorful, perfect for burgers or tacos.",
+  "price": 7.99,
+  "type": 2,
+  "quantity": 30,
+  "imageUrl": "https://embed.widencdn.net/img/beef/4hh1pywcnj/800x600px/Grind_Fine_85.psd?keep=c&u=7fueml"
+},
+{
+  "_id": {
+    "$oid": "6650bd35d02adc97196d816b"
+  },
+  "name": "Organic Avocado",
+  "description": "Creamy and delicious, ideal for guacamole or toast.",
+  "price": 1.5,
+  "type": 1,
+  "quantity": 78,
+  "imageUrl": "https://i.ebayimg.com/images/g/dIIAAOSwxuNfYi8U/s-l1200.jpg"
+},
+{
+  "_id": {
+    "$oid": "6650bd35d02adc97196d816c"
+  },
+  "name": "Goat Cheese Log",
+  "description": "Tangy and creamy, perfect for salads or appetizers.",
+  "price": 6.79,
+  "type": 2,
+  "quantity": 18,
+  "imageUrl": "https://photos.bigoven.com/recipe/hero/goat-cheese-log-rolled-in-dried-apr.jpg"
+}]
