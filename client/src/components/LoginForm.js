@@ -2,19 +2,47 @@ import { useState, useRef, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { IoEyeOffSharp, IoEyeSharp } from "react-icons/io5";
 
-import LOGO from "../assets/logo/100_LOGO.svg";
+import LOGO from "../assets/logo/100_LOGO.png";
+
+/**
+ * COMPONENT: LoginForm
+ * PURPOSE: Provides a form for users to log into the application.
+ *
+ * PROPS:
+ *  - toggleFunc (Function): Function to switch between login and registration forms.
+ *
+ * STATE:
+ *  - showPassword (boolean): Controls the visibility of the password input.
+ *  - loginError (string): Stores error messages during login attempts.
+ *
+ * CONTEXT:
+ *  - AuthContext: Provides the `login` function for authentication.
+ *
+ * USAGE:
+ *  - Used on login section of the login page to enable user authentication.
+ */
 
 export default function LoginForm({ toggleFunc }) {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const { login } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const email = emailRef.current.value;
-    const password = passwordRef.current.value;
-    login(email, password);
+
+    try {
+      const email = emailRef.current.value;
+      const password = passwordRef.current.value;
+      const error = await login(email, password);
+
+      if (error) {
+        setLoginError(error);
+      }
+    } catch (error) {
+      setLoginError("An unexpected error occurred. Please try again later.");
+    }
   };
 
   const togglePassword = () => {
@@ -38,30 +66,32 @@ export default function LoginForm({ toggleFunc }) {
 
         <input
           type="text"
-          required="true"
+          required={true}
           id="email"
           className="input-box"
           placeholder="Email"
           ref={emailRef}
         />
+        <div className="relative w-full">
+          <input
+            type={showPassword ? "text" : "password"}
+            required={true}
+            id="password"
+            className="input-box"
+            placeholder="Password"
+            ref={passwordRef}
+          />
 
-        <input
-          type={showPassword ? "text" : "password"}
-          required
-          id="password"
-          className="input-box"
-          placeholder="Password"
-          ref={passwordRef}
-        />
+          <button
+            type="button"
+            className="absolute inset-y-0 right-0 pr-5 flex items-center text-xl leading-5"
+            onClick={togglePassword}
+          >
+            {showPassword ? <IoEyeOffSharp /> : <IoEyeSharp />}
+          </button>
+        </div>
 
-        <button
-          type="button"
-          className="password-toggle"
-          onClick={togglePassword}
-        >
-          {showPassword ? <IoEyeOffSharp /> : <IoEyeSharp />}
-        </button>
-
+        <div className="text-red-500 mt-3">{loginError}</div>
         <button className="form-button mt-8" type="submit">
           Log In
         </button>
