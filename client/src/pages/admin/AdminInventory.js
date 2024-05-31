@@ -4,7 +4,6 @@ import InventoryCard from "../../components/InventoryCard";
 import AdminNavbar from "../../components/AdminNavbar";
 import { FaRegCircleXmark  } from 'react-icons/fa6'
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
-import Popup from "../../components/AdminUpdatePopup";
 import { useState, useEffect, useContext, useRef } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import Lenis from "@studio-freight/lenis";
@@ -18,7 +17,7 @@ export default function Shop() {
   const [productPrice, setProductPrice] = useState('');
   const [productStock, setProductStock] = useState('');
 
-  const [showPopup, setShowPopup] = useState(false);
+  const [showUpdatePopup, setShowUpdatePopup] = useState(false);
   const [popupImage, setPopupImage] = useState("");
   const [popupName, setPopupName] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -58,16 +57,6 @@ export default function Shop() {
     setFilterOption((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleButtonClick = (image, name) => {
-    setShowPopup(true);
-    setPopupImage(image);
-    setPopupName(name);
-  };
-
-  const handleClosePopup = () => {
-    setShowPopup(false);
-  };
-
   const openModal = () => {
     setShowModal(true);
   };
@@ -79,6 +68,19 @@ export default function Shop() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (
+      !imageURL ||
+      !productName ||
+      !productType ||
+      !productDescription ||
+      !productPrice ||
+      !productStock
+    ) {
+      alert("Please fill out all fields!");
+      return;
+    }
+
     setShowModal(false);
     try{
       await axios.post(
@@ -94,7 +96,8 @@ export default function Shop() {
     } catch (error) {
       console.error("Error adding order:", error);
     }
-    window.location.reload(); // refresh page to get current data
+    alert("Added product!");
+    window.location.reload(); 
 
     setImageURL('');
     setProductName('');
@@ -186,7 +189,6 @@ export default function Shop() {
         <div className="flex flex-row justify-center items-center gap-2">
              <button
               className="form-button mb-6"
-              // onClick={addProduct}
               onClick={() => openModal()}
             >
               + Add Product
@@ -388,7 +390,6 @@ export default function Shop() {
                           placeholder="Product Name"
                           value={productName}
                           onChange={(e) => setProductName(e.target.value)}
-                          // ref={nameRef}
                         />
                       </div>
                     </div>
@@ -396,21 +397,22 @@ export default function Shop() {
                       <div class="md:w-1/3">
                         <label
                           class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                          for="inline-type"
+                          for="product-type"
                         >
                           Product Type
                         </label>
                       </div>
                       <div class="md:w-2/3">
-                        <input
+                        <select
+                          id="product-type"
                           class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-emerald-600"
-                          id="type"
-                          type="text"
-                          placeholder="Product Type"
-                          value={productType} // change to dropdown
+                          value={productType}
                           onChange={(e) => setProductType(e.target.value)}
-                          // ref={typeRef}
-                        />
+                        >
+                          <option value="">Select Product Type</option>
+                          <option value="1">Crops</option>
+                          <option value="2">Poultry</option>
+                        </select>
                       </div>
                     </div>
                     <div class="md:flex md:items-center mb-6">
@@ -429,7 +431,6 @@ export default function Shop() {
                           placeholder="Product Description"
                           value={productDescription}
                           onChange={(e) => setProductDescription(e.target.value)}
-                          // ref={typeRef}
                         />
                       </div>
                     </div>
@@ -450,7 +451,6 @@ export default function Shop() {
                           placeholder="Product Price"
                           value={productPrice}
                           onChange={(e) => setProductPrice(e.target.value)}
-                          // ref={typeRef}
                         />
                       </div>
                     </div>
@@ -471,7 +471,6 @@ export default function Shop() {
                           placeholder="Product Stocks"
                           value={productStock}
                           onChange={(e) => setProductStock(e.target.value)}
-                          // ref={typeRef}
                         />
                       </div>
                     </div>
@@ -498,12 +497,6 @@ export default function Shop() {
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       )}
-      <Popup
-        show={showPopup}
-        onClose={handleClosePopup}
-        image={popupImage}
-        title={popupName}
-      />
     </div>
   );
 }
