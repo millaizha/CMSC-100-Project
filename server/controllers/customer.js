@@ -16,7 +16,7 @@ import Cart from "../models/cartModel.js";
 const getProductListings = async (req, res) => {
   try {
     const { sortOption } = req.body;
-    const products = await Product.find().sort(sortOption);
+    const products = await Product.find({ quantity: { $gt: 0 } }).sort(sortOption);
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ error: "Unable to get products." });
