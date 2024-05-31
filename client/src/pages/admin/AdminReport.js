@@ -164,8 +164,8 @@ export default function AdminReport() {
                 <ProductSaleReport product={product}/>
               ))}
             </div>
-
-            <div className="filter-container max-w-[1000px] p-6 m-12 mt-0 rounded-2xl flex-shrink-0">
+              {/* // TimeReportCard component */}
+            <div className="filter-container flex-grow p-6 m-12 mt-0 rounded-2xl flex-shrink-0">
             <h1 className="font-black text-4xl mb-6">TIME SALES REPORT</h1>
               <TimeReportCard items={items} week={weeklyData} month={monthlyData} year={yearlyData}/>
             </div>
